@@ -248,4 +248,12 @@ func _on_time_to_catch_on_fire_timeout():
 
 func _on_Hitbox_area_exited(area):
 	if area.name == "FlameAffection":
-		$time_to_catch_on_fire.stop()
+		area.call_deferred("set_monitorable",true)
+		area.call_deferred("set_monitoring",true)
+
+func _on_Hitbox_area_entered(area):
+	if area.name == "FlameAffection":
+		area.call_deferred("set_monitorable",false)
+		area.call_deferred("set_monitoring",false)
+		take_damage(area.get_parent().damage,false,false)
+		burn(5,1,5)

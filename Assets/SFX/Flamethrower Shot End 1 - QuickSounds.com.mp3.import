@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Flamethrower Shot End 1 - QuickSounds.com.mp3-aac6884c4b1f7e6b6228a8dae8f35be9.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/Flamethrower Shot End 1 - QuickSounds.com.mp3"
+dest_files=[ "res://.import/Flamethrower Shot End 1 - QuickSounds.com.mp3-aac6884c4b1f7e6b6228a8dae8f35be9.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

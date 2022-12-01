@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/fire.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/Bullet_Trail.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Bullet.gd" type="Script" id=3]
 
 [sub_resource type="AtlasTexture" id=1]
@@ -45,32 +44,27 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=10]
-extents = Vector2( 4.5, 4.5 )
-
-[sub_resource type="Curve" id=11]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.372727 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="Gradient" id=12]
-colors = PoolColorArray( 0.894531, 0.304492, 0.146759, 1, 0.953125, 0.716938, 0.0893555, 1 )
+extents = Vector2( 4, 4.5 )
 
 [sub_resource type="CircleShape2D" id=13]
-radius = 7.0
+radius = 5.0
 
 [node name="Bullet" type="KinematicBody2D" groups=["player_bullets"]]
+z_index = 1
 collision_layer = 4
-collision_mask = 16
+collision_mask = 0
 script = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( -4.76837e-07, -4.76837e-07 )
-scale = Vector2( 0.0885468, 0.0885468 )
+position = Vector2( -9.53674e-07, 9.53674e-07 )
+scale = Vector2( 0.0559921, 0.0559921 )
 frames = SubResource( 9 )
-frame = 1
+frame = 4
 speed_scale = 1.5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.5, 0.5 )
+position = Vector2( 0, 0.5 )
 shape = SubResource( 10 )
 disabled = true
 
@@ -79,14 +73,6 @@ position = Vector2( -0.211998, 2.98023e-08 )
 scale = Vector2( 0.174269, 0.2 )
 rect = Rect2( -10.26, -10, 22.953, 20 )
 
-[node name="Line2D" type="Line2D" parent="."]
-show_behind_parent = true
-width_curve = SubResource( 11 )
-default_color = Color( 0.913725, 0.643137, 0.0627451, 1 )
-gradient = SubResource( 12 )
-script = ExtResource( 2 )
-lenght = 5.0
-
 [node name="timer_to_dissapear" type="Timer" parent="."]
 one_shot = true
 
@@ -94,9 +80,15 @@ one_shot = true
 wait_time = 0.05
 one_shot = true
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="FlameAffection" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 16
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlameAffection"]
 shape = SubResource( 13 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="timeout" from="timer_to_dissapear" to="." method="_on_timer_to_dissapear_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

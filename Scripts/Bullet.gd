@@ -17,6 +17,8 @@ var starting_damage = null
 var time_to_be_gone = 3
 
 func _ready():
+	if is_flamethrower:
+		$Timer.start()
 	if !is_flamethrower:
 		get_node(bullet_sprite+"Bullet").visible = true
 	percentages[0] = 1.0 - Global.stats["player_crit_chance"]
@@ -41,13 +43,21 @@ func _ready():
 
 func _physics_process(delta):
 	#damage = Global.stats["player_damagey"]
-	velocity += Vector2(bullet_speed*delta,0).rotated(rotation) 
+	if !is_flamethrower:
+		velocity += Vector2(bullet_speed*delta,0).rotated(rotation)
+	elif is_flamethrower:
+		var tween = create_tween()
+		scale += Vector2(0.05,0.05)
+		$AnimatedSprite.rotation_degrees += rand_range(-3,3)
+		tween.tween_property(self,"modulate",Color(0,0,0,0),1.2)
+		velocity = Vector2(bullet_speed*delta,0).rotated(rotation)
 	var info = move_and_collide(velocity)
-	if is_flamethrower:
-		var enemies = $Hitbox.get_overlapping_bodies()
-		if !enemies.empty():
-			for enemy in enemies:
-				enemy.burn(5,1,5)
+#	if is_flamethrower:
+#		var enemies = $Hitbox.get_overlapping_bodies()
+#		if !enemies.empty():
+#			for enemy in enemies:
+#				enemy.take_damage(damage,false,false)
+#				enemy.burn(5,1,5)
 #	for i in get_slide_count():
 #		var collision = get_slide_collision(i)
 #		if collision.get_collider().has_method("take_damage"):
@@ -75,3 +85,8 @@ func remove_ghost():
 func become_ghost():
 	$CollisionShape2D.set_deferred("disabled",true)
 	ghost = true
+
+
+func _on_Timer_timeout():
+	if damage > 5:
+		damage -= 1

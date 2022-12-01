@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/my_jingle.mp3-4b98d39de37fac81ec5c35cc54a9749e.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/my_jingle.mp3"
+dest_files=[ "res://.import/my_jingle.mp3-4b98d39de37fac81ec5c35cc54a9749e.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

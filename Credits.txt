@@ -1,0 +1,14 @@
+Credits can be seen in-game but I will also duplicate them here:
+Most art, ideas: Zerodon
+Code, some art, some sfx: FoggyDude
+Music: PROVGM
+
+Engine: Godot Engine
+Font: Upheaval  Created by Brian Kent
+SFX made using JSFXR; sfxr.me
+Smooth scroll plugin by SpyrexDE 
+Originally made for LD51
+THANKS TO YOU FOR PLAYING!!!
+
+
+And a special thanks for those reading this on github :P

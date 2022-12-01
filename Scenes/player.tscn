@@ -1,0 +1,220 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://Scripts/player.gd" type="Script" id=2]
+[ext_resource path="res://Assets/cowboy stand.png" type="Texture" id=3]
+[ext_resource path="res://Assets/cowboy walk.png" type="Texture" id=5]
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=6]
+[ext_resource path="res://Assets/SFX/playerhurt.wav" type="AudioStream" id=7]
+[ext_resource path="res://Scripts/ShakyCamera.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/Fucker.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/SFX/dash_charged.wav" type="AudioStream" id=10]
+[ext_resource path="res://Scripts/EnemySpawnerActual.gd" type="Script" id=11]
+[ext_resource path="res://Assets/circle-blood.png" type="Texture" id=12]
+[ext_resource path="res://Assets/SFX/dash.wav" type="AudioStream" id=15]
+[ext_resource path="res://Assets/SFX/dash_charging.wav" type="AudioStream" id=16]
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource( 6 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 7.0
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 3 )
+region = Rect2( 256, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 3 )
+region = Rect2( 512, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 5 )
+region = Rect2( 256, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 256, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 5 )
+region = Rect2( 256, 256, 256, 256 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "guy idle"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "guy walk"
+length = 0.55
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.35, 0.55 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 6 ]
+}
+
+[sub_resource type="Curve2D" id=24]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -501, 0, 0, 0, 0, 0, 561, 0, 0, 0, 0, 0, -483, -166, 0, 0, 0, 0, -484, 182, 0, 0, 0, 0, 547, -164, 0, 0, 0, 0, 553, 181 )
+}
+
+[node name="Player" type="KinematicBody2D"]
+material = SubResource( 2 )
+z_index = 1
+collision_layer = 2
+collision_mask = 25
+script = ExtResource( 2 )
+speed = 150.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+light_mask = 2
+use_parent_material = true
+scale = Vector2( 0.138, 0.138 )
+frames = SubResource( 14 )
+offset = Vector2( 0, -10 )
+
+[node name="GunRoot" type="Position2D" parent="."]
+use_parent_material = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 8 )
+"anims/guy idle" = SubResource( 23 )
+"anims/guy walk" = SubResource( 15 )
+
+[node name="gun timeout" type="Timer" parent="."]
+wait_time = 0.66
+one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.55, 0.55 )
+smoothing_enabled = true
+smoothing_speed = 6.0
+script = ExtResource( 8 )
+RANDOM_SHAKE_STRENGTH = 5.0
+
+[node name="hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -8.739
+
+[node name="RegenerationTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="FuckerSpawn" type="Path2D" parent="."]
+visible = false
+curve = SubResource( 24 )
+script = ExtResource( 11 )
+enemy = ExtResource( 9 )
+signal_to_connect = "activate_fuckers"
+is_the_fucker = true
+additional_time = 0.1
+name_to_look_up = "Fucker"
+max_amount_of_this_type = 4
+
+[node name="Timer" type="Timer" parent="FuckerSpawn"]
+one_shot = true
+
+[node name="additional" type="Timer" parent="FuckerSpawn"]
+one_shot = true
+
+[node name="Sprite2" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 0.435294 )
+position = Vector2( 0, 16 )
+scale = Vector2( 1, 0.125 )
+z_index = -1
+texture = ExtResource( 12 )
+
+[node name="DashTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DashTimeout" type="Timer" parent="."]
+one_shot = true
+
+[node name="ghost_instancing" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="FRENZY" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[node name="dash_charged" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+volume_db = -15.0
+
+[node name="dash_charging" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -4.0
+
+[node name="dash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+volume_db = -12.0
+pitch_scale = 0.85
+bus = "New Bus 2"
+
+[connection signal="timeout" from="RegenerationTimer" to="." method="_on_RegenerationTimer_timeout"]
+[connection signal="timeout" from="FuckerSpawn/Timer" to="FuckerSpawn" method="_on_Timer_timeout"]
+[connection signal="timeout" from="FuckerSpawn/additional" to="FuckerSpawn" method="_on_additional_timeout"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_DashTimer_timeout"]
+[connection signal="timeout" from="DashTimeout" to="." method="_on_DashTimeout_timeout"]
+[connection signal="timeout" from="ghost_instancing" to="." method="_on_ghost_instancing_timeout"]
+[connection signal="timeout" from="FRENZY" to="." method="_on_FRENZY_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/godot_jignle.mp3-1feb6bccb2b8d729f31e22bd26bbbb44.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/godot_jignle.mp3"
+dest_files=[ "res://.import/godot_jignle.mp3-1feb6bccb2b8d729f31e22bd26bbbb44.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

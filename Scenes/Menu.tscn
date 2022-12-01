@@ -1,0 +1,216 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Font/use_this.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/Menu.gd" type="Script" id=2]
+[ext_resource path="res://Assets/logo_realll.png" type="Texture" id=3]
+[ext_resource path="res://Assets/background menu.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/schmancy_buttons.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=33]
+size = 60
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=30]
+bg_color = Color( 0.956863, 0.552941, 0.0745098, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.976471, 0.294118, 0.247059, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color( 0.803922, 0.168627, 0.12549, 1 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 8 )
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.984314, 0.619608, 0.188235, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.988235, 0.364706, 0.321569, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color( 0.635294, 0.215686, 0.188235, 1 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 8 )
+
+[sub_resource type="Animation" id=6]
+length = 6.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect2:rect_scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 3, 6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.1, 1.1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextureRect2:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 3.0, -3.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("TextureRect2:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TextureRect2:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 2.4 ]
+}
+
+[node name="Menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color( 0.501961, 0.227451, 0.376471, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -152.0
+margin_top = -86.0
+margin_right = 119.0
+margin_bottom = 73.0
+rect_rotation = 2.4
+rect_pivot_offset = Vector2( 674, 337 )
+mouse_filter = 2
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -407.0
+margin_top = -78.0
+margin_right = -72.0
+margin_bottom = 246.0
+rect_pivot_offset = Vector2( 167, 162 )
+custom_constants/separation = 20
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+margin_right = 335.0
+margin_bottom = 66.0
+rect_pivot_offset = Vector2( 167, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 33 )
+custom_styles/hover = SubResource( 30 )
+custom_styles/pressed = SubResource( 30 )
+custom_styles/focus = SubResource( 31 )
+custom_styles/disabled = SubResource( 31 )
+custom_styles/normal = SubResource( 31 )
+text = "PLAY"
+script = ExtResource( 5 )
+
+[node name="ShopButton" type="Button" parent="VBoxContainer"]
+margin_top = 86.0
+margin_right = 335.0
+margin_bottom = 152.0
+rect_pivot_offset = Vector2( 167, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 33 )
+custom_styles/hover = SubResource( 30 )
+custom_styles/pressed = SubResource( 30 )
+custom_styles/focus = SubResource( 31 )
+custom_styles/disabled = SubResource( 31 )
+custom_styles/normal = SubResource( 31 )
+text = "SHOP"
+script = ExtResource( 5 )
+
+[node name="CreditsButton" type="Button" parent="VBoxContainer"]
+margin_top = 172.0
+margin_right = 335.0
+margin_bottom = 238.0
+rect_pivot_offset = Vector2( 167, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 33 )
+custom_styles/hover = SubResource( 30 )
+custom_styles/pressed = SubResource( 30 )
+custom_styles/focus = SubResource( 31 )
+custom_styles/disabled = SubResource( 31 )
+custom_styles/normal = SubResource( 31 )
+text = "CREDITS"
+script = ExtResource( 5 )
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+margin_top = 258.0
+margin_right = 335.0
+margin_bottom = 324.0
+rect_pivot_offset = Vector2( 167, 33 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 33 )
+custom_styles/hover = SubResource( 30 )
+custom_styles/pressed = SubResource( 30 )
+custom_styles/focus = SubResource( 31 )
+custom_styles/disabled = SubResource( 31 )
+custom_styles/normal = SubResource( 31 )
+text = "EXIT"
+script = ExtResource( 5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "MenuAnimation"
+anims/MenuAnimation = SubResource( 6 )
+anims/RESET = SubResource( 5 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -475.0
+margin_top = -293.5
+margin_right = -9.0
+margin_bottom = -82.5
+texture = ExtResource( 3 )
+expand = true
+
+[connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ShopButton" to="." method="_on_ShopButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_Quit_pressed"]

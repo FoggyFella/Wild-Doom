@@ -1,0 +1,141 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Assets/light.png" type="Texture" id=1]
+[ext_resource path="res://Assets/SFX/LargeWeaponFire.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://Assets/boomstick-sheet.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/Gun.gd" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 4 )
+region = Rect2( 270, 288, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 4 )
+region = Rect2( 270, 0, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 4 )
+region = Rect2( 540, 0, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 96, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 4 )
+region = Rect2( 270, 96, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 4 )
+region = Rect2( 540, 96, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 192, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 4 )
+region = Rect2( 270, 192, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 4 )
+region = Rect2( 540, 192, 270, 96 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 288, 270, 96 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="ShaderMaterial" id=15]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "shoot"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0 ]
+}
+
+[node name="Gun" type="AnimatedSprite"]
+light_mask = 2
+use_parent_material = true
+scale = Vector2( 0.191, 0.191 )
+frames = SubResource( 14 )
+offset = Vector2( 75, -8 )
+script = ExtResource( 5 )
+bullet_sprite = "Shotty"
+starting_damage = 25
+bullet_dissapear_after = 0.4
+starting_critchance = 0.05
+bullets_rotations = [ -0.1, 0.0, 0.1 ]
+bullets_rotations_rand = [ [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ], [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ] ]
+recoil_min = 10.0
+recoil_max = 20.0
+starting_firerate = 1.4
+max_firerate = 1.12
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 118.577, -15.798 )
+
+[node name="Light2D2" type="Light2D" parent="Position2D"]
+material = SubResource( 15 )
+position = Vector2( 17.41, 11.017 )
+scale = Vector2( 3.82812, 4.14812 )
+texture = ExtResource( 1 )
+color = Color( 0.960784, 0.466667, 0.105882, 1 )
+energy = 0.0
+range_item_cull_mask = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 1.5
+anims/RESET = SubResource( 16 )
+anims/shoot = SubResource( 17 )
+
+[node name="shoot1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -15.0
+bus = "New Bus"
+
+[node name="shoot2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -15.0
+bus = "New Bus"

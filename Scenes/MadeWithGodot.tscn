@@ -1,0 +1,307 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Assets/Godot_icon.svg.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/MadeWithGodot.gd" type="Script" id=2]
+[ext_resource path="res://Assets/SFX/godot_jignle.mp3" type="AudioStream" id=3]
+
+[sub_resource type="Shader" id=57]
+code = "shader_type canvas_item;
+
+
+uniform vec4 shine_color : hint_color = vec4(1.0);
+uniform float shine_speed : hint_range(0.0, 10.0, 0.1) = 1.0;
+uniform float shine_size : hint_range(0.01, 1.0, 0.01) = 0.01;
+
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+	
+	float shine = step(1.0 - shine_size * 0.5, 0.5 + 0.5 * sin(UV.x - UV.y + TIME * shine_speed));
+	
+	COLOR.rgb = mix(COLOR.rgb, shine_color.rgb, shine * shine_color.a);
+}"
+
+[sub_resource type="ShaderMaterial" id=54]
+shader = SubResource( 57 )
+shader_param/shine_color = Color( 1, 1, 1, 0.219608 )
+shader_param/shine_speed = 1.0
+shader_param/shine_size = 0.01
+
+[sub_resource type="DynamicFontData" id=58]
+antialiased = false
+font_path = "res://Assets/Font/upheavtt.ttf"
+
+[sub_resource type="DynamicFont" id=51]
+size = 91
+outline_size = 5
+outline_color = Color( 0.101961, 0.101961, 0.239216, 1 )
+font_data = SubResource( 58 )
+
+[sub_resource type="DynamicFont" id=52]
+size = 60
+outline_size = 5
+outline_color = Color( 0.101961, 0.101961, 0.239216, 1 )
+font_data = SubResource( 58 )
+
+[sub_resource type="Animation" id=55]
+resource_name = "Auto_Anim"
+length = 6.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("HBoxContainer/CenterContainer/TextureRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.8 ),
+"transitions": PoolRealArray( 0.241484, 1.56917, 2.14355 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HBoxContainer/VBoxContainer/Label:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.9 ),
+"transitions": PoolRealArray( 0.267943, 0.267943, 2.63902 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HBoxContainer/VBoxContainer/Label2:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.6, 1.1 ),
+"transitions": PoolRealArray( 0.258816, 0.258816, 0.25, 0.241484 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Label:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.9 ),
+"transitions": PoolRealArray( 1, 0.267943, 0.267943 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Label2:rect_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.2, 0.6, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 0.3, 0.3 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=56]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("HBoxContainer/CenterContainer/TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HBoxContainer/VBoxContainer/Label:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HBoxContainer/VBoxContainer/Label2:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Label:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Label2:rect_scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1 ) ]
+}
+
+[sub_resource type="Gradient" id=59]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 0.959045, 0.957031, 1 )
+
+[sub_resource type="GradientTexture" id=19]
+gradient = SubResource( 59 )
+
+[sub_resource type="Environment" id=60]
+background_mode = 4
+background_color = Color( 1, 1, 1, 1 )
+dof_blur_near_distance = 1.76
+dof_blur_near_transition = 2.48
+glow_enabled = true
+glow_intensity = 0.44
+glow_strength = 1.01
+glow_bloom = 0.41
+glow_hdr_threshold = 1.5
+glow_bicubic_upscale = true
+adjustment_enabled = true
+adjustment_color_correction = SubResource( 19 )
+
+[node name="MadeWithGodot" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 76, 229 )
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0941176, 0.0980392, 0.12549, 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -401.0
+margin_top = -100.0
+margin_right = 401.0
+margin_bottom = 100.0
+rect_clip_content = true
+custom_constants/separation = 20
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 200.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/CenterContainer"]
+modulate = Color( 1, 1, 1, 0 )
+material = SubResource( 54 )
+margin_right = 200.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+texture = ExtResource( 1 )
+expand = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 220.0
+margin_right = 802.0
+margin_bottom = 200.0
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 29.0
+margin_right = 582.0
+margin_bottom = 112.0
+rect_scale = Vector2( 1e-05, 1 )
+custom_colors/font_color_shadow = Color( 0.12549, 0.12549, 0.262745, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 51 )
+text = "MADE WITH"
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 116.0
+margin_right = 582.0
+margin_bottom = 170.0
+rect_scale = Vector2( 1e-05, 1 )
+rect_pivot_offset = Vector2( 582, 0 )
+custom_colors/font_color_shadow = Color( 0.12549, 0.12549, 0.262745, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 52 )
+text = "GODOT GAME ENGINE"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Auto_Anim"
+anims/Auto_Anim = SubResource( 55 )
+anims/RESET = SubResource( 56 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 60 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0
+autoplay = true
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -180.0
+margin_top = -70.5
+margin_right = 402.0
+margin_bottom = 12.5
+rect_scale = Vector2( 1e-05, 1 )
+custom_colors/font_color_shadow = Color( 0.12549, 0.12549, 0.262745, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 51 )
+text = "MADE WITH"
+
+[node name="Label2" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -181.0
+margin_top = 16.0
+margin_right = 401.0
+margin_bottom = 70.0
+rect_scale = Vector2( 1e-05, 1 )
+rect_pivot_offset = Vector2( 582, 0 )
+custom_colors/font_color_shadow = Color( 0.12549, 0.12549, 0.262745, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 52 )
+text = "GODOT GAME ENGINE"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

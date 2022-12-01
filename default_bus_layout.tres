@@ -1,0 +1,34 @@
+[gd_resource type="AudioBusLayout" load_steps=3 format=2]
+
+[sub_resource type="AudioEffectReverb" id=5]
+resource_name = "Reverb"
+room_size = 0.1
+damping = 0.08
+spread = 0.11
+hipass = 0.14
+wet = 0.0
+
+[sub_resource type="AudioEffectPhaser" id=6]
+resource_name = "Phaser"
+range_min_hz = 3959.53
+range_max_hz = 10000.0
+rate_hz = 1.662
+feedback = 0.9
+
+[resource]
+bus/1/name = "New Bus"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = "Master"
+bus/1/effect/0/effect = SubResource( 5 )
+bus/1/effect/0/enabled = true
+bus/2/name = "New Bus 2"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = 0.0672607
+bus/2/send = "Master"
+bus/2/effect/0/effect = SubResource( 6 )
+bus/2/effect/0/enabled = true

@@ -1,0 +1,105 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Scripts/Fucker.gd" type="Script" id=2]
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/circle-blood.png" type="Texture" id=7]
+[ext_resource path="res://Assets/fucker but cooler.png" type="Texture" id=8]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 135, 102 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 8 )
+region = Rect2( 135, 0, 135, 102 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 8 )
+region = Rect2( 270, 0, 135, 102 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 102, 135, 102 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 8 )
+region = Rect2( 135, 102, 135, 102 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 8 )
+region = Rect2( 270, 102, 135, 102 )
+
+[sub_resource type="SpriteFrames" id=20]
+animations = [ {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CircleShape2D" id=21]
+radius = 12.0
+
+[node name="Fucker" type="KinematicBody2D" groups=["enemy_group"]]
+z_index = 2
+collision_layer = 16
+collision_mask = 6
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+material = SubResource( 2 )
+scale = Vector2( 0.30499, 0.30499 )
+frames = SubResource( 20 )
+frame = 3
+speed_scale = 1.5
+playing = true
+offset = Vector2( -24.309, 0 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 21 )
+
+[node name="hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -11.361
+
+[node name="death" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -9.613
+
+[node name="shoot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = -7.866
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -0.500001, 0 )
+scale = Vector2( 1.05, 1 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 0.435294 )
+position = Vector2( 0, 18.271 )
+scale = Vector2( 1, 0.158875 )
+z_index = -1
+texture = ExtResource( 7 )
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

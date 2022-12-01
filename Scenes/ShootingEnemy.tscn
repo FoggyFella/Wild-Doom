@@ -1,0 +1,227 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=1]
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/circle-blood.png" type="Texture" id=4]
+[ext_resource path="res://Assets/fill health.png" type="Texture" id=5]
+[ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/underhealth.png" type="Texture" id=7]
+[ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/demon 2.png" type="Texture" id=9]
+[ext_resource path="res://Assets/demon 1.png" type="Texture" id=10]
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 10 )
+region = Rect2( 192, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 10 )
+region = Rect2( 384, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 10 )
+region = Rect2( 192, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 10 )
+region = Rect2( 384, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 9 )
+region = Rect2( 192, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 9 )
+region = Rect2( 384, 0, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 9 )
+region = Rect2( 192, 192, 192, 192 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 9 )
+region = Rect2( 384, 192, 192, 192 )
+
+[sub_resource type="SpriteFrames" id=23]
+animations = [ {
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=26]
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 6 ]
+}
+
+[sub_resource type="Animation" id=24]
+resource_name = "idle"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 6, 7, 8, 9, 10, 11 ]
+}
+
+[sub_resource type="Animation" id=25]
+resource_name = "new_shoot"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=27]
+radius = 11.0
+height = 22.0
+
+[node name="ShootingEnemy" type="KinematicBody2D" groups=["enemy_group"]]
+z_index = 2
+collision_layer = 16
+collision_mask = 20
+script = ExtResource( 2 )
+more_health = 50
+min_money = 2
+max_money = 5
+min_speed = 0
+max_speed = -5
+how_much_slower = 5
+should_rotate = true
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( -1, -0.999999 )
+scale = Vector2( 0.335938, 0.335938 )
+frames = SubResource( 23 )
+frame = 6
+offset = Vector2( -10, -10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -2.358 )
+shape = SubResource( 26 )
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 2, -8 )
+
+[node name="reload" type="Timer" parent="."]
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -11.361
+attenuation = 4.43828
+
+[node name="death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = -9.613
+attenuation = 4.43828
+
+[node name="shoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -7.866
+attenuation = 4.43828
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -2.5, 0.75 )
+scale = Vector2( 0.35, 0.725 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/RESET = SubResource( 8 )
+anims/idle = SubResource( 24 )
+anims/new_shoot = SubResource( 25 )
+
+[node name="timer2" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+visible = false
+margin_left = -11.0
+margin_top = -26.0
+margin_right = 11.0
+margin_bottom = -18.0
+value = 100.0
+rounded = true
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 5 )
+nine_patch_stretch = true
+
+[node name="bite_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( -0.136, -2.235 )
+scale = Vector2( 0.97, 0.949 )
+shape = SubResource( 27 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 0.435294 )
+position = Vector2( 1.78814e-07, 23.792 )
+scale = Vector2( 1.25, 0.15625 )
+z_index = -1
+texture = ExtResource( 4 )
+
+[connection signal="timeout" from="reload" to="." method="_on_reload_timeout"]
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="timer2" to="." method="_on_timer2_timeout"]
+[connection signal="timeout" from="bite_timer" to="." method="_on_bite_timer_timeout"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]

@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/dash_charged.wav-2efb984002ad56e9e380c8069b2ac509.sample"
+
+[deps]
+
+source_file="res://Assets/SFX/dash_charged.wav"
+dest_files=[ "res://.import/dash_charged.wav-2efb984002ad56e9e380c8069b2ac509.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

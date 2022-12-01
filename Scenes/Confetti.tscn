@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/confetti sheet.png" type="Texture" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=7]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.687023, 0.969466 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0.491228, 0.995454 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( 2, 0, 0 )
+spread = 57.86
+gravity = Vector3( 0, 10, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.18
+angular_velocity = 9.35
+angular_velocity_random = 0.1
+orbit_velocity = 0.1
+orbit_velocity_random = 0.05
+angle = 720.0
+angle_random = 1.0
+scale_curve = SubResource( 6 )
+color_ramp = SubResource( 2 )
+hue_variation = 0.1
+hue_variation_random = 0.1
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[node name="Confetti" type="Particles2D"]
+pause_mode = 2
+material = SubResource( 7 )
+scale = Vector2( 2, 2 )
+emitting = false
+amount = 35
+lifetime = 3.0
+explosiveness = 0.83
+process_material = SubResource( 4 )
+texture = ExtResource( 1 )

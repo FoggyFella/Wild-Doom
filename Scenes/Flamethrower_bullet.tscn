@@ -1,0 +1,102 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Assets/fire.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Bullet_Trail.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Bullet.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 256, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 512, 0, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 256, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 256, 256, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 512, 256, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 512, 256, 256 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 256, 512, 256, 256 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 4.5, 4.5 )
+
+[sub_resource type="Curve" id=11]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.372727 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=12]
+colors = PoolColorArray( 0.894531, 0.304492, 0.146759, 1, 0.953125, 0.716938, 0.0893555, 1 )
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 7.0
+
+[node name="Bullet" type="KinematicBody2D" groups=["player_bullets"]]
+collision_layer = 4
+collision_mask = 16
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -4.76837e-07, -4.76837e-07 )
+scale = Vector2( 0.0885468, 0.0885468 )
+frames = SubResource( 9 )
+frame = 1
+speed_scale = 1.5
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, 0.5 )
+shape = SubResource( 10 )
+disabled = true
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -0.211998, 2.98023e-08 )
+scale = Vector2( 0.174269, 0.2 )
+rect = Rect2( -10.26, -10, 22.953, 20 )
+
+[node name="Line2D" type="Line2D" parent="."]
+show_behind_parent = true
+width_curve = SubResource( 11 )
+default_color = Color( 0.913725, 0.643137, 0.0627451, 1 )
+gradient = SubResource( 12 )
+script = ExtResource( 2 )
+lenght = 5.0
+
+[node name="timer_to_dissapear" type="Timer" parent="."]
+one_shot = true
+
+[node name="ghost_timer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource( 13 )

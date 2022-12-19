@@ -1,0 +1,362 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/circle-blood.png" type="Texture" id=5]
+[ext_resource path="res://Assets/fill health.png" type="Texture" id=6]
+[ext_resource path="res://Assets/underhealth.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Dogger/Untitled_12-16-2022_06-40-35_1.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Dogger/Untitled_12-16-2022_08-14-48.png" type="Texture" id=9]
+
+[sub_resource type="Shader" id=17]
+code = "shader_type canvas_item;
+
+uniform vec4 flash_color : hint_color = vec4(1.0);
+uniform float flash_modifier : hint_range(0.0, 1.0) = 1;
+uniform float max_line_width = 10.0;
+uniform float min_line_width = 5.0;
+uniform float freq = 1.0;
+uniform float block_size = 20.0;
+uniform vec4 starting_colour = vec4(0,0,0,1);
+uniform vec4 ending_colour = vec4(1);
+
+const float pi = 3.1415;
+const int ang_res = 16;
+const int grad_res = 8;
+
+float hash(vec2 p, float s) {
+	return fract(35.1 * sin(dot(vec3(112.3, 459.2, 753.2), vec3(p, s))));
+}
+
+float noise(vec2 p, float s) {
+	vec2 d = vec2(0, 1);
+	vec2 b = floor(p);
+	vec2 f = fract(p);
+	return mix(
+		mix(hash(b + d.xx, s), hash(b + d.yx, s), f.x),
+		mix(hash(b + d.xy, s), hash(b + d.yy, s), f.x), f.y);
+}
+
+float getLineWidth(vec2 p, float s) {
+	p /= block_size;
+	float w = 0.0;
+	float intensity = 1.0;
+	for (int i = 0; i < 3; i++) {
+		w = mix(w, noise(p, s), intensity);
+		p /= 2.0;
+		intensity /= 2.0;
+	}
+	
+	return mix(max_line_width, min_line_width, w);
+}
+
+bool pixelInRange(sampler2D text, vec2 uv, vec2 dist) {
+	float alpha = 0.0;
+	for (int i = 0; i < ang_res; i++) {
+		float angle = 2.0 * pi * float(i) / float(ang_res);
+		vec2 disp = dist * vec2(cos(angle), sin(angle));
+		if (texture(text, uv + disp).a > 0.0) return true;
+	}
+	return false;
+}
+
+float getClosestDistance(sampler2D text, vec2 uv, vec2 maxDist) {
+	if (!pixelInRange(text, uv, maxDist)) return -1.0;
+	
+	float hi = 1.0; float lo = 0.0;
+	
+	for (int i = 1; i <= grad_res; i++) {
+		float curr = (hi + lo) / 2.0;
+		if (pixelInRange(text, uv, curr * maxDist)) {
+			hi = curr;
+		}
+		else {
+			lo = curr;
+		}
+	}
+	return hi;
+	
+}
+
+void fragment() {
+	float timeStep = floor(freq * TIME);
+	vec2 scaledDist = TEXTURE_PIXEL_SIZE;
+	scaledDist *= getLineWidth(UV / TEXTURE_PIXEL_SIZE, timeStep);
+	float w = getClosestDistance(TEXTURE, UV, scaledDist);
+	
+	if (( w > 0.0) && (texture(TEXTURE, UV).a < 0.2)) {
+		COLOR = mix(starting_colour, ending_colour, tanh(3.0*w));
+	}
+	else {
+		COLOR = texture(TEXTURE, UV);
+	vec4 color = texture(TEXTURE, UV);
+	color.rgb = mix(color.rgb, flash_color.rgb, flash_modifier );
+	COLOR = color;
+	}
+	
+}"
+
+[sub_resource type="ShaderMaterial" id=18]
+resource_local_to_scene = true
+shader = SubResource( 17 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+shader_param/max_line_width = 0.0
+shader_param/min_line_width = 0.0
+shader_param/freq = 10.0
+shader_param/block_size = 2.0
+shader_param/starting_colour = Plane( 1, 0, 0, 0.3 )
+shader_param/ending_colour = Plane( 1.3, 0.3, 0, 1 )
+
+[sub_resource type="AtlasTexture" id=39]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=40]
+atlas = ExtResource( 8 )
+region = Rect2( 64, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=41]
+atlas = ExtResource( 8 )
+region = Rect2( 128, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=42]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=43]
+atlas = ExtResource( 8 )
+region = Rect2( 64, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=44]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=45]
+atlas = ExtResource( 9 )
+region = Rect2( 64, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=46]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 9 )
+region = Rect2( 192, 0, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=48]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=49]
+atlas = ExtResource( 9 )
+region = Rect2( 64, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=50]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=51]
+atlas = ExtResource( 9 )
+region = Rect2( 192, 40, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=52]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 80, 64, 40 )
+
+[sub_resource type="AtlasTexture" id=53]
+atlas = ExtResource( 9 )
+region = Rect2( 64, 80, 64, 40 )
+
+[sub_resource type="SpriteFrames" id=34]
+animations = [ {
+"frames": [ SubResource( 39 ), SubResource( 40 ), SubResource( 41 ), SubResource( 42 ), SubResource( 43 ), SubResource( 44 ), SubResource( 45 ), SubResource( 46 ), SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ), SubResource( 52 ), SubResource( 53 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=35]
+radius = 7.0
+height = 22.0
+
+[sub_resource type="Animation" id=54]
+resource_name = "Dash"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ]
+}
+
+[sub_resource type="Animation" id=36]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=37]
+resource_name = "Walk"
+length = 0.4
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+
+[sub_resource type="RectangleShape2D" id=38]
+extents = Vector2( 19.5, 10.5 )
+
+[node name="Doggy" type="KinematicBody2D"]
+z_index = 2
+collision_layer = 16
+collision_mask = 20
+script = ExtResource( 1 )
+more_health = 30
+min_speed = 2
+max_speed = 7
+bite_damage = 9
+should_dash = true
+dash_speed = 350.0
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+material = SubResource( 18 )
+scale = Vector2( 0.9, 0.9 )
+frames = SubResource( 34 )
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 8 )
+rotation = 1.5708
+z_index = 2
+shape = SubResource( 35 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Walk"
+playback_speed = 0.7
+anims/Dash = SubResource( 54 )
+anims/RESET = SubResource( 36 )
+anims/Walk = SubResource( 37 )
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+visible = false
+margin_left = -11.0
+margin_top = -32.0
+margin_right = 11.0
+margin_bottom = -24.0
+value = 100.0
+rounded = true
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 6 )
+nine_patch_stretch = true
+
+[node name="reload" type="Timer" parent="."]
+
+[node name="bite_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="." groups=["enemy_group"]]
+collision_layer = 0
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( 0.5, 7.5 )
+shape = SubResource( 38 )
+
+[node name="Sprite2" type="Sprite" parent="."]
+modulate = Color( 0, 0, 0, 0.435294 )
+position = Vector2( 1.5, 18.542 )
+scale = Vector2( 1.9375, 0.125 )
+z_index = -1
+texture = ExtResource( 5 )
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -11.361
+attenuation = 4.43828
+bus = "SoundEffects"
+
+[node name="death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -9.613
+attenuation = 4.43828
+bus = "SoundEffects"
+
+[node name="shoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = -7.866
+attenuation = 4.43828
+bus = "SoundEffects"
+
+[node name="burn_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="burn_tick" type="Timer" parent="."]
+wait_time = 0.15
+
+[node name="time_to_catch_on_fire" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="flames_shield" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="damage" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="time_until_dash" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="dash_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="ghost_tick" type="Timer" parent="."]
+wait_time = 0.05
+
+[node name="timebetweendashes" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]
+[connection signal="timeout" from="burn_timer" to="." method="_on_burn_timer_timeout"]
+[connection signal="timeout" from="time_to_catch_on_fire" to="." method="_on_time_to_catch_on_fire_timeout"]
+[connection signal="timeout" from="flames_shield" to="." method="_on_flames_shield_timeout"]
+[connection signal="timeout" from="damage" to="." method="_on_damage_timeout"]
+[connection signal="timeout" from="time_until_dash" to="." method="_on_time_until_dash_timeout"]
+[connection signal="timeout" from="dash_timer" to="." method="_on_dash_timer_timeout"]
+[connection signal="timeout" from="ghost_tick" to="." method="_on_ghost_tick_timeout"]
+[connection signal="timeout" from="timebetweendashes" to="." method="_on_timebetweendashes_timeout"]

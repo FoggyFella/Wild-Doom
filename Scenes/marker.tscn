@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=2]
+resource_name = "marker_script"
+script/source = "extends Sprite
+
+func _on_Timer_timeout():
+	queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 29.8667, 25.6 )
+
+[node name="Sprite" type="Sprite"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -1.90735e-06, 1.90735e-06 )
+scale = Vector2( 0.234375, 0.234375 )
+texture = ExtResource( 1 )
+script = SubResource( 2 )
+
+[node name="MarkerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MarkerArea"]
+position = Vector2( 8.90096e-06, -7.62939e-06 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 9.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

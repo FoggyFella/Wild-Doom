@@ -16,6 +16,7 @@ onready var ui = $"../UI"
 onready var hurt = $hurt
 onready var camera = $Camera2D
 
+#var look_thing_vec = Vector2.ZERO
 var weapon = null
 var dash_timeout = 3
 var can_dash = true
@@ -31,19 +32,29 @@ var number_of_damage = preload("res://Scenes/NumberPopup.tscn")
 var fire_before_frenzy = 0
 var movement = Vector2.ZERO
 var velocity = Vector2.ZERO
+var should_show_arrow = false
 
 func _ready():
-	#weapon = Global.equipped_weapon
-	weapon = "Flamethrower"
+	weapon = Global.equipped_weapon
+	#weapon = "Sniper"
 	var weapon_inst = weapons[weapon].instance()
 	get_node("GunRoot").add_child(weapon_inst)
 	Global.player = self
 	Global.connect("frenzy_start",self,"on_frenzy_started")
+	set_deadzone()
 
 func _exit_tree():
 	Global.player = null
 
 func _process(delta):
+	if should_show_arrow:
+		if $arrow.global_position.distance_to(get_tree().current_scene.get_node("PickUps").get_child(0).global_position) > 100:
+			$arrow.show()
+		else:
+			$arrow.hide()
+		$arrow.look_at(get_tree().current_scene.get_node("PickUps").get_child(0).global_position)
+	else:
+		$arrow.hide()
 	if Global.stats["player_health"] > Global.player_max_health:
 		Global.player_max_health = Global.stats["player_health"]
 	if should_regen and should_actually_regen:
@@ -90,11 +101,15 @@ func _physics_process(delta):
 		start_dash(dash_duration,dash_timeout)
 	velocity = movement * dash_speed if is_dashing() else movement * speed
 	move_and_slide(velocity,Vector2.UP)
-	if Input.is_action_just_pressed("ui_up"):
-		take_damage(1000)
+	#if Input.is_action_just_pressed("ui_up"):
+		#take_damage(1000)
 
 func take_damage(amount):
 	if can_be_hurt:
+		can_be_hurt = false
+		$Invincibility.start()
+		var tween_1 = create_tween()
+		tween_1.tween_property(self,"modulate",Color("8da7ff"),0.1)
 		player_regen = 1
 		should_regen = false
 		$RegenerationTimer.start()
@@ -104,7 +119,7 @@ func take_damage(amount):
 		numb_inst.amount = "-" + str(amount)
 		numb_inst.type = "White"
 		numb_inst.position = self.position
-		get_tree().current_scene.add_child(numb_inst)
+		get_tree().current_scene.call_deferred("add_child",numb_inst)
 		$Camera2D.NOISE_SHAKE_STRENGTH = rand_range(7,15)
 		$Camera2D.apply_noise_shake()
 		$hurt.play()
@@ -166,6 +181,7 @@ func instance_ghost():
 	ghost_inst.frames = $Sprite.frames
 	ghost_inst.frame = $Sprite.frame
 	ghost_inst.scale = $Sprite.scale
+	ghost_inst.material = null
 	ghost_inst.flip_h = $Sprite.flip_h
 	get_tree().current_scene.add_child(ghost_inst)
 
@@ -189,3 +205,14 @@ func _on_FRENZY_timeout():
 	$GunRoot.get_node("Gun").update_self_stats()
 	var tween = create_tween()
 	tween.tween_property(camera,"zoom",Vector2(0.55,0.55),1)
+
+func _on_Invincibility_timeout():
+	can_be_hurt = true
+	var tween = create_tween()
+	tween.tween_property(self,"modulate",Color("ffffff"),0.1)
+
+func set_deadzone():
+	InputMap.action_set_deadzone("move_left",Global.settings["deadzone"])
+	InputMap.action_set_deadzone("move_up",Global.settings["deadzone"])
+	InputMap.action_set_deadzone("move_down",Global.settings["deadzone"])
+	InputMap.action_set_deadzone("move_right",Global.settings["deadzone"])

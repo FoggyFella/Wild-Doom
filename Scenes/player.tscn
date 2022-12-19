@@ -1,5 +1,6 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
+[ext_resource path="res://Assets/arrow.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/cowboy stand.png" type="Texture" id=3]
 [ext_resource path="res://Assets/cowboy walk.png" type="Texture" id=5]
@@ -114,6 +115,38 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -501, 0, 0, 0, 0, 0, 561, 0, 0, 0, 0, 0, -483, -166, 0, 0, 0, 0, -484, 182, 0, 0, 0, 0, 547, -164, 0, 0, 0, 0, 553, 181 )
 }
 
+[sub_resource type="Animation" id=41]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("arrow_sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.064375, 0.064375 ) ]
+}
+
+[sub_resource type="Animation" id=42]
+resource_name = "arrow_anim"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("arrow_sprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.064375, 0.064375 ), Vector2( 0.07, 0.07 ) ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 material = SubResource( 2 )
 z_index = 1
@@ -155,6 +188,7 @@ RANDOM_SHAKE_STRENGTH = 5.0
 [node name="hurt" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 volume_db = -8.739
+bus = "SoundEffects"
 
 [node name="RegenerationTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -200,16 +234,37 @@ one_shot = true
 [node name="dash_charged" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
 volume_db = -15.0
+bus = "SoundEffects"
 
 [node name="dash_charging" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
 volume_db = -4.0
+bus = "SoundEffects"
 
 [node name="dash" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 volume_db = -12.0
 pitch_scale = 0.85
-bus = "New Bus 2"
+bus = "DashBus"
+
+[node name="Invincibility" type="Timer" parent="."]
+one_shot = true
+
+[node name="arrow" type="Position2D" parent="."]
+visible = false
+z_index = 1
+
+[node name="arrow_sprite" type="Sprite" parent="arrow"]
+modulate = Color( 0.73, 0.05, 1.2, 1 )
+position = Vector2( 26, 0 )
+scale = Vector2( 0.064375, 0.064375 )
+texture = ExtResource( 1 )
+offset = Vector2( 80, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arrow"]
+autoplay = "arrow_anim"
+anims/RESET = SubResource( 41 )
+anims/arrow_anim = SubResource( 42 )
 
 [connection signal="timeout" from="RegenerationTimer" to="." method="_on_RegenerationTimer_timeout"]
 [connection signal="timeout" from="FuckerSpawn/Timer" to="FuckerSpawn" method="_on_Timer_timeout"]
@@ -218,3 +273,4 @@ bus = "New Bus 2"
 [connection signal="timeout" from="DashTimeout" to="." method="_on_DashTimeout_timeout"]
 [connection signal="timeout" from="ghost_instancing" to="." method="_on_ghost_instancing_timeout"]
 [connection signal="timeout" from="FRENZY" to="." method="_on_FRENZY_timeout"]
+[connection signal="timeout" from="Invincibility" to="." method="_on_Invincibility_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/WBA Free Track - Sabotage.mp3-019f1b02e413b6e03d705ee227061fd4.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/MUSIC/Sabotage - Karl Casey @ White Bat Audio/WBA Free Track - Sabotage.mp3"
+dest_files=[ "res://.import/WBA Free Track - Sabotage.mp3-019f1b02e413b6e03d705ee227061fd4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

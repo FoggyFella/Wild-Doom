@@ -3,41 +3,44 @@
 [ext_resource path="res://Scripts/Gun.gd" type="Script" id=1]
 [ext_resource path="res://Assets/light.png" type="Texture" id=2]
 [ext_resource path="res://Assets/SFX/LargeWeaponFire.wav" type="AudioStream" id=3]
-[ext_resource path="res://Assets/big iron in hadn.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Guns/Revolver/Revolver v2.png" type="Texture" id=4]
 [ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=5]
-[ext_resource path="res://Assets/big iron sheet.png" type="Texture" id=6]
 
-[sub_resource type="AtlasTexture" id=49]
+[sub_resource type="AtlasTexture" id=58]
 atlas = ExtResource( 4 )
-region = Rect2( 0, 0, 256, 112 )
+region = Rect2( 65, 64, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=50]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 0, 256, 112 )
+[sub_resource type="AtlasTexture" id=59]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=51]
-atlas = ExtResource( 6 )
-region = Rect2( 256, 0, 256, 112 )
+[sub_resource type="AtlasTexture" id=60]
+atlas = ExtResource( 4 )
+region = Rect2( 65, 0, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=52]
-atlas = ExtResource( 6 )
-region = Rect2( 512, 0, 256, 112 )
+[sub_resource type="AtlasTexture" id=61]
+atlas = ExtResource( 4 )
+region = Rect2( 130, 0, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=53]
-atlas = ExtResource( 6 )
-region = Rect2( 0, 112, 256, 112 )
+[sub_resource type="AtlasTexture" id=62]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 32, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=54]
-atlas = ExtResource( 6 )
-region = Rect2( 256, 112, 256, 112 )
+[sub_resource type="AtlasTexture" id=63]
+atlas = ExtResource( 4 )
+region = Rect2( 65, 32, 65, 32 )
 
-[sub_resource type="AtlasTexture" id=55]
-atlas = ExtResource( 6 )
-region = Rect2( 512, 112, 256, 112 )
+[sub_resource type="AtlasTexture" id=64]
+atlas = ExtResource( 4 )
+region = Rect2( 130, 32, 65, 32 )
+
+[sub_resource type="AtlasTexture" id=65]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 64, 65, 32 )
 
 [sub_resource type="SpriteFrames" id=56]
 animations = [ {
-"frames": [ SubResource( 49 ), SubResource( 50 ), SubResource( 51 ), SubResource( 52 ), SubResource( 53 ), SubResource( 54 ), SubResource( 55 ) ],
+"frames": [ SubResource( 58 ), SubResource( 59 ), SubResource( 60 ), SubResource( 61 ), SubResource( 62 ), SubResource( 63 ), SubResource( 64 ), SubResource( 65 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -74,33 +77,34 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 2, 3, 4, 5, 6, 0 ]
+"values": [ 1, 2, 3, 4, 5, 6, 7, 0 ]
 }
 
 [node name="Gun" type="AnimatedSprite"]
 light_mask = 2
-position = Vector2( 0, 2 )
-scale = Vector2( 0.156947, 0.156947 )
+position = Vector2( 1, 1 )
+scale = Vector2( 0.625, 0.625 )
 frames = SubResource( 56 )
-offset = Vector2( 98.247, -25 )
+offset = Vector2( 22, -4.7 )
 script = ExtResource( 1 )
-starting_damage = 80
+bullet_delay = 0.1
+starting_damage = 100
 bullet_dissapear_after = 2.0
 starting_critchance = 0.2
 starting_firerate = 1.15
 max_firerate = 0.82
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( 147.276, -40.584 )
+position = Vector2( 30.857, -8.77 )
 scale = Vector2( 0.15, 0.15 )
 
 [node name="Light2D2" type="Light2D" parent="Position2D"]
 material = SubResource( 46 )
-position = Vector2( -17.2866, -26.7803 )
-scale = Vector2( 20.8504, 17.8576 )
+position = Vector2( 0.953339, -1.53333 )
+scale = Vector2( 2.91667, 1.62718 )
 texture = ExtResource( 2 )
 color = Color( 0.960784, 0.466667, 0.105882, 1 )
 energy = 0.0
@@ -109,12 +113,12 @@ range_item_cull_mask = 6
 [node name="shoot1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"
 
 [node name="shoot2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 2.0

@@ -1,51 +1,50 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://Assets/sniper 2 because you suck.png" type="Texture" id=1]
-[ext_resource path="res://Assets/sniper sheet.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Guns/Sniper/Sniper V2.png" type="Texture" id=1]
 [ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=3]
 [ext_resource path="res://Assets/light.png" type="Texture" id=4]
 [ext_resource path="res://Assets/SFX/LargeWeaponFire.wav" type="AudioStream" id=5]
 [ext_resource path="res://Scripts/Gun.gd" type="Script" id=6]
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 285, 102 )
+region = Rect2( 190, 64, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 285, 102 )
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 285, 0, 285, 102 )
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 1 )
+region = Rect2( 95, 0, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 570, 0, 285, 102 )
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 1 )
+region = Rect2( 190, 0, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 102, 285, 102 )
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 32, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 2 )
-region = Rect2( 285, 102, 285, 102 )
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 1 )
+region = Rect2( 95, 32, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 2 )
-region = Rect2( 570, 102, 285, 102 )
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 1 )
+region = Rect2( 190, 32, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 204, 285, 102 )
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 95, 32 )
 
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 2 )
-region = Rect2( 285, 204, 285, 102 )
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 1 )
+region = Rect2( 95, 64, 95, 32 )
 
 [sub_resource type="SpriteFrames" id=10]
 animations = [ {
-"frames": [ SubResource( 9 ), SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -90,10 +89,10 @@ tracks/0/keys = {
 
 [node name="Gun" type="AnimatedSprite"]
 light_mask = 2
-position = Vector2( 0, 2 )
-scale = Vector2( 0.2, 0.2 )
+position = Vector2( -1, 2 )
+scale = Vector2( 0.625, 0.625 )
 frames = SubResource( 10 )
-offset = Vector2( 90.274, -15 )
+offset = Vector2( 32.351, -7.264 )
 script = ExtResource( 6 )
 bullet_sprite = "Sniper"
 bullet_health = 3
@@ -102,16 +101,16 @@ bullet_speed = 100
 starting_critchance = 0.33
 recoil_min = 10.0
 recoil_max = 20.0
-starting_firerate = 2.75
-max_firerate = 1.92
+starting_firerate = 2.4
+max_firerate = 1.8
 
 [node name="Position2D" type="Position2D" parent="."]
-position = Vector2( 147.769, -17.9 )
+position = Vector2( 48.705, -6.348 )
 
 [node name="Light2D2" type="Light2D" parent="Position2D"]
 material = SubResource( 11 )
-position = Vector2( 2.41, 1.017 )
-scale = Vector2( 3.82812, 4.14812 )
+position = Vector2( -2.94879, 0 )
+scale = Vector2( 0.879882, 0.85358 )
 texture = ExtResource( 4 )
 color = Color( 0.960784, 0.466667, 0.105882, 1 )
 energy = 0.0
@@ -125,9 +124,9 @@ anims/shoot = SubResource( 13 )
 [node name="shoot1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"
 
 [node name="shoot2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"

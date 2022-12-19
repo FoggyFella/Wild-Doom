@@ -6,7 +6,7 @@ const SWLogger = preload("res://addons/silent_wolf/utils/SWLogger.gd")
 
 var list_index = 0
 # Replace the leaderboard name if you're not using the default leaderboard
-var ld_name = "remix"
+var ld_name = "main"
 
 func _ready():
 	#var scores = SilentWolf.Scores.scores
@@ -17,12 +17,18 @@ func _ready():
 	
 	if len(scores) > 0: 
 		render_board(scores, local_scores)
+		var last_child = $Board/HighScores/ScrollContainer/ScoreItemContainer.get_child($Board/HighScores/ScrollContainer/ScoreItemContainer.get_child_count()-1)
+		last_child.focus_neighbour_bottom = last_child.get_path_to($CloseButtonContainer/CloseButton)
+		$CloseButtonContainer/CloseButton.focus_neighbour_top = $CloseButtonContainer/CloseButton.get_path_to(last_child)
 	else:
 		# use a signal to notify when the high scores have been returned, and show a "loading" animation until it's the case...
 		add_loading_scores_message()
 		yield(SilentWolf.Scores.get_high_scores(50,ld_name), "sw_scores_received")
 		hide_message()
 		render_board(SilentWolf.Scores.scores, local_scores)
+		var last_child = $Board/HighScores/ScrollContainer/ScoreItemContainer.get_child($Board/HighScores/ScrollContainer/ScoreItemContainer.get_child_count()-1)
+		last_child.focus_neighbour_bottom = last_child.get_path_to($CloseButtonContainer/CloseButton)
+		$CloseButtonContainer/CloseButton.focus_neighbour_top = $CloseButtonContainer/CloseButton.get_path_to(last_child) 
 
 
 func render_board(scores, local_scores):
@@ -36,11 +42,10 @@ func render_board(scores, local_scores):
 			add_no_scores_message()
 	if !all_scores:
 		for score in scores:
-			add_item(score.player_name, str(int(score.score)))
+			add_item(score.player_name, str(int(score.score)),score.metadata)
 	else:
 		for score in all_scores:
-			add_item(score.player_name, str(int(score.score)))
-
+			add_item(score.player_name, str(int(score.score)),score.metadata)
 
 
 func is_default_leaderboard(ld_config):
@@ -82,11 +87,13 @@ func score_in_score_array(scores, new_score):
 	return in_score_array
 
 
-func add_item(player_name, score):
+func add_item(player_name, score, metadata=null):
 	var item = ScoreItem.instance()
 	list_index += 1
 	item.get_node("PlayerName").text = str(list_index) + str(". ") + player_name
 	item.get_node("Score").text = score
+	if metadata != null:
+		item.set_metadata(metadata["weapon"],metadata["enemies"],metadata["pickups"])
 	item.margin_top = list_index * 100
 	$"Board/HighScores/ScrollContainer/ScoreItemContainer".add_child(item)
 
@@ -119,21 +126,11 @@ func clear_leaderboard():
 
 func _on_CloseButton_pressed():
 	visible = false
+	get_parent().get_node("HBoxContainer/ShowLb").grab_focus()
 
 
 func _on_Button_pressed():
 	clear_leaderboard()
+	merge_scores_with_local_scores(SilentWolf.Scores.scores,SilentWolf.Scores.local_scores,50)
 	list_index = 0
-	var scores = []
-	if ld_name in SilentWolf.Scores.leaderboards:
-		scores = SilentWolf.Scores.leaderboards[ld_name]
-	var local_scores = SilentWolf.Scores.local_scores
-	
-	if len(scores) > 0: 
-		render_board(scores, local_scores)
-	else:
-		# use a signal to notify when the high scores have been returned, and show a "loading" animation until it's the case...
-		add_loading_scores_message()
-		yield(SilentWolf.Scores.get_high_scores(50,ld_name), "sw_scores_received")
-		hide_message()
-		render_board(SilentWolf.Scores.scores, local_scores)
+	_ready()

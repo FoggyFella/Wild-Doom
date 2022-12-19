@@ -11,7 +11,12 @@ var rots = [0]
 var look_vec = null
 var firerate = 0.66
 var sprite_size = 0
+var move_vec = Vector2.ZERO
+var rs_look = Vector2(0,0)
+var deadzone = 1.0
 
+export var bullet_delay:float = 0.0
+export var should_show_total_dmg:bool = false
 export var should_screenshake:bool = true
 export var is_a_flamethrower:bool = false
 export var bullet_sprite:String = "Pistol"
@@ -34,13 +39,15 @@ func _ready():
 	Global.stats["player_firerate"] = starting_firerate
 	Global.max_fire_rate = max_firerate
 	sprite_size = self.scale.x
+	deadzone = Global.settings["deadzone"]
 	gun_timeout.connect("timeout",self,"_on_gun_timeout_timeout")
 	firerate = Global.stats["player_firerate"]
 	Global.connect("pick_up_collected",self,"update_self_stats")
 
 func _physics_process(delta):
-	look_vec = get_global_mouse_position() - global_position
-	rotation = atan2(look_vec.y,look_vec.x)
+#	look_vec = get_global_mouse_position() - global_position
+#	rotation = atan2(look_vec.y,look_vec.x)
+	rslook()
 	if abs(rotation_degrees) > 88:
 		scale.y = lerp(scale.y,-sprite_size,0.1)
 		#scale.y = -1
@@ -92,6 +99,8 @@ func fire():
 		var random_numbah = int(rand_range(1,2))
 		get_node("shoot" + str(random_numbah)).pitch_scale = rand_range(0.85,1.3)
 		get_node("shoot" + str(random_numbah)).play()
+		if is_a_flamethrower:
+			gun_timeout.start(firerate)
 		for i in range(bullet_keep.size()):
 			counta += 1
 			var bullet_instance = bullet.instance()
@@ -101,13 +110,17 @@ func fire():
 			bullet_instance.is_flamethrower = is_a_flamethrower
 			bullet_instance.bullet_speed = bullet_speed
 			bullet_instance.bullet_sprite = bullet_sprite
+			bullet_instance.should_show_total_dmg = should_show_total_dmg
 			bullet_instance.time_to_be_gone = bullet_dissapear_after
 			get_tree().current_scene.get_node("Player_Bullets").add_child(bullet_instance)
 			if is_a_flamethrower and counta == 1:
 				bullet_instance.queue_free()
+			if bullet_delay != 0.0:
+				yield(get_tree().create_timer(bullet_delay),"timeout")
 			if is_a_flamethrower:
 				yield(get_tree().create_timer(0.05),"timeout")
-		gun_timeout.start(firerate)
+		if !is_a_flamethrower:
+			gun_timeout.start(firerate)
 		if is_a_flamethrower:
 			var tween2 = create_tween()
 			tween2.parallel().tween_property($Position2D/Light2D2,"energy",0.0,0.1)
@@ -119,3 +132,32 @@ func update_self_stats():
 
 func _on_gun_timeout_timeout():
 	can_fire = true
+
+func _input(event):
+#	if event is InputEventJoypadMotion:
+#		var deadzone = 0.9
+#		var controllerangle = Vector2.ZERO
+#		var xAxisRL = Input.get_joy_axis(0, JOY_AXIS_0)
+#		var yAxisUD = Input.get_joy_axis(0 ,JOY_AXIS_1)
+#
+#		if abs(xAxisRL) > deadzone || abs(yAxisUD) > deadzone:
+#			controllerangle = Vector2(xAxisRL, yAxisUD).angle()
+#			rotation = controllerangle
+		#rotation = atan2(rotate_with_controller().y,rotate_with_controller().x)
+	if event is InputEventMouseMotion:
+		look_vec = get_global_mouse_position() - global_position
+		rotation = atan2(look_vec.y,look_vec.x)
+
+func rotate_with_controller():
+	var vec = Vector2.ZERO
+	vec.x = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
+	vec.y = Input.get_action_strength("look_down") - Input.get_action_strength("look_up")
+	if vec != Vector2.ZERO:
+		move_vec = vec# * 3
+	return move_vec
+
+func rslook():
+	rs_look.y = Input.get_joy_axis(0, JOY_AXIS_3)
+	rs_look.x = Input.get_joy_axis(0, JOY_AXIS_2)
+	if rs_look.length() >= deadzone and rs_look != Vector2.ZERO:
+		rotation = rs_look.angle()

@@ -50,7 +50,7 @@ func _init():
 
 func _ready():
 	# The following line would keep SilentWolf working even if the game tree is paused.
-#	pause_mode = Node.PAUSE_MODE_PROCESS
+	pause_mode = Node.PAUSE_MODE_PROCESS
 	print("SW ready start timestamp: " + str(OS.get_time()))
 	Auth.set_script(auth_script)
 	add_child(Auth)

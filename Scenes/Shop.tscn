@@ -1,20 +1,22 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Assets/Font/upheavtt.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Scripts/ShopManger.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/EquipWeapon.gd" type="Script" id=3]
-[ext_resource path="res://Assets/big iron.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Guns/Revolver/Untitled 12-11-2022 01-52-29.png" type="Texture" id=4]
 [ext_resource path="res://Scripts/BuyButton.gd" type="Script" id=5]
-[ext_resource path="res://Assets/boomstick.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Guns/Shotgun/Shotgun (picture) (1).png" type="Texture" id=6]
 [ext_resource path="res://Assets/pisto.png" type="Texture" id=7]
-[ext_resource path="res://Assets/snipey.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Guns/Sniper/Untitled 12-10-2022 07-12-17.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Font/use_this.tres" type="DynamicFontData" id=9]
-
-[sub_resource type="DynamicFont" id=1]
-size = 100
-outline_size = 3
-outline_color = Color( 0.172549, 0.0666667, 0.105882, 1 )
-font_data = ExtResource( 9 )
+[ext_resource path="res://Assets/Guns/Flamethrower/Flamethrower (Picture) (3).png" type="Texture" id=10]
+[ext_resource path="res://Scripts/schmancy_buttons.gd" type="Script" id=11]
+[ext_resource path="res://Assets/SFX/ui/click_004.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/SFX/ui/rollover3.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Assets/SFX/ui/items/jump.wav" type="AudioStream" id=14]
+[ext_resource path="res://Assets/SFX/ui/items/itempick2.wav" type="AudioStream" id=15]
+[ext_resource path="res://Assets/SFX/ui/items/land.wav" type="AudioStream" id=16]
+[ext_resource path="res://Assets/SFX/ui/items/cash-register-purchase-87313.mp3" type="AudioStream" id=17]
 
 [sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 1, 0.976471, 0.894118, 1 )
@@ -102,7 +104,20 @@ size = 100
 outline_size = 3
 outline_color = Color( 0.172549, 0.0666667, 0.105882, 1 )
 extra_spacing_top = -10
-font_data = ExtResource( 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 1, 0.513726, 0, 0 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.898039, 0.235294, 0.0588235, 1 )
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="DynamicFont" id=12]
 size = 60
@@ -115,6 +130,126 @@ font_data = ExtResource( 1 )
 size = 42
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="Environment" id=15]
+background_mode = 4
+tonemap_white = 0.35
+glow_enabled = true
+glow_intensity = 1.39
+glow_strength = 0.89
+glow_blend_mode = 0
+glow_bicubic_upscale = true
+adjustment_enabled = true
+
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("HBoxContainer2/Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0.129412, 0.231373, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HBoxContainer2/Label2:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.129412, 0.129412, 0.129412, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HBoxContainer2/Label3:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.129412, 0.129412, 0.129412, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AmountOmoney:rect_rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "flick"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("HBoxContainer2/Label:modulate")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.129412, 0.231373, 1 ), Color( 0.32, 1.15, 0.11, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HBoxContainer2/Label2:modulate")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.129412, 0.129412, 0.129412, 1 ), Color( 1.2, 0.13, 0.13, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HBoxContainer2/Label3:modulate")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.129412, 0.129412, 0.129412, 1 ), Color( 1.2, 0.13, 0.13, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AmountOmoney:rect_rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -1.0, 0.0, 1.0 ]
+}
+
+[sub_resource type="DynamicFont" id=1]
+size = 100
+outline_size = 3
+outline_color = Color( 0.168627, 0.168627, 0.168627, 1 )
 font_data = ExtResource( 9 )
 
 [node name="Control" type="Control"]
@@ -131,19 +266,6 @@ color = Color( 0.223529, 0.0901961, 0.0313726, 1 )
 anchor_right = 1.0
 margin_bottom = 101.0
 color = Color( 0.270588, 0.105882, 0.0352941, 1 )
-
-[node name="Label" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -120.0
-margin_right = 120.0
-margin_bottom = 90.0
-custom_colors/font_color = Color( 0.780392, 0.27451, 0.27451, 1 )
-custom_colors/font_color_shadow = Color( 0.486275, 0.164706, 0.164706, 1 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 5
-custom_fonts/font = SubResource( 1 )
-text = "SHOP"
 
 [node name="Control" type="Control" parent="."]
 anchor_left = 0.5
@@ -237,8 +359,8 @@ custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 4 )
-text = "40 dmg, 10% crit,
-0.65 firerate"
+text = "50 dmg, 10% crit,
+0.6 firerate"
 align = 1
 autowrap = true
 
@@ -275,7 +397,7 @@ margin_bottom = 281.0
 [node name="Buy" type="Button" parent="Control/ItemContainer/Pistol/HBoxContainer"]
 margin_right = 148.0
 margin_bottom = 39.0
-focus_mode = 0
+focus_neighbour_right = NodePath("../Equip")
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -284,17 +406,16 @@ custom_styles/hover = SubResource( 11 )
 custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
-enabled_focus_mode = 0
 text = "BUY"
 script = ExtResource( 5 )
 weapon_name = "Pistol"
 weapon_cost = 1
 
-[node name="Equip2" type="Button" parent="Control/ItemContainer/Pistol/HBoxContainer"]
+[node name="Equip" type="Button" parent="Control/ItemContainer/Pistol/HBoxContainer"]
 margin_left = 152.0
 margin_right = 300.0
 margin_bottom = 39.0
-focus_mode = 0
+focus_neighbour_left = NodePath("../Buy")
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -304,7 +425,6 @@ custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
 disabled = true
-enabled_focus_mode = 0
 text = "NOT BOUGHT"
 script = ExtResource( 3 )
 weapon_name = "Pistol"
@@ -326,32 +446,22 @@ margin_right = 150.0
 margin_bottom = 150.0
 custom_styles/panel = SubResource( 6 )
 
-[node name="TextureRect2" type="TextureRect" parent="Control/ItemContainer/Revolver/Panel"]
+[node name="TextureRect3" type="TextureRect" parent="Control/ItemContainer/Revolver/Panel"]
 modulate = Color( 0, 0, 0, 0.407843 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -180.724
-margin_top = -89.7542
-margin_right = 301.276
-margin_bottom = 121.246
-rect_rotation = -26.7
-rect_pivot_offset = Vector2( 124, 80 )
+margin_left = -43.0
+margin_top = 66.0
+margin_right = 539.0
+margin_bottom = 352.0
+rect_rotation = -24.8
 texture = ExtResource( 4 )
 expand = true
 
-[node name="TextureRect" type="TextureRect" parent="Control/ItemContainer/Revolver/Panel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -183.0
-margin_top = -93.0
-margin_right = 299.0
-margin_bottom = 118.0
-rect_rotation = -26.7
-rect_pivot_offset = Vector2( 124, 80 )
+[node name="TextureRect4" type="TextureRect" parent="Control/ItemContainer/Revolver/Panel"]
+margin_left = -47.0
+margin_top = 63.0
+margin_right = 535.0
+margin_bottom = 349.0
+rect_rotation = -24.8
 texture = ExtResource( 4 )
 expand = true
 
@@ -389,7 +499,7 @@ custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 4 )
-text = "80 dmg, 20% crit,
+text = "100 dmg, 20% crit,
 1.15 firerate"
 align = 1
 autowrap = true
@@ -427,7 +537,6 @@ margin_bottom = 281.0
 [node name="Buy" type="Button" parent="Control/ItemContainer/Revolver/HBoxContainer"]
 margin_right = 148.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -436,17 +545,15 @@ custom_styles/hover = SubResource( 11 )
 custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
-enabled_focus_mode = 0
 text = "BUY"
 script = ExtResource( 5 )
 weapon_name = "Revolver"
 weapon_cost = 1
 
-[node name="Equip2" type="Button" parent="Control/ItemContainer/Revolver/HBoxContainer"]
+[node name="Equip" type="Button" parent="Control/ItemContainer/Revolver/HBoxContainer"]
 margin_left = 152.0
 margin_right = 300.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -456,7 +563,6 @@ custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
 disabled = true
-enabled_focus_mode = 0
 text = "NOT BOUGHT"
 script = ExtResource( 3 )
 weapon_name = "Revolver"
@@ -478,32 +584,22 @@ margin_right = 150.0
 margin_bottom = 150.0
 custom_styles/panel = SubResource( 6 )
 
-[node name="TextureRect2" type="TextureRect" parent="Control/ItemContainer/Shotgun/Panel"]
+[node name="TextureRect3" type="TextureRect" parent="Control/ItemContainer/Shotgun/Panel"]
 modulate = Color( 0, 0, 0, 0.407843 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -176.762
-margin_top = -65.7779
-margin_right = 203.238
-margin_bottom = 96.2221
+margin_left = -32.0
+margin_top = 121.0
+margin_right = 540.0
+margin_bottom = 327.0
 rect_rotation = -26.7
-rect_pivot_offset = Vector2( 150, 64 )
 texture = ExtResource( 6 )
 expand = true
 
-[node name="TextureRect" type="TextureRect" parent="Control/ItemContainer/Shotgun/Panel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -179.0
-margin_top = -69.0
-margin_right = 201.0
-margin_bottom = 93.0
+[node name="TextureRect4" type="TextureRect" parent="Control/ItemContainer/Shotgun/Panel"]
+margin_left = -34.0
+margin_top = 118.0
+margin_right = 538.0
+margin_bottom = 324.0
 rect_rotation = -26.7
-rect_pivot_offset = Vector2( 150, 64 )
 texture = ExtResource( 6 )
 expand = true
 
@@ -541,7 +637,7 @@ custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 4 )
-text = "25 dmg, 5% crit,
+text = "30 dmg, 5% crit,
 1.65 firerate"
 align = 1
 autowrap = true
@@ -551,18 +647,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -151.0
-margin_top = 202.0
-margin_right = 150.0
-margin_bottom = 239.0
+margin_left = -173.0
+margin_top = 200.5
+margin_right = 173.0
+margin_bottom = 237.5
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 5 )
-text = "SHOOTS OUT 4-7 bullets
-(YOU CAN't UPGRADE THAT)"
+text = "Shoots out 4-7 bullets
+(YOU CAN UPGRADE THAT)"
 align = 1
 autowrap = true
 
@@ -579,7 +675,6 @@ margin_bottom = 281.0
 [node name="Buy" type="Button" parent="Control/ItemContainer/Shotgun/HBoxContainer"]
 margin_right = 148.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -588,17 +683,15 @@ custom_styles/hover = SubResource( 11 )
 custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
-enabled_focus_mode = 0
 text = "BUY"
 script = ExtResource( 5 )
 weapon_name = "Shotgun"
 weapon_cost = 1
 
-[node name="Equip2" type="Button" parent="Control/ItemContainer/Shotgun/HBoxContainer"]
+[node name="Equip" type="Button" parent="Control/ItemContainer/Shotgun/HBoxContainer"]
 margin_left = 152.0
 margin_right = 300.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -608,7 +701,6 @@ custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
 disabled = true
-enabled_focus_mode = 0
 text = "NOT BOUGHT"
 script = ExtResource( 3 )
 weapon_name = "Shotgun"
@@ -630,17 +722,22 @@ margin_right = 150.0
 margin_bottom = 150.0
 custom_styles/panel = SubResource( 6 )
 
-[node name="TextureRect" type="TextureRect" parent="Control/ItemContainer/Sniper/Panel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -215.0
-margin_top = -120.0
-margin_right = 233.0
-margin_bottom = 43.0
-rect_rotation = -33.7
-rect_pivot_offset = Vector2( 261, 95 )
+[node name="TextureRect3" type="TextureRect" parent="Control/ItemContainer/Sniper/Panel"]
+modulate = Color( 0, 0, 0, 0.407843 )
+margin_left = -36.0
+margin_top = 147.0
+margin_right = 474.0
+margin_bottom = 319.0
+rect_rotation = -32.7
+texture = ExtResource( 8 )
+expand = true
+
+[node name="TextureRect4" type="TextureRect" parent="Control/ItemContainer/Sniper/Panel"]
+margin_left = -38.0
+margin_top = 143.0
+margin_right = 472.0
+margin_bottom = 315.0
+rect_rotation = -32.7
 texture = ExtResource( 8 )
 expand = true
 
@@ -679,7 +776,7 @@ custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 1
 custom_fonts/font = SubResource( 4 )
 text = "150 dmg, 33% crit,
-2.75 firerate"
+2.4 firerate"
 align = 1
 autowrap = true
 
@@ -716,7 +813,6 @@ margin_bottom = 281.0
 [node name="Buy" type="Button" parent="Control/ItemContainer/Sniper/HBoxContainer"]
 margin_right = 148.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -725,17 +821,15 @@ custom_styles/hover = SubResource( 11 )
 custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
-enabled_focus_mode = 0
 text = "BUY"
 script = ExtResource( 5 )
 weapon_name = "Sniper"
 weapon_cost = 1
 
-[node name="Equip2" type="Button" parent="Control/ItemContainer/Sniper/HBoxContainer"]
+[node name="Equip" type="Button" parent="Control/ItemContainer/Sniper/HBoxContainer"]
 margin_left = 152.0
 margin_right = 300.0
 margin_bottom = 39.0
-focus_mode = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
@@ -745,10 +839,149 @@ custom_styles/pressed = SubResource( 11 )
 custom_styles/disabled = SubResource( 9 )
 custom_styles/normal = SubResource( 8 )
 disabled = true
-enabled_focus_mode = 0
 text = "NOT BOUGHT"
 script = ExtResource( 3 )
 weapon_name = "Sniper"
+
+[node name="Firethrower" type="Control" parent="Control/ItemContainer"]
+margin_left = 3600.0
+margin_right = 3900.0
+margin_bottom = 430.0
+rect_min_size = Vector2( 300, 400 )
+
+[node name="Panel" type="Panel" parent="Control/ItemContainer/Firethrower"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -150.0
+margin_right = 150.0
+margin_bottom = 150.0
+custom_styles/panel = SubResource( 6 )
+
+[node name="TextureRect3" type="TextureRect" parent="Control/ItemContainer/Firethrower/Panel"]
+modulate = Color( 0, 0, 0, 0.407843 )
+margin_left = -46.0
+margin_top = 41.0
+margin_right = 393.0
+margin_bottom = 216.0
+rect_rotation = -33.5223
+rect_pivot_offset = Vector2( 220, 88 )
+texture = ExtResource( 10 )
+expand = true
+
+[node name="TextureRect4" type="TextureRect" parent="Control/ItemContainer/Firethrower/Panel"]
+margin_left = -48.0
+margin_top = 38.0
+margin_right = 391.0
+margin_bottom = 213.0
+rect_rotation = -33.5223
+rect_pivot_offset = Vector2( 220, 88 )
+texture = ExtResource( 10 )
+expand = true
+
+[node name="Label" type="Label" parent="Control/ItemContainer/Firethrower"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -172.0
+margin_top = -202.0
+margin_right = 172.0
+margin_bottom = -156.0
+custom_colors/font_color = Color( 0.960784, 0.74902, 0.184314, 1 )
+custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.682353, 0.301961, 0.0941176, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 3 )
+text = "flamethrower"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="Control/ItemContainer/Firethrower"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -151.0
+margin_top = 153.0
+margin_right = 150.0
+margin_bottom = 202.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 4 )
+text = "20 dmg, 0% crit,
+0.5 firerate"
+align = 1
+autowrap = true
+
+[node name="Label3" type="Label" parent="Control/ItemContainer/Firethrower"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -286.0
+margin_top = 202.0
+margin_right = 286.0
+margin_bottom = 239.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.498039, 0.498039, 0.498039, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 1
+custom_fonts/font = SubResource( 5 )
+text = "SETs enemies on fire
+after hit enemies get resistance to flames for 0.75 sec."
+align = 1
+autowrap = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ItemContainer/Firethrower"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -151.0
+margin_top = 242.0
+margin_right = 149.0
+margin_bottom = 281.0
+
+[node name="Buy" type="Button" parent="Control/ItemContainer/Firethrower/HBoxContainer"]
+margin_right = 148.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
+custom_fonts/font = SubResource( 7 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 8 )
+text = "BUY"
+script = ExtResource( 5 )
+weapon_name = "Flamethrower"
+weapon_cost = 1
+
+[node name="Equip" type="Button" parent="Control/ItemContainer/Firethrower/HBoxContainer"]
+margin_left = 152.0
+margin_right = 300.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color_disabled = Color( 0.752941, 0.752941, 0.752941, 1 )
+custom_fonts/font = SubResource( 7 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/disabled = SubResource( 9 )
+custom_styles/normal = SubResource( 8 )
+disabled = true
+text = "NOT BOUGHT"
+script = ExtResource( 3 )
+weapon_name = "Flamethrower"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_left = 0.5
@@ -764,27 +997,39 @@ custom_constants/separation = 500
 [node name="PreviousButton" type="Button" parent="HBoxContainer"]
 margin_right = 117.0
 margin_bottom = 86.0
-focus_mode = 0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_right = NodePath("../NextButton")
+focus_neighbour_bottom = NodePath("../../Control/ItemContainer/Pistol/HBoxContainer/Buy")
 custom_colors/font_color_disabled = Color( 0.490196, 0.490196, 0.490196, 1 )
+custom_colors/font_color_focus = Color( 0.980392, 0.776471, 0.458824, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.980392, 0.776471, 0.458824, 1 )
 custom_colors/font_color_pressed = Color( 0.964706, 0.713726, 0.32549, 1 )
 custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 14 )
 text = "<-"
 flat = true
+script = ExtResource( 11 )
 
 [node name="NextButton" type="Button" parent="HBoxContainer"]
 margin_left = 617.0
 margin_right = 734.0
 margin_bottom = 86.0
-focus_mode = 0
+focus_neighbour_left = NodePath("../PreviousButton")
+focus_neighbour_top = NodePath("../../MainMenu")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../Control/ItemContainer/Pistol/HBoxContainer/Equip")
 custom_colors/font_color_disabled = Color( 0.490196, 0.490196, 0.490196, 1 )
+custom_colors/font_color_focus = Color( 0.980392, 0.776471, 0.458824, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 0.980392, 0.776471, 0.458824, 1 )
 custom_colors/font_color_pressed = Color( 0.964706, 0.713726, 0.32549, 1 )
 custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 14 )
 text = "->"
 flat = true
+script = ExtResource( 11 )
+should_focus = true
 
 [node name="AmountOmoney" type="Label" parent="."]
 anchor_left = 1.0
@@ -795,6 +1040,7 @@ margin_left = -241.0
 margin_top = -64.0
 margin_right = -10.0
 margin_bottom = -10.0
+rect_pivot_offset = Vector2( 115, 27 )
 custom_colors/font_color = Color( 0.427451, 0.956863, 0.0666667, 1 )
 custom_colors/font_outline_modulate = Color( 0.027451, 0.290196, 0.0117647, 1 )
 custom_colors/font_color_shadow = Color( 0.0980392, 0.560784, 0.0117647, 1 )
@@ -805,6 +1051,7 @@ text = "00000 $"
 valign = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="AmountOmoney"]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 13.0
@@ -816,6 +1063,9 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 142.0
 margin_bottom = 76.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../HBoxContainer/NextButton")
 custom_fonts/font = SubResource( 13 )
 custom_styles/hover = SubResource( 11 )
 custom_styles/pressed = SubResource( 11 )
@@ -823,23 +1073,107 @@ custom_styles/focus = SubResource( 8 )
 custom_styles/disabled = SubResource( 8 )
 custom_styles/normal = SubResource( 8 )
 text = "BACK"
+script = ExtResource( 11 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 15 )
+
+[node name="click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = -5.0
+bus = "SoundEffects"
+
+[node name="switch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -5.0
+bus = "SoundEffects"
+
+[node name="buy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+volume_db = -5.0
+pitch_scale = 1.6
+bus = "SoundEffects"
+
+[node name="item1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 15 )
+volume_db = -5.0
+bus = "SoundEffects"
+
+[node name="item2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = -5.0
+bus = "SoundEffects"
+
+[node name="item3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -9.0
+bus = "SoundEffects"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "flick"
+anims/RESET = SubResource( 16 )
+anims/flick = SubResource( 17 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -169.0
+margin_right = 169.0
+margin_bottom = 90.0
+
+[node name="Label2" type="Label" parent="HBoxContainer2"]
+modulate = Color( 0.129412, 0.129412, 0.129412, 1 )
+margin_right = 45.0
+margin_bottom = 90.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.266667, 0.266667, 0.266667, 1 )
+custom_constants/shadow_offset_x = 0
+custom_fonts/font = SubResource( 1 )
+text = "<"
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+modulate = Color( 1, 0.129412, 0.231373, 1 )
+margin_left = 49.0
+margin_right = 289.0
+margin_bottom = 90.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.568627, 0.568627, 0.568627, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 1 )
+text = "SHOP"
+
+[node name="Label3" type="Label" parent="HBoxContainer2"]
+modulate = Color( 0.129412, 0.129412, 0.129412, 1 )
+margin_left = 293.0
+margin_right = 338.0
+margin_bottom = 90.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.266667, 0.266667, 0.266667, 1 )
+custom_constants/shadow_offset_x = 0
+custom_fonts/font = SubResource( 1 )
+text = ">"
 
 [connection signal="mouse_entered" from="Control/ItemContainer/Pistol/HBoxContainer/Buy" to="Control/ItemContainer/Pistol/HBoxContainer/Buy" method="_on_Buy_mouse_entered"]
 [connection signal="mouse_exited" from="Control/ItemContainer/Pistol/HBoxContainer/Buy" to="Control/ItemContainer/Pistol/HBoxContainer/Buy" method="_on_Buy_mouse_exited"]
 [connection signal="pressed" from="Control/ItemContainer/Pistol/HBoxContainer/Buy" to="Control/ItemContainer/Pistol/HBoxContainer/Buy" method="_on_Bought"]
-[connection signal="pressed" from="Control/ItemContainer/Pistol/HBoxContainer/Equip2" to="Control/ItemContainer/Pistol/HBoxContainer/Equip2" method="_on_Equip_pressed"]
+[connection signal="pressed" from="Control/ItemContainer/Pistol/HBoxContainer/Equip" to="Control/ItemContainer/Pistol/HBoxContainer/Equip" method="_on_Equip_pressed"]
 [connection signal="mouse_entered" from="Control/ItemContainer/Revolver/HBoxContainer/Buy" to="Control/ItemContainer/Revolver/HBoxContainer/Buy" method="_on_Buy_mouse_entered"]
 [connection signal="mouse_exited" from="Control/ItemContainer/Revolver/HBoxContainer/Buy" to="Control/ItemContainer/Revolver/HBoxContainer/Buy" method="_on_Buy_mouse_exited"]
 [connection signal="pressed" from="Control/ItemContainer/Revolver/HBoxContainer/Buy" to="Control/ItemContainer/Revolver/HBoxContainer/Buy" method="_on_Bought"]
-[connection signal="pressed" from="Control/ItemContainer/Revolver/HBoxContainer/Equip2" to="Control/ItemContainer/Revolver/HBoxContainer/Equip2" method="_on_Equip_pressed"]
+[connection signal="pressed" from="Control/ItemContainer/Revolver/HBoxContainer/Equip" to="Control/ItemContainer/Revolver/HBoxContainer/Equip" method="_on_Equip_pressed"]
 [connection signal="mouse_entered" from="Control/ItemContainer/Shotgun/HBoxContainer/Buy" to="Control/ItemContainer/Shotgun/HBoxContainer/Buy" method="_on_Buy_mouse_entered"]
 [connection signal="mouse_exited" from="Control/ItemContainer/Shotgun/HBoxContainer/Buy" to="Control/ItemContainer/Shotgun/HBoxContainer/Buy" method="_on_Buy_mouse_exited"]
 [connection signal="pressed" from="Control/ItemContainer/Shotgun/HBoxContainer/Buy" to="Control/ItemContainer/Shotgun/HBoxContainer/Buy" method="_on_Bought"]
-[connection signal="pressed" from="Control/ItemContainer/Shotgun/HBoxContainer/Equip2" to="Control/ItemContainer/Shotgun/HBoxContainer/Equip2" method="_on_Equip_pressed"]
+[connection signal="pressed" from="Control/ItemContainer/Shotgun/HBoxContainer/Equip" to="Control/ItemContainer/Shotgun/HBoxContainer/Equip" method="_on_Equip_pressed"]
 [connection signal="mouse_entered" from="Control/ItemContainer/Sniper/HBoxContainer/Buy" to="Control/ItemContainer/Sniper/HBoxContainer/Buy" method="_on_Buy_mouse_entered"]
 [connection signal="mouse_exited" from="Control/ItemContainer/Sniper/HBoxContainer/Buy" to="Control/ItemContainer/Sniper/HBoxContainer/Buy" method="_on_Buy_mouse_exited"]
 [connection signal="pressed" from="Control/ItemContainer/Sniper/HBoxContainer/Buy" to="Control/ItemContainer/Sniper/HBoxContainer/Buy" method="_on_Bought"]
-[connection signal="pressed" from="Control/ItemContainer/Sniper/HBoxContainer/Equip2" to="Control/ItemContainer/Sniper/HBoxContainer/Equip2" method="_on_Equip_pressed"]
+[connection signal="pressed" from="Control/ItemContainer/Sniper/HBoxContainer/Equip" to="Control/ItemContainer/Sniper/HBoxContainer/Equip" method="_on_Equip_pressed"]
+[connection signal="mouse_entered" from="Control/ItemContainer/Firethrower/HBoxContainer/Buy" to="Control/ItemContainer/Firethrower/HBoxContainer/Buy" method="_on_Buy_mouse_entered"]
+[connection signal="mouse_exited" from="Control/ItemContainer/Firethrower/HBoxContainer/Buy" to="Control/ItemContainer/Firethrower/HBoxContainer/Buy" method="_on_Buy_mouse_exited"]
+[connection signal="pressed" from="Control/ItemContainer/Firethrower/HBoxContainer/Buy" to="Control/ItemContainer/Firethrower/HBoxContainer/Buy" method="_on_Bought"]
+[connection signal="pressed" from="Control/ItemContainer/Firethrower/HBoxContainer/Equip" to="Control/ItemContainer/Firethrower/HBoxContainer/Equip" method="_on_Equip_pressed"]
 [connection signal="pressed" from="HBoxContainer/PreviousButton" to="." method="_on_PreviousButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/NextButton" to="." method="_on_NextButton_pressed"]
 [connection signal="pressed" from="MainMenu" to="." method="_on_MainMenu_pressed"]

@@ -34,7 +34,7 @@ func _physics_process(delta):
 
 
 func _on_VisibilityNotifier2D_screen_exited():
-#		queue_free()ier2D_screen_exited():
+#	queue_free()ier2D_screen_exited():
 	visible_really = false
 
 

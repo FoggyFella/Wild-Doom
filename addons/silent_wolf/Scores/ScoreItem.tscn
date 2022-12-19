@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Font/upheavtt.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/ScoreItem.gd" type="Script" id=2]
 
-[sub_resource type="StyleBoxFlat" id=23]
+[sub_resource type="StyleBoxFlat" id=36]
 bg_color = Color( 0.537255, 0.0705882, 0.184314, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -12,13 +13,22 @@ border_color = Color( 0.964706, 0.141176, 0.32549, 1 )
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 
 [sub_resource type="DynamicFont" id=34]
 size = 30
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=35]
+bg_color = Color( 0.588235, 0.0980392, 0.215686, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.352941, 0.054902, 0.121569, 1 )
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [node name="ScoreItem" type="Panel"]
 anchor_right = 0.4
@@ -27,7 +37,9 @@ margin_bottom = 41.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_min_size = Vector2( 538, 41 )
-custom_styles/panel = SubResource( 23 )
+focus_mode = 2
+custom_styles/panel = SubResource( 36 )
+script = ExtResource( 2 )
 
 [node name="PlayerName" type="RichTextLabel" parent="."]
 anchor_top = 0.5
@@ -53,3 +65,49 @@ custom_fonts/font = SubResource( 34 )
 text = "7"
 align = 2
 valign = 1
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 0, 14 )
+
+[node name="MetadataPanel" type="Panel" parent="Node2D"]
+show_behind_parent = true
+margin_top = 27.0
+margin_right = 396.0
+margin_bottom = 136.0
+rect_scale = Vector2( 1, 1e-05 )
+rect_pivot_offset = Vector2( 198, 0 )
+custom_styles/panel = SubResource( 35 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Node2D/MetadataPanel"]
+margin_left = 10.0
+margin_top = 6.0
+margin_right = 377.0
+margin_bottom = 98.0
+
+[node name="Label" type="Label" parent="Node2D/MetadataPanel/VBoxContainer"]
+margin_right = 367.0
+margin_bottom = 28.0
+custom_fonts/font = SubResource( 34 )
+text = "WEAPON:"
+autowrap = true
+
+[node name="Label2" type="Label" parent="Node2D/MetadataPanel/VBoxContainer"]
+margin_top = 32.0
+margin_right = 367.0
+margin_bottom = 60.0
+custom_fonts/font = SubResource( 34 )
+text = "ENEMIES KILLED:"
+autowrap = true
+
+[node name="Label3" type="Label" parent="Node2D/MetadataPanel/VBoxContainer"]
+margin_top = 64.0
+margin_right = 367.0
+margin_bottom = 92.0
+custom_fonts/font = SubResource( 34 )
+text = "PICKUPS COLLECTED:"
+autowrap = true
+
+[connection signal="focus_entered" from="." to="." method="_on_PlayerName_mouse_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_PlayerName_mouse_exited"]
+[connection signal="mouse_entered" from="PlayerName" to="." method="_on_PlayerName_mouse_entered"]
+[connection signal="mouse_exited" from="PlayerName" to="." method="_on_PlayerName_mouse_exited"]

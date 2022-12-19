@@ -61,8 +61,7 @@ var wrDeleteScore = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-#	pause_mode = Node.PAUSE_MODE_PROCESS 
+	pause_mode = Node.PAUSE_MODE_PROCESS
 	#connect("request_completed", self, "_on_Scores_request_completed")
 	#setup_request_timer()
 	
@@ -75,6 +74,7 @@ func get_score_position(score, ldboard_name="main"):
 	else:
 		score_value = score
 	ScorePosition = HTTPRequest.new()
+	ScorePosition.pause_mode = Node.PAUSE_MODE_PROCESS
 	wrScorePosition = weakref(ScorePosition)
 	if OS.get_name() != "HTML5":
 		ScorePosition.set_use_threads(true)
@@ -102,6 +102,7 @@ func get_scores_around(score, scores_to_fetch=3, ldboard_name="main"):
 	else:
 		score_value = score
 	ScoresAround = HTTPRequest.new()
+	ScoresAround.pause_mode = Node.PAUSE_MODE_PROCESS
 	wrScoresAround = weakref(ScoresAround)
 	if OS.get_name() != "HTML5":
 		ScoresAround.set_use_threads(true)
@@ -136,6 +137,7 @@ func get_high_scores(maximum=10, ldboard_name="main", period_offset=0):
 
 func get_scores_by_player(player_name, maximum=10, ldboard_name="main", period_offset=0):
 	ScoresByPlayer = HTTPRequest.new()
+	ScoresByPlayer.pause_mode = Node.PAUSE_MODE_PROCESS
 	wrScoresByPlayer = weakref(ScoresByPlayer)
 	if OS.get_name() != "HTML5":
 		ScoresByPlayer.set_use_threads(true)
@@ -216,6 +218,7 @@ func persist_score(player_name, score, ldboard_name="main", metadata={}):
 # Scores are permanently deleted, no going back!
 func wipe_leaderboard(ldboard_name='main'):
 	WipeLeaderboard = HTTPRequest.new()
+	WipeLeaderboard.pause_mode = Node.PAUSE_MODE_PROCESS
 	wrWipeLeaderboard = weakref(WipeLeaderboard)
 	if OS.get_name() != "HTML5":
 		WipeLeaderboard.set_use_threads(true)
@@ -232,6 +235,7 @@ func wipe_leaderboard(ldboard_name='main'):
 
 func delete_score(score_id):
 	DeleteScore = HTTPRequest.new()
+	DeleteScore.pause_mode = Node.PAUSE_MODE_PROCESS
 	wrDeleteScore = weakref(DeleteScore)
 	if OS.get_name() != "HTML5":
 		DeleteScore.set_use_threads(true)

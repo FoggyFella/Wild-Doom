@@ -9,6 +9,7 @@ var list_index = 0
 var ld_name = "main"
 
 func _ready():
+	pause_mode = Node.PAUSE_MODE_PROCESS
 	print("SilentWolf.Scores.leaderboards: " + str(SilentWolf.Scores.leaderboards))
 	print("SilentWolf.Scores.ldboard_config: " + str(SilentWolf.Scores.ldboard_config))
 	#var scores = SilentWolf.Scores.scores

@@ -23,7 +23,7 @@ var content_node : Control
 var pos := Vector2(0, 0)
 # When true, `content_node`'s position is only set by dragging the scroll bar
 var scrolling := false
-
+export var should_scroll_with_keys:bool = false
 
 func _ready() -> void:
 	get_v_scrollbar().connect("scrolling", self, "_on_VScrollBar_scrolling")
@@ -34,6 +34,13 @@ func _process(delta: float) -> void:
 	# If no scroll needed, don't apply forces
 	if content_node.rect_size.y - self.rect_size.y < 1:
 		return
+	if should_scroll_with_keys:
+		if Input.is_action_pressed("move_up"):
+			#scrolling = true
+			velocity.y += speed
+		if Input.is_action_pressed("move_down"):
+			#scrolling = true
+			velocity.y -= speed
 	
 	var d := delta
 	# Distance between content_node's bottom and bottom of the scroll box 

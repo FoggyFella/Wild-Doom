@@ -15,7 +15,8 @@ func _ready():
 	if signal_to_connect != "":
 		Global.connect(signal_to_connect,self,"activate_on_signal")
 	if should_spawn:
-		$Timer.start(Global.spawn_time)
+		pass
+		#$Timer.start(Global.spawn_time)
 
 
 func _on_Timer_timeout():

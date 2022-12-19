@@ -42,3 +42,9 @@ func _process(delta):
 	random_rotation = rand_range(-10,10)
 	rotation_degrees = lerp(rotation_degrees,random_rotation,0.5)
 	position -= velocity * delta
+
+
+func _on_NumberArea_area_entered(area):
+	if area.name == "NumberArea":
+		amount += area.get_parent().amount
+		area.get_parent().queue_free()

@@ -23,17 +23,22 @@ margin_left = -419.0
 margin_top = -167.0
 margin_right = 419.0
 margin_bottom = 167.0
+focus_mode = 2
+follow_focus = true
 scroll_horizontal_enabled = false
 script = ExtResource( 2 )
+should_scroll_with_keys = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 826.0
-margin_bottom = 2223.0
+margin_right = 825.0
+margin_bottom = 2412.0
+focus_mode = 2
 custom_constants/separation = 10
 
 [node name="Label7" type="Label" parent="VBoxContainer"]
-margin_right = 826.0
+margin_right = 825.0
 margin_bottom = 144.0
+focus_mode = 2
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
 custom_colors/font_color_shadow = Color( 0.654902, 0.654902, 0.654902, 1 )
@@ -52,8 +57,9 @@ __meta__ = {
 
 [node name="Label4" type="Label" parent="VBoxContainer"]
 margin_top = 154.0
-margin_right = 826.0
+margin_right = 825.0
 margin_bottom = 249.0
+focus_mode = 2
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
 custom_colors/font_color_shadow = Color( 0.654902, 0.654902, 0.654902, 1 )
@@ -67,8 +73,9 @@ autowrap = true
 
 [node name="Label6" type="Label" parent="VBoxContainer"]
 margin_top = 259.0
-margin_right = 826.0
+margin_right = 825.0
 margin_bottom = 403.0
+focus_mode = 2
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0.137255, 0.137255, 0.137255, 1 )
 custom_colors/font_color_shadow = Color( 0.654902, 0.654902, 0.654902, 1 )
@@ -76,7 +83,7 @@ custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 2 )
 text = " Music: 
-PROVGM
+Karl Casey @ White Bat Audio
 "
 align = 1
 valign = 1
@@ -84,8 +91,9 @@ autowrap = true
 
 [node name="Label3" type="Label" parent="VBoxContainer"]
 margin_top = 413.0
-margin_right = 826.0
+margin_right = 825.0
 margin_bottom = 459.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.372549, 0.67451, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0.0313726, 0.235294, 0.419608, 1 )
 custom_colors/font_color_shadow = Color( 0.290196, 0.552941, 0.835294, 1 )
@@ -99,8 +107,9 @@ autowrap = true
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
 margin_top = 469.0
-margin_right = 826.0
+margin_right = 825.0
 margin_bottom = 564.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
 custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
@@ -115,55 +124,50 @@ autowrap = true
 
 [node name="Label10" type="Label" parent="VBoxContainer"]
 margin_top = 574.0
-margin_right = 826.0
-margin_bottom = 620.0
+margin_right = 825.0
+margin_bottom = 718.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
 custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 2 )
-text = "Fonts used:"
-align = 1
-valign = 1
-autowrap = true
-
-[node name="Label11" type="Label" parent="VBoxContainer"]
-margin_top = 630.0
-margin_right = 826.0
-margin_bottom = 872.0
-custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
-custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
-custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 2
-custom_fonts/font = SubResource( 2 )
-text = "
-Upheaval by Brian Kent
-Secular one under SIL OPEN FONT LICENSE
+text = "Font is Upheaval by Brian Kent
 "
 align = 1
 valign = 1
 autowrap = true
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 882.0
-margin_right = 826.0
-margin_bottom = 928.0
+margin_top = 728.0
+margin_right = 825.0
+margin_bottom = 1117.0
+focus_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
 custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 5 )
-text = " SFX made using JSFXR; sfxr.me "
+text = "SFX:
+Some made using JSFXR; sfxr.me
+some made using my mouth
+AND THE REST IS FROM:
+KEnney; kenney.nl
+PIXABAY.COM
+OPENGAMEART.org
+"
 align = 1
 valign = 1
 
 [node name="Label9" type="Label" parent="VBoxContainer"]
-margin_top = 938.0
-margin_right = 826.0
-margin_bottom = 1033.0
+margin_top = 1127.0
+margin_right = 825.0
+margin_bottom = 1222.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
 custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
@@ -177,9 +181,10 @@ valign = 1
 autowrap = true
 
 [node name="Label8" type="Label" parent="VBoxContainer"]
-margin_top = 1043.0
-margin_right = 826.0
-margin_bottom = 1089.0
+margin_top = 1232.0
+margin_right = 825.0
+margin_bottom = 1278.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.878431, 0.886275, 1, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0.0705882, 0.12549, 1 )
 custom_colors/font_color_shadow = Color( 0.117647, 0.172549, 0.215686, 1 )
@@ -192,9 +197,10 @@ valign = 1
 autowrap = true
 
 [node name="Label5" type="Label" parent="VBoxContainer"]
-margin_top = 1099.0
-margin_right = 826.0
-margin_bottom = 2223.0
+margin_top = 1288.0
+margin_right = 825.0
+margin_bottom = 2412.0
+focus_mode = 2
 custom_colors/font_color = Color( 0.262745, 0.945098, 0.0470588, 1 )
 custom_colors/font_outline_modulate = Color( 0.129412, 0.482353, 0.0313726, 1 )
 custom_colors/font_color_shadow = Color( 0.160784, 0.564706, 0.0313726, 1 )
@@ -221,7 +227,7 @@ text = "THANKS TO YOU FOR PLAYING!!!
 
 
 
-there's nothing here but I respect your interest
+there's nothing else here but I do respect your interest
 "
 align = 1
 valign = 1

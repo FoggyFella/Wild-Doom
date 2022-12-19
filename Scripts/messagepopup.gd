@@ -29,6 +29,9 @@ func _process(delta):
 	$Label2.text = "Health: " + str(Global.stats["player_health"])
 
 func show_death_screen():
+	Global.stop_timer()
+	if Music.current_music == "Boss":
+		Music.fade_in("Game",1,-10,"Boss",3)
 	if $PauseMenu.visible == true:
 		$PauseMenu.visible = false
 	var score_here = Global.enemies_killed + Global.pick_ups
@@ -41,7 +44,6 @@ func show_death_screen():
 		$DeathScreen/VBoxContainer/Label5.text = "High Score: " + str(Global.high_score)
 	Global.save_game()
 	$DeathScreen.visible = true
-	Global.stop_timer()
 	get_tree().paused = true
 	var tween = create_tween()
 	tween.set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
@@ -50,12 +52,16 @@ func show_death_screen():
 	$DeathScreen/VBoxContainer/Label3.text = "You killed: "+ str(Global.enemies_killed) + " enemies"
 	$DeathScreen/VBoxContainer/Label4.text = "Your score: "+ str(Global.score)
 	tween.tween_property($DeathScreen,"rect_scale",Vector2(1,1),0.5)
+	$DeathScreen/Button.grab_focus()
 
 
 func _on_Button_pressed():
+	Global.stop_timer()
 	Global.reset_stats()
 	Global.reset_timer()
 	Transition.reload_current_scene()
+	if Music.current_music == "Boss":
+		Music.fade_in("Game",1,-10,"Boss",3)
 
 func get_damaged():
 	var tween = create_tween()
@@ -67,9 +73,11 @@ func set_defaults():
 	$DeathScreen.visible = false
 	$DeathScreen.rect_scale = Vector2(1,0)
 
-
 func _on_Button2_pressed():
+	if Music.current_music == "Boss":
+		Music.fade_in("Game",1,-10,"Boss",3)
 	get_tree().paused = false
+	Global.stop_timer()
 	Global.reset_stats()
 	Global.reset_timer()
 	Transition.change_scene("res://Scenes/Menu.tscn")
@@ -95,6 +103,7 @@ func show_pause_screen():
 	get_tree().paused = true
 	$PauseMenu/Label2.text = tip_dic[random_numb]
 	$PauseMenu.visible = true
+	$PauseMenu/VBoxContainer/Button3.grab_focus()
 
 func update_dash_charge(dash_charge_time):
 	var tween = create_tween()
@@ -118,15 +127,15 @@ func emit_confetti():
 func _on_ConfettiTimer_timeout():
 	$DeathScreen/Confetti1/Confetti.emitting = false
 	$DeathScreen/Confetti2/Confetti.emitting = false
-	
-
 
 func _on_ShowLb_pressed():
 	$DeathScreen/Leaderboard.visible = true
+	$DeathScreen/Leaderboard/Button.grab_focus()
 
 
 func _on_ShowSubmitScreen_pressed():
 	$DeathScreen/SubmitScorePanel.show()
+	$DeathScreen/SubmitScorePanel/ActuallySubmit.grab_focus()
 
 
 func _on_LineEdit_text_changed(new_text):
@@ -139,14 +148,20 @@ func _on_LineEdit_text_changed(new_text):
 	$DeathScreen/SubmitScorePanel/LineEdit.set_text(word)
 	$DeathScreen/SubmitScorePanel/LineEdit.caret_position = old_caret_position
 	namey = str($DeathScreen/SubmitScorePanel/LineEdit.text)
-	print(namey)
 
 
 func _on_ActuallySubmit_pressed():
 	if namey != "" and can_submit:
+		var metadata = {
+			"weapon" : Global.equipped_weapon,
+			"enemies" : Global.enemies_killed,
+			"pickups" : Global.pick_ups}
 		can_submit = false
-		yield(SilentWolf.Scores.persist_score(str(namey),Global.score,"remix"),"sw_score_posted")
+		yield(SilentWolf.Scores.persist_score(str(namey),Global.score,"main",metadata),"sw_score_posted")
+		#TEST THE THING BELOW
+		yield(SilentWolf.Scores.get_high_scores(50,"main"), "sw_scores_received")
 		$DeathScreen/SubmitScorePanel.hide()
+		$DeathScreen/HBoxContainer/ShowSubmitScreen.grab_focus()
 	elif namey == "":
 		$DeathScreen/SubmitScorePanel/ERROR.bbcode_text = "[center][wave amp=20 freq=2]NAME CAN'T BE BLANK!"
 		var tween = create_tween().set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
@@ -166,6 +181,7 @@ func _on_LineEdit_text_entered(new_text):
 
 func _on_Nvm_pressed():
 	$DeathScreen/SubmitScorePanel.hide()
+	$DeathScreen/HBoxContainer/ShowSubmitScreen.grab_focus()
 
 func frenzy_start():
 	var tween = create_tween()
@@ -174,3 +190,39 @@ func frenzy_start():
 func frenzy_end():
 	var tween = create_tween()
 	tween.tween_property($FrenzyTexture,"modulate",Color(1,1,1,0),1)
+
+func enable_boss_health():
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property($BossHealth,"rect_scale",Vector2(1,1),0.5)
+
+func update_boss_health(damage_taken):
+	$BossHealth/Label.text = str(float($BossHealth/Label.text) - float(damage_taken)) + "%"#str(round(float($BossHealth/Label.text) - damage_taken)) + "%"
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property($BossHealth,"value",float($BossHealth/Label.text),0.1)
+
+func boss_dead():
+	var tween = create_tween()
+	$BossHealth/Label.text = str(0) + "%"
+	$BossHealth.set_value(0.0)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_interval(4)
+	tween.tween_property($BossHealth,"rect_scale",Vector2(1,0),0.5)
+	Music.fade_in("Game",3,-10,"Boss",3)
+
+func change_wave_text(wave):
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CIRC)
+	$VBoxContainer/WaveLabel.text = "WAVE " + str(wave)
+	$VBoxContainer/WaveLine.visible = false
+	tween.tween_property($VBoxContainer/WaveLabel,"rect_scale",Vector2(1.2,1.2),0.2)
+	tween.tween_property($VBoxContainer/WaveLabel,"rect_scale",Vector2(1,1),0.2)
+
+func change_to_waiting():
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_LINEAR)
+	$VBoxContainer/WaveLabel.text = "Prepare for next wave"
+	$VBoxContainer/WaveLine.rect_scale = Vector2(1,1)
+	$VBoxContainer/WaveLine.visible = true
+	tween.tween_property($VBoxContainer/WaveLine,"rect_scale",Vector2(0,1),5)

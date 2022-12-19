@@ -16,8 +16,14 @@ export var should_shoot = true
 export var should_rotate = false
 export var should_walk = true
 export var should_knockback = true
+export var should_stay_away:bool = false
+export var should_dash:bool = false
+export var dash_speed:float = 30
 
+var should_run = false
 var previous_speed = speed
+var previous_damage = damage
+var previous_direction = Vector2.ZERO
 var burning = false
 var money_reward = 0
 var stun = false
@@ -27,7 +33,10 @@ var player = null
 var is_visisble = false
 var velocity = Vector2.ZERO
 var should_change_speed = true
+var can_dash = false
 
+var max_health = 0
+var dash_ghost = preload("res://Scenes/DashGhost.tscn")
 var bullet = preload("res://Scenes/enemy_bullet.tscn")
 var blood = preload("res://Scenes/BloodParticles.tscn")
 var damage_popup = preload("res://Scenes/NumberPopup.tscn")
@@ -36,11 +45,15 @@ var sprite_size_x = null
 
 onready var time_to_catch_on_fire = $time_to_catch_on_fire
 
+var total_damage_got = 0
+var should_get_damaged_by_flames = true
+
 func _ready():
 	randomize()
 	money_reward = int(rand_range(min_money,max_money))
 	sprite_size_x = $Sprite.scale.x
 	health = Global.stats["enemy_health"] + more_health
+	max_health = health
 	$TextureProgress.max_value = health
 	$TextureProgress.value = health
 	scale.x = rand_range(0.8,1)
@@ -50,28 +63,37 @@ func _ready():
 	else:
 		speed = 0
 	player = Global.player
+	if should_dash:
+		$timebetweendashes.start(rand_range(6,8))
 	
 func _physics_process(delta):
 	var overlapping_bodies = $Hitbox.get_overlapping_bodies()
 	for i in overlapping_bodies:
-		if stun == false:
-			i.health -= 1
-			if i.health <= 0:
-				i.call_deferred("queue_free")
-			else:
-				i.call_deferred("become_ghost")
-			if i.critical and !i.is_flamethrower:
-				take_damage(i.damage,true)
-			elif !i.critical and !i.is_flamethrower:
-				take_damage(i.damage,false)
+		if i.is_in_group("player_bullets"):
+			if stun == false:
+				i.health -= 1
+				if i.health <= 0:
+					i.call_deferred("queue_free")
+				else:
+					i.call_deferred("become_ghost")
+				if i.critical:
+					take_damage(i.damage,true,true,i.should_show_total_dmg)
+				elif !i.critical:
+					if stun == false:
+						take_damage(i.damage,false,true,i.should_show_total_dmg)
 #			elif i.is_flamethrower:
 #				burn(5,1,5)
 	if player == null:
 		queue_free()
 	if player != null and stun == false:
-		direction_to_player = Vector2(player.global_position - global_position)
-		velocity = direction_to_player.normalized() * speed
-		move_and_slide(velocity,Vector2.UP)
+		if !should_run:
+			direction_to_player = Vector2(player.global_position - global_position)
+			velocity = direction_to_player.normalized() * speed if !is_dashing() else previous_direction * dash_speed
+			move_and_slide(velocity,Vector2.UP)
+		elif should_run and !Global.player.velocity == Vector2.ZERO:
+			direction_to_player = Vector2(player.global_position - global_position)
+			velocity = velocity.linear_interpolate(-direction_to_player.normalized() * speed,0.1)
+			move_and_slide(velocity,Vector2.UP)
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
 			if collision.get_collider().has_method("take_damage") and collision.get_collider().name == "Player":
@@ -82,14 +104,18 @@ func _physics_process(delta):
 		if direction_to_player.x < 0:
 			if should_rotate:
 				$Sprite.rotation_degrees = lerp($Sprite.rotation_degrees,-8.9,0.05)
-			$Sprite.scale.x = lerp($Sprite.scale.x,-sprite_size_x,0.27)
+			if !is_dashing():
+				$Sprite.scale.x = lerp($Sprite.scale.x,-sprite_size_x,0.27)
 		else:
 			if should_rotate:
 				$Sprite.rotation_degrees = lerp($Sprite.rotation_degrees,8.9,0.05)
-			$Sprite.scale.x = lerp($Sprite.scale.x,sprite_size_x,0.27)
+			if !is_dashing():
+				$Sprite.scale.x = lerp($Sprite.scale.x,sprite_size_x,0.27)
 		if can_shoot and is_visisble:
 			if should_shoot:
 				shoot()
+		if can_dash and should_dash:
+			start_dash()
 func shoot():
 	if $timer2.is_stopped():
 		speed -= 40
@@ -108,20 +134,26 @@ func shoot():
 #	bullet_inst.lock_on = true
 	#bullet_inst.look_at(player.global_position)
 
-func take_damage(how_much,critical,knockback=true):
+func take_damage(how_much,critical,knockback=true,show_total=false):
+	total_damage_got += how_much
+	#if $damage.is_stopped():
 	if $TextureProgress.visible == false:
 		show_health_bar()
 	update_health_bar(how_much)
 	randomize()
-	var num_popup = damage_popup.instance()
-	num_popup.position = self.position
-	num_popup.amount = "-" + str(how_much)
-	if critical:
-		num_popup.type = "Critical"
-	else:
-		num_popup.type = "White"
-	get_tree().current_scene.add_child(num_popup)
-	stun = true
+	if show_total:
+		$damage.start()
+	elif show_total == false:
+		var num_popup = damage_popup.instance()
+		num_popup.position = self.position
+		num_popup.amount = "-" + str(how_much)
+		if critical:
+			num_popup.type = "Critical"
+		else:
+			num_popup.type = "White"
+		get_tree().current_scene.call_deferred("add_child",num_popup)
+	if knockback:
+		stun = true
 	if should_knockback and knockback:
 		velocity = -velocity * 10
 		move_and_slide(velocity,Vector2.UP)
@@ -205,10 +237,9 @@ func _on_bite_timer_timeout():
 
 
 func _on_Hitbox_body_entered(body):
-	pass
-#	if self.stun != true:
-#		take_damage(body.damage)
-#		body.queue_free()
+	if is_dashing():
+		if body.name == "Player":
+			body.take_damage(20)
 
 
 func _on_Hitbox_body_exited(body):
@@ -238,7 +269,10 @@ func _on_burn_timer_timeout():
 
 func _on_burn_tick_timeout():
 	if burning:
-		take_damage(5,false,false)
+		var damage = round(float(max_health)*0.05)
+		if damage > 75:
+			damage = 75
+		take_damage(damage,false,false)
 	else:
 		$burn_tick.stop()
 
@@ -255,5 +289,82 @@ func _on_Hitbox_area_entered(area):
 	if area.name == "FlameAffection":
 		area.call_deferred("set_monitorable",false)
 		area.call_deferred("set_monitoring",false)
-		take_damage(area.get_parent().damage,false,false)
-		burn(5,1,5)
+		if should_get_damaged_by_flames:
+			take_damage(area.get_parent().damage,false,false)
+			burn(5,1,5)
+			should_get_damaged_by_flames = false
+			if $flames_shield.is_stopped():
+				$flames_shield.start(Global.stats["flames_shield"])
+
+
+func _on_damage_timeout():
+	var num_popup = damage_popup.instance()
+	num_popup.position = self.position
+	num_popup.amount = "-" + str(total_damage_got)
+	num_popup.type = "White"
+	get_tree().current_scene.call_deferred("add_child",num_popup)
+	total_damage_got = 0
+	
+
+func _on_flames_shield_timeout():
+	should_get_damaged_by_flames = true
+
+
+func _on_FleeArea_body_entered(body):
+	if should_stay_away:
+		should_run = true
+
+func _on_FleeArea_body_exited(body):
+	if should_stay_away:
+		should_run = false
+
+func instance_ghost():
+	var ghost_inst = dash_ghost.instance()
+	ghost_inst.global_position = self.global_position
+	ghost_inst.frames = $Sprite.frames
+	ghost_inst.frame = $Sprite.frame
+	ghost_inst.scale = $Sprite.scale
+	ghost_inst.material = null
+	ghost_inst.flip_h = $Sprite.flip_h
+	get_tree().current_scene.add_child(ghost_inst)
+
+func is_dashing():
+	if get_node_or_null("dash_timer") != null:
+		return !$dash_timer.is_stopped()
+
+
+func _on_ghost_tick_timeout():
+	instance_ghost()
+
+
+func _on_dash_timer_timeout():
+	$CollisionShape2D.disabled = false
+	#set_collision_mask_bit(1, true)
+	#set_collision_mask_bit(4, true)
+	instance_ghost()
+	$ghost_tick.stop()
+	$AnimationPlayer.play("Walk")
+	speed = previous_speed
+
+
+func _on_time_until_dash_timeout():
+	$CollisionShape2D.disabled = true
+	previous_direction = direction_to_player.normalized()
+	$ghost_tick.start()
+	#set_collision_mask_bit(1, false)
+	#set_collision_mask_bit(4, false)
+	$dash_timer.start()
+	$timebetweendashes.wait_time = rand_range(5,7)
+	$timebetweendashes.start()
+	instance_ghost()
+
+func start_dash():
+	if can_dash:
+		previous_speed = speed
+		speed = 0
+		can_dash = false
+		$time_until_dash.start()
+		$AnimationPlayer.play("Dash")
+
+func _on_timebetweendashes_timeout():
+	can_dash = true

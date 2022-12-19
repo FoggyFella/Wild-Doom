@@ -90,9 +90,9 @@ scale = Vector2( 0.185, 0.185 )
 frames = SubResource( 9 )
 offset = Vector2( 80, -21.613 )
 script = ExtResource( 5 )
-starting_damage = 40
-starting_firerate = 0.65
-max_firerate = 0.39
+bullet_delay = 0.1
+starting_firerate = 0.6
+max_firerate = 0.35
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 114.977, -31.968 )
@@ -110,12 +110,12 @@ range_item_cull_mask = 6
 [node name="shoot1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"
 
 [node name="shoot2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -15.0
-bus = "New Bus"
+bus = "SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 1.5

@@ -20,7 +20,10 @@ var stats = {"player_damage":50,
 "enemy_speed": 80,
 "player_bullets": [0],
 "player_firerate" : 0.66,
-"player_crit_chance" : 0.1}
+"player_crit_chance" : 0.1,
+"flames_shield" : 0.75,
+"flames_speed" : 300,
+"shotty_bullet_upgrades": 0}
 
 signal frenzy_start
 signal weapon_equipped
@@ -28,12 +31,22 @@ signal money_picked_up
 signal pick_up_collected
 signal activate_stalkers
 signal activate_fuckers
+signal activate_boss
 
+var settings = {
+	"full_screen" : false,
+	"sfx_volume" : 0,
+	"music_volume" : 0,
+	"deadzone" : 0.5
+}
+var min_shield_time = 0.25
+var max_flame_speed = 435
 var max_fire_rate = 0
 var bought_weapons = ["Pistol"]
 var equipped_weapon = "Pistol"
 var activated_fuckers = false
 var activated_stalkers = false
+var activated_boss = false
 var frenzy_on = false
 
 var money = 0
@@ -41,10 +54,25 @@ var time = 0
 var timer_on = false
 var time_text = null
 
+var full_screen = false
+var sfx_volume = 0
+var music_volume = 0
+
+onready var music_bus = AudioServer.get_bus_index("MusicBus")
+onready var sfx_bus = AudioServer.get_bus_index("SoundEffects")
+onready var dash_bus = AudioServer.get_bus_index("DashBus")
+
 func _ready():
 	load_game()
 	get_tree().set_auto_accept_quit(false)
 	configure_wolf()
+	if settings["fullscreen"] == true:
+		OS.set_window_fullscreen(true)
+	else:
+		OS.set_window_fullscreen(false)
+	AudioServer.set_bus_volume_db(music_bus,settings["music_volume"])
+	AudioServer.set_bus_volume_db(sfx_bus,settings["sfx_volume"])
+	AudioServer.set_bus_volume_db(dash_bus,settings["sfx_volume"])
 	print("Bought weapons: " + str(bought_weapons))
 	print("Equipped weapons: " + str(equipped_weapon))
 	print("High score: " + str(high_score))
@@ -63,14 +91,17 @@ func reset_stats():
 	stats["player_bullets"]=[0]
 	stats["player_firerate"] = 0.66
 	stats["player_crit_chance"] = 0.1
+	stats["flames_shield"] = 0.75
+	stats["flames_speed"] = 300
+	stats["shotty_bullet_upgrades"] = 0
 	player_max_health = 100
 	activated_fuckers = false
 	activated_stalkers = false
+	activated_boss = false
 	score = 0
 	max_fire_rate = 0
 	frenzy_on = false
-	print(stats)
-
+	
 func _process(delta):
 	if stats["enemy_damage"] < 10:
 		stats["enemy_damage"] = 10
@@ -82,6 +113,10 @@ func _process(delta):
 		stats["player_firerate"] = max_fire_rate
 	if stats["player_crit_chance"] > 0.5:
 		stats["player_crit_chance"] = 0.5
+	if stats["flames_shield"] < min_shield_time:
+		stats["flames_shield"] = min_shield_time
+	if stats["flames_speed"] > max_flame_speed:
+		stats["flames_speed"] = max_flame_speed
 	
 	if timer_on:
 		time += delta
@@ -92,11 +127,15 @@ func _process(delta):
 	var time_passed = "%02d : %02d" % [mins,secs]
 	time_text = time_passed
 	
-	if time_text == "01 : 30" and activated_stalkers == false:
+	if time_text == "10 : 00" and activated_stalkers == false:
 		activated_stalkers = true
 		emit_signal("activate_stalkers")
-	
-	if time_text == "02 : 45" and activated_fuckers == false:
+		
+	if time_text == "15 : 00" and activated_boss == false:
+		activated_boss = true
+		emit_signal("activate_boss")
+		
+	if time_text == "12 : 45" and activated_fuckers == false:
 		activated_fuckers = true
 		emit_signal("activate_fuckers")
 
@@ -114,6 +153,7 @@ func save_game():
 	f.store_var(bought_weapons,true)
 	f.store_var(high_score)
 	f.store_var(money)
+	f.store_var(settings)
 	f.close()
 
 func load_game():
@@ -124,12 +164,17 @@ func load_game():
 		bought_weapons = f.get_var()
 		high_score = f.get_var()
 		money = f.get_var()
+		settings = f.get_var()
 		f.close()
 	else:
 		equipped_weapon = "Pistol"
 		bought_weapons = ["Pistol"]
 		money = 0
 		high_score = 0
+		settings["fullscreen"] = false
+		settings["sfx_volume"] = 0
+		settings["music_volume"] = 0
+		settings["deadzone"] = 0.5
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
@@ -137,12 +182,11 @@ func _notification(what):
 		save_game()
 		yield(get_tree().create_timer(1),"timeout")
 		get_tree().quit()
-		print("done")
 
 func configure_wolf():
 	SilentWolf.configure({
 		"api_key": "l9LNd7SqxqaTnbftLhYTjaIj8iQYotNva2dkCJAf",
-		"game_id": "heckinschmeckin",
+		"game_id": "demonblast",
 		"game_version": "1.0",
 		"log_level": 0
 	})

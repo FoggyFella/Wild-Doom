@@ -1,10 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Assets/SFX/game_music.wav" type="AudioStream" id=1]
+[ext_resource path="res://Assets/SFX/MUSIC/Sabotage - Karl Casey @ White Bat Audio/WBA Free Track - Sabotage.mp3" type="AudioStream" id=1]
 [ext_resource path="res://Scripts/Music.gd" type="Script" id=2]
+[ext_resource path="res://Assets/SFX/MUSIC/Karl Casey @ White Bat Audio - Fight Like Hell/WBA Free Track - Fight Like Hell.mp3" type="AudioStream" id=3]
+[ext_resource path="res://Assets/SFX/game_intro_music.wav" type="AudioStream" id=4]
 
-[node name="Music" type="AudioStreamPlayer"]
+[node name="MusicManager" type="Node"]
+pause_mode = 2
+script = ExtResource( 2 )
+
+[node name="Intro" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 4 )
+bus = "MusicBus"
+
+[node name="Game" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 1 )
-volume_db = -60.0
-script = ExtResource( 2 )
+volume_db = -15.0
+bus = "MusicBus"
+
+[node name="Boss" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 3 )
+volume_db = -8.0
+bus = "MusicBus"

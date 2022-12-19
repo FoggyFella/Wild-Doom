@@ -26,6 +26,7 @@ var noise_i: float = 0.0
 onready var rand = RandomNumberGenerator.new()
 var shake_type: int = ShakeType.Random
 var shake_strength: float = 0.0
+var rs_look = Vector2(0,0)
 
 func _ready() -> void:
 	rand.randomize()
@@ -46,9 +47,9 @@ func apply_noise_sway() -> void:
 	shake_type = ShakeType.Sway
 	
 func _process(delta: float) -> void:
-	var mouse_pos = get_global_mouse_position()
-	self.offset_h = (mouse_pos.x - global_position.x) / (1024 / 1.6)
-	self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
+#	var mouse_pos = get_global_mouse_position()
+#	self.offset_h = (mouse_pos.x - global_position.x) / (1024 / 1.6)
+#	self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
 	# Fade out the intensity over time
 	shake_strength = lerp(shake_strength, 0, SHAKE_DECAY_RATE * delta)
 	
@@ -79,3 +80,16 @@ func get_random_offset() -> Vector2:
 		rand.randf_range(-shake_strength, shake_strength),
 		rand.randf_range(-shake_strength, shake_strength)
 	)
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		var mouse_pos = get_global_mouse_position()
+		self.offset_h = (mouse_pos.x - global_position.x) / (1024 / 1.6)
+		self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
+	if event is InputEventJoypadMotion:
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+		rs_look.y = Input.get_joy_axis(0, JOY_AXIS_3)*150
+		rs_look.x = Input.get_joy_axis(0, JOY_AXIS_2)*150
+		self.offset_h = (rs_look.x - global_position.x) / (1024 / 1.6)
+		self.offset_v = (rs_look.y - global_position.y) / (600 / 1.6)

@@ -50,7 +50,7 @@ func take_damage(how_much,critical):
 		num_popup.type = "Critical"
 	else:
 		num_popup.type = "White"
-	get_tree().root.add_child(num_popup)
+	get_tree().current_scene.call_deferred("add_child",num_popup)
 	health -= how_much
 	var tween = create_tween()
 	tween.tween_property($Sprite.get_material(),"shader_param/flash_modifier",1.0,0.05)
@@ -63,7 +63,7 @@ func take_damage(how_much,critical):
 			var blood_inst = blood.instance()
 			blood_inst.global_position = global_position
 			blood_inst.rotation = global_position.angle_to_point(player.global_position)
-			get_tree().root.add_child(blood_inst)
+			get_tree().current_scene.call_deferred("add_child",blood_inst)
 			$death.pitch_scale = rand_range(0.8,1)
 			$death.play()
 			yield(tween,"finished")
@@ -74,7 +74,7 @@ func take_damage(how_much,critical):
 		var blood_inst = blood.instance()
 		blood_inst.global_position = global_position
 		blood_inst.rotation = global_position.angle_to_point(player.global_position)
-		get_tree().root.add_child(blood_inst)
+		get_tree().current_scene.call_deferred("add_child",blood_inst)
 		health = 0
 		$death.pitch_scale = rand_range(0.8,1)
 		$death.play()
@@ -107,3 +107,16 @@ func _on_Hitbox_body_exited(body):
 	if body.is_in_group("player_bullets"):
 		if body.ghost:
 			body.remove_ghost()
+
+
+func _on_Hitbox_area_entered(area):
+	if area.name == "FlameAffection":
+		area.call_deferred("set_monitorable",true)
+		area.call_deferred("set_monitoring",true)
+
+
+func _on_Hitbox_area_exited(area):
+	if area.name == "FlameAffection":
+		area.call_deferred("set_monitorable",false)
+		area.call_deferred("set_monitoring",false)
+		take_damage(area.get_parent().damage,false)

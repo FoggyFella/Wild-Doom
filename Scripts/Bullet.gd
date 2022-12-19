@@ -8,6 +8,7 @@ var is_flamethrower = false
 var bullet_sprite = "Pistol"
 var ghost = false
 var health = 1
+var starting_damage_1 = 0
 var lock_on = false
 var velocity = Vector2.ZERO
 var damage_multiplier = [1,2]
@@ -15,16 +16,23 @@ var percentages = [0.9,0.1]
 var critical = false
 var starting_damage = null
 var time_to_be_gone = 3
+var should_show_total_dmg = false
+var count = 0
 
 func _ready():
 	if is_flamethrower:
+		bullet_speed = Global.stats["flames_speed"]
 		$Timer.start()
 	if !is_flamethrower:
+		$ShottyBullet.play("default")
 		get_node(bullet_sprite+"Bullet").visible = true
+		if bullet_sprite == "Shotty":
+			$Line2D.queue_free()
 	percentages[0] = 1.0 - Global.stats["player_crit_chance"]
 	percentages[1] = Global.stats["player_crit_chance"]
 	#print(percentages)
 	starting_damage = Global.stats["player_damage"]
+	starting_damage_1 = Global.stats["player_damage"]
 	damage = Global.stats["player_damage"]
 	randomize()
 	var num = randf()
@@ -48,8 +56,9 @@ func _physics_process(delta):
 	elif is_flamethrower:
 		var tween = create_tween()
 		scale += Vector2(0.05,0.05)
-		$AnimatedSprite.rotation_degrees += rand_range(-3,3)
-		tween.tween_property(self,"modulate",Color(0,0,0,0),1.2)
+		$AnimatedSprite.rotation_degrees += rand_range(-360,360)
+		tween.tween_interval(0.3)
+		tween.tween_property(self,"modulate",Color(0,0,0,0),0.1)
 		velocity = Vector2(bullet_speed*delta,0).rotated(rotation)
 	var info = move_and_collide(velocity)
 #	if is_flamethrower:
@@ -84,7 +93,12 @@ func remove_ghost():
 
 func become_ghost():
 	$CollisionShape2D.set_deferred("disabled",true)
+	count += 1
 	ghost = true
+	if count == 1:
+		damage = (starting_damage_1*0.7)
+	elif count == 2:
+		damage = (starting_damage_1*0.33)
 
 
 func _on_Timer_timeout():

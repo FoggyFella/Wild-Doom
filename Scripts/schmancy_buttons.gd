@@ -2,6 +2,7 @@ extends Button
 
 export var has_a_bar:bool = false
 export var should_focus:bool = false
+export var should_change_outline:bool = false
 
 func _ready():
 	if should_focus:

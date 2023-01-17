@@ -7,7 +7,7 @@
 [ext_resource path="res://Assets/SFX/ui/switch14.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/SFX/ui/scroll_002.ogg" type="AudioStream" id=6]
 
-[sub_resource type="Shader" id=63]
+[sub_resource type="Shader" id=90]
 code = "shader_type canvas_item;
 uniform sampler2D noise_img;
 uniform float speed = 1.0;
@@ -31,19 +31,20 @@ void fragment(){
 	COLOR.a = clamp(new_alpha * 5.0 * texture(TEXTURE, UV).a, 0.0, 1.0);
 }"
 
-[sub_resource type="OpenSimplexNoise" id=64]
+[sub_resource type="OpenSimplexNoise" id=92]
 
-[sub_resource type="NoiseTexture" id=65]
+[sub_resource type="NoiseTexture" id=89]
 width = 1000
 height = 1000
 seamless = true
-noise = SubResource( 64 )
+noise = SubResource( 92 )
+noise_offset = Vector2( 1000, 1000 )
 
-[sub_resource type="ShaderMaterial" id=66]
-shader = SubResource( 63 )
+[sub_resource type="ShaderMaterial" id=91]
+shader = SubResource( 90 )
 shader_param/speed = 0.05
-shader_param/smoke_color = Color( 0.160784, 0.223529, 0.92549, 1 )
-shader_param/noise_img = SubResource( 65 )
+shader_param/smoke_color = Color( 0.0431373, 0.0235294, 0.631373, 0.972549 )
+shader_param/noise_img = SubResource( 89 )
 
 [sub_resource type="Gradient" id=61]
 interpolation_mode = 2
@@ -142,11 +143,11 @@ script = ExtResource( 1 )
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.0588235, 0.164706, 0.258824, 1 )
+color = Color( 0.0352941, 0.0156863, 0.164706, 1 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 modulate = Color( 1, 1, 1, 0.372549 )
-material = SubResource( 66 )
+material = SubResource( 91 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 

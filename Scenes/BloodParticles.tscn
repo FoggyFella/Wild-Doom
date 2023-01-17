@@ -17,7 +17,7 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.414239, -10.6364 ), 0.0, 0
 
 [sub_resource type="CanvasItemMaterial" id=3]
 particles_animation = true
-particles_anim_h_frames = 3
+particles_anim_h_frames = 6
 particles_anim_v_frames = 1
 particles_anim_loop = false
 

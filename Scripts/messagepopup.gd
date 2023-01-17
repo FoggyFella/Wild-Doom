@@ -1,15 +1,19 @@
 extends CanvasLayer
 
 onready var pickup_timer = $"../PickupTimer"
+onready var upgrade_afer_wave = $UpgradeAferWave
 var number_popup = preload("res://Scenes/NumberPopup.tscn")
 var amount = 0
 var namey = ""
 var can_submit = true
 var allowed_characters = "[A-Za-z-_0-9]"
+var boss_thing = 100.0
 
 func _ready():
-	$Label4.text = str(Global.money).pad_zeros(5) + " $"
+	$Cash/Label4.text = str(Global.money)#.pad_zeros(5)
+	$Ruby/Label4.text = str(Global.settings["rubys"])#.pad_zeros(5)
 	Global.connect("money_picked_up",self,"money_picked_up")
+	Global.connect("ruby_collected",self,"on_ruby_collected")
 	set_defaults()
 
 func message_popup(text,color,shadow):
@@ -31,9 +35,10 @@ func _process(delta):
 func show_death_screen():
 	Global.stop_timer()
 	if Music.current_music == "Boss":
-		Music.fade_in("Game",1,-10,"Boss",3)
+		Music.fade_in("Chapter1",1,-10,"Boss",3)
 	if $PauseMenu.visible == true:
 		$PauseMenu.visible = false
+	$UpgradeAferWave.hide()
 	var score_here = Global.enemies_killed + Global.pick_ups
 	Global.score = score_here
 	if Global.score > Global.high_score:
@@ -61,7 +66,7 @@ func _on_Button_pressed():
 	Global.reset_timer()
 	Transition.reload_current_scene()
 	if Music.current_music == "Boss":
-		Music.fade_in("Game",1,-10,"Boss",3)
+		Music.fade_in("Chapter1",1,-10,"Boss",3)
 
 func get_damaged():
 	var tween = create_tween()
@@ -72,10 +77,22 @@ func get_damaged():
 func set_defaults():
 	$DeathScreen.visible = false
 	$DeathScreen.rect_scale = Vector2(1,0)
+	$UpgradeAferWave.hide()
+
+func after_wave_upgrade():
+	get_tree().paused = true
+	upgrade_afer_wave.show()
+	upgrade_afer_wave.get_node("Error").hide()
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(upgrade_afer_wave,"modulate",Color(1,1,1,1),0.4)
+	yield(tween,"finished")
+	upgrade_afer_wave.roll_upgrades()
 
 func _on_Button2_pressed():
 	if Music.current_music == "Boss":
 		Music.fade_in("Game",1,-10,"Boss",3)
+	elif Music.current_music == "Chapter1":
+		Music.fade_in("Game",1,-10,"Chapter1",3)
 	get_tree().paused = false
 	Global.stop_timer()
 	Global.reset_stats()
@@ -87,6 +104,7 @@ func _on_Button3_pressed():
 	$PauseMenu.visible = false
 
 func show_pause_screen():
+	var rng = RandomNumberGenerator.new()
 	var tip_dic = {
 		1:"you can go get yourself a snack or something",
 		2:"enemies are angry",
@@ -95,11 +113,22 @@ func show_pause_screen():
 		5:"I don't really know what to write here",
 		6:"Lava's pretty hot,don't step into it!",
 		7:"Go wash your dishes. NOW!",
-		8:"This game was made by a human",
+		8:"This game was made by humans (probably)",
 		9:"Pineapples on pizza aren't that bad",
-		10:"I wrote 10 stupid tips to put here"
+		10:"I wrote 20 stupid things to put here",
+		11:"Potato,potato,potato",
+		12:"How's your day going?",
+		13:"Merry Christmas! (don't put in the game)",
+		14:"Damn.",
+		15:"easy peasy lemon squeezy",
+		16:"Hello there!",
+		17:"The demons are patiently waiting",
+		18:"The devil awaits",
+		19:"It sure is hot around here",
+		20:"This is a very secret message if you see it then you're cool",
 	}
-	var random_numb = int(rand_range(1,10))
+	rng.randomize()
+	var random_numb = rng.randi_range(1,tip_dic.size())
 	get_tree().paused = true
 	$PauseMenu/Label2.text = tip_dic[random_numb]
 	$PauseMenu.visible = true
@@ -116,9 +145,17 @@ func money_picked_up(amounti):
 	money_number.amount = str(amounti)
 	money_number.type = "Green"
 	money_number.position = Vector2(56,10)
-	$Label4.text = str(Global.money).pad_zeros(5) + " $"
-	$Label4/CenterContainer.add_child(money_number)
+	$Cash/Label4.text = str(Global.money)#.pad_zeros(5)
+	$Cash/Label4/CenterContainer.add_child(money_number)
 
+func on_ruby_collected(amounti):
+	var ruby_number = number_popup.instance()
+	ruby_number.amount = str(amounti)
+	ruby_number.type = "Red"
+	ruby_number.position = Vector2(56,10)
+	$Ruby/Label4.text = str(Global.settings["rubys"])#.pad_zeros(5)
+	$Ruby/Label4/CenterContainer.add_child(ruby_number)
+	
 func emit_confetti():
 	$ConfettiTimer.start()
 	$DeathScreen/Confetti1/Confetti.emitting = true
@@ -197,19 +234,22 @@ func enable_boss_health():
 	tween.tween_property($BossHealth,"rect_scale",Vector2(1,1),0.5)
 
 func update_boss_health(damage_taken):
-	$BossHealth/Label.text = str(float($BossHealth/Label.text) - float(damage_taken)) + "%"#str(round(float($BossHealth/Label.text) - damage_taken)) + "%"
+	boss_thing -= float(damage_taken)
+	$BossHealth/Label.text = str(int(boss_thing)) + "%"#str(float($BossHealth/Label.text) - float(damage_taken)) + "%"#str(round(float($BossHealth/Label.text) - damage_taken)) + "%"
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property($BossHealth,"value",float($BossHealth/Label.text),0.1)
 
 func boss_dead():
+	$BossDeath.play()
 	var tween = create_tween()
 	$BossHealth/Label.text = str(0) + "%"
 	$BossHealth.set_value(0.0)
+	Global.settings["beat_gorilla"] = true
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_interval(4)
 	tween.tween_property($BossHealth,"rect_scale",Vector2(1,0),0.5)
-	Music.fade_in("Game",3,-10,"Boss",3)
+	Music.fade_in("Chapter1",3,-10,"Boss",3)
 
 func change_wave_text(wave):
 	var tween = create_tween()

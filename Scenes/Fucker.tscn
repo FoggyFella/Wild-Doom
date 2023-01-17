@@ -1,7 +1,6 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Fucker.gd" type="Script" id=2]
-[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=3]
 [ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=5]
 [ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=6]
@@ -10,9 +9,22 @@
 
 [sub_resource type="CircleShape2D" id=1]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="Shader" id=24]
 resource_local_to_scene = true
-shader = ExtResource( 3 )
+code = "shader_type canvas_item;
+
+uniform vec4 flash_color : hint_color = vec4(1.0);
+uniform float flash_modifier : hint_range(0.0, 1.0) = 0.0;
+
+void fragment(){
+	vec4 color = texture(TEXTURE,UV);
+	color.rgb = mix(color.rgb,flash_color.rgb,flash_modifier);
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=25]
+resource_local_to_scene = true
+shader = SubResource( 24 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
 
@@ -28,11 +40,11 @@ region = Rect2( 135, 0, 135, 102 )
 atlas = ExtResource( 8 )
 region = Rect2( 270, 0, 135, 102 )
 
-[sub_resource type="AtlasTexture" id=17]
+[sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 8 )
 region = Rect2( 0, 102, 135, 102 )
 
-[sub_resource type="AtlasTexture" id=18]
+[sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 8 )
 region = Rect2( 135, 102, 135, 102 )
 
@@ -42,7 +54,7 @@ region = Rect2( 270, 102, 135, 102 )
 
 [sub_resource type="SpriteFrames" id=20]
 animations = [ {
-"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 22 ), SubResource( 23 ), SubResource( 19 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -62,7 +74,7 @@ shape = SubResource( 1 )
 disabled = true
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
-material = SubResource( 2 )
+material = SubResource( 25 )
 scale = Vector2( 0.30499, 0.30499 )
 frames = SubResource( 20 )
 frame = 3

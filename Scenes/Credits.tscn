@@ -165,7 +165,7 @@ margin_right = 20.0
 position = Vector2( -1292, -1 )
 scale = Vector2( 0.338216, 0.338216 )
 frames = SubResource( 24 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Control/AnimatedSprite2"]
@@ -178,7 +178,7 @@ offset = Vector2( 90, -25 )
 position = Vector2( -819.5, -1.5 )
 scale = Vector2( 0.442708, 0.442708 )
 frames = SubResource( 19 )
-frame = 3
+frame = 4
 playing = true
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
@@ -255,7 +255,7 @@ rect_clip_content = false
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_fonts/normal_font = SubResource( 27 )
 bbcode_enabled = true
-bbcode_text = "[rainbow freq=0.3 sat=0.8 val=1][rainbow][wave amp=50 freq=2]CREDITS:"
+bbcode_text = "[rainbow freq=1 sat=1 val=1][rainbow][wave amp=50 freq=2]CREDITS:"
 text = "CREDITS:"
 scroll_active = false
 

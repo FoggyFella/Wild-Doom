@@ -1,0 +1,119 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Assets/light.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Guns/P90/Untitled_12-16-2022_12-27-14_2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/SFX/p_90_new.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=4]
+[ext_resource path="res://Scripts/Gun.gd" type="Script" id=5]
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 120, 38, 60, 38 )
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 60, 38 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 60, 0, 60, 38 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 120, 0, 60, 38 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 38, 60, 38 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 60, 38, 60, 38 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 6 ), SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="ShaderMaterial" id=8]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="Animation" id=9]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "shoot"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 0 ]
+}
+
+[node name="Gun" type="AnimatedSprite"]
+light_mask = 2
+scale = Vector2( 0.583, 0.583 )
+frames = SubResource( 7 )
+offset = Vector2( 15, -3 )
+script = ExtResource( 5 )
+should_screenshake = false
+bullet_sprite = "Petuh"
+should_have_knockback = false
+starting_damage = 15
+starting_critchance = 0.025
+starting_firerate = 0.17
+max_firerate = 0.13
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 29.668, -1.998 )
+scale = Vector2( 0.15, 0.15 )
+
+[node name="Light2D2" type="Light2D" parent="Position2D"]
+material = SubResource( 8 )
+position = Vector2( 2.32768, -3.83266 )
+scale = Vector2( 5.18153, 3.3948 )
+texture = ExtResource( 1 )
+color = Color( 0.960784, 0.466667, 0.105882, 1 )
+energy = 0.0
+range_item_cull_mask = 6
+
+[node name="shoot1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -15.0
+bus = "SoundEffects"
+
+[node name="shoot2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -15.0
+pitch_scale = 0.9
+bus = "SoundEffects"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 1.5
+anims/RESET = SubResource( 9 )
+anims/shoot = SubResource( 10 )

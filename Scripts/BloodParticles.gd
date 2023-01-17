@@ -8,7 +8,8 @@ func _ready():
 func _on_Timer_timeout():
 	#this is for perfomance
 	disable_all(self)
-	disable_all($BloodParticles2)
+	if get_node_or_null("BloodParticles2") != null:
+		disable_all($BloodParticles2)
 	$Timer2.start()
 
 func _on_Timer2_timeout():

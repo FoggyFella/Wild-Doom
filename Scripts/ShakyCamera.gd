@@ -82,14 +82,15 @@ func get_random_offset() -> Vector2:
 	)
 
 func _input(event):
-	if event is InputEventMouseMotion:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		var mouse_pos = get_global_mouse_position()
-		self.offset_h = (mouse_pos.x - global_position.x) / (1024 / 1.6)
-		self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
-	if event is InputEventJoypadMotion:
-		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-		rs_look.y = Input.get_joy_axis(0, JOY_AXIS_3)*150
-		rs_look.x = Input.get_joy_axis(0, JOY_AXIS_2)*150
-		self.offset_h = (rs_look.x - global_position.x) / (1024 / 1.6)
-		self.offset_v = (rs_look.y - global_position.y) / (600 / 1.6)
+	if get_parent().should_move_camera:
+		if event is InputEventMouseMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			var mouse_pos = get_global_mouse_position()
+			self.offset_h = (mouse_pos.x - global_position.x) / (1024 / 1.6)
+			self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
+		if event is InputEventJoypadMotion:
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+			rs_look.y = Input.get_joy_axis(0, JOY_AXIS_3)*150
+			rs_look.x = Input.get_joy_axis(0, JOY_AXIS_2)*150
+			self.offset_h = (rs_look.x - global_position.x) / (1024 / 1.6)
+			self.offset_v = (rs_look.y - global_position.y) / (600 / 1.6)

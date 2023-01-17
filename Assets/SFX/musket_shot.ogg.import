@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/musket_shot.ogg-c9acc68f40d882b47546164a3000a539.oggstr"
+
+[deps]
+
+source_file="res://Assets/SFX/musket_shot.ogg"
+dest_files=[ "res://.import/musket_shot.ogg-c9acc68f40d882b47546164a3000a539.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -40,6 +40,8 @@ align = 1
 valign = 1
 
 [node name="NumberArea" type="Area2D" parent="."]
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NumberArea"]
 shape = SubResource( 14 )

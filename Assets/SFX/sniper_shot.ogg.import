@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sniper_shot.ogg-02eb308537c797515e9736de3768f8ed.oggstr"
+
+[deps]
+
+source_file="res://Assets/SFX/sniper_shot.ogg"
+dest_files=[ "res://.import/sniper_shot.ogg-02eb308537c797515e9736de3768f8ed.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

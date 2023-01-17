@@ -23,22 +23,31 @@ var stats = {"player_damage":50,
 "player_crit_chance" : 0.1,
 "flames_shield" : 0.75,
 "flames_speed" : 300,
-"shotty_bullet_upgrades": 0}
+"shotty_bullet_upgrades": 0,
+"sniper_health": 3,
+"flames_size": 1}
 
 signal frenzy_start
 signal weapon_equipped
 signal money_picked_up
+signal ruby_collected
 signal pick_up_collected
 signal activate_stalkers
 signal activate_fuckers
 signal activate_boss
 
 var settings = {
-	"full_screen" : false,
+	"fullscreen" : false,
 	"sfx_volume" : 0,
 	"music_volume" : 0,
-	"deadzone" : 0.5
+	"deadzone" : 0.5,
+	"beat_gorilla" : false,
+	"saw_intro" : false,
+	"unlocked_chapters" : [1],
+	"rubys" : 0,
+	"bought_items" : {}
 }
+
 var min_shield_time = 0.25
 var max_flame_speed = 435
 var max_fire_rate = 0
@@ -49,12 +58,13 @@ var activated_stalkers = false
 var activated_boss = false
 var frenzy_on = false
 
+var selected_wave = 1
 var money = 0
 var time = 0
 var timer_on = false
 var time_text = null
 
-var full_screen = false
+var fullscreen = false
 var sfx_volume = 0
 var music_volume = 0
 
@@ -94,6 +104,8 @@ func reset_stats():
 	stats["flames_shield"] = 0.75
 	stats["flames_speed"] = 300
 	stats["shotty_bullet_upgrades"] = 0
+	stats["sniper_health"] = 3
+	stats["flames_size"] = 1
 	player_max_health = 100
 	activated_fuckers = false
 	activated_stalkers = false
@@ -175,6 +187,11 @@ func load_game():
 		settings["sfx_volume"] = 0
 		settings["music_volume"] = 0
 		settings["deadzone"] = 0.5
+		settings["beat_gorilla"] = false
+		settings["saw_intro"] = false
+		settings["unlocked_chapters"] = [1]
+		settings["rubys"] = 0
+		settings["bought_items"] = {}
 
 func _notification(what):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:

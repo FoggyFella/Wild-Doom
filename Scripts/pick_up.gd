@@ -13,7 +13,7 @@ var pick_ups = {
 3: ["player_bullets",0,"+1 bullet to your gun!","green",true],
 4: ["player_bullets",0,"+1 bullet to your gun!","green",true],
 #FRENZY
-5: ["start_frenzy",0,"FRENZY FRENZY FRENZY","green",true],
+5: ["start_frenzy",0,"FRENZY! FRENZY! FRENZY!","green",true],
 #player health
 6: ["player_health",+15,"+15 health for you!","green",true],
 7: ["player_health",+20,"+20 health for you!","green",true],
@@ -32,23 +32,24 @@ var pick_ups = {
 #player crit chance
 17: ["player_crit_chance",+0.05,"bigger % of a critical for you!","green",true],
 #flamethrower updates
-18: ["flames_shield",-get_percentage(Global.stats["flames_shield"],5,false),"-5% for enemies flame invincibility","green",true],
-19: ["flames_shield",-get_percentage(Global.stats["flames_shield"],7.5,false),"-7.5% for enemies flame invincibility","green",true],
-20: ["flames_shield",-get_percentage(Global.stats["flames_shield"],10,false),"-10% for enemies flame invincibility","green",true],
-21: ["flames_speed",+get_percentage(Global.stats["flames_speed"],15,false),"+ " + str(get_percentage(Global.stats["flames_speed"],15,false)) + " speed for your flames","green",true],
-
+18: ["flames_shield",-get_percentage(Global.stats["flames_shield"],5,false),"-5% for enemies flame invincibility!","green",true],
+19: ["flames_shield",-get_percentage(Global.stats["flames_shield"],7.5,false),"-7.5% for enemies flame invincibility!","green",true],
+20: ["flames_shield",-get_percentage(Global.stats["flames_shield"],10,false),"-10% for enemies flame invincibility!","green",true],
+21: ["flames_speed",+get_percentage(Global.stats["flames_speed"],15,false),"+ " + str(get_percentage(Global.stats["flames_speed"],15,false)) + " speed for your flames!","green",true],
+#sniper upgrade
+22: ["sniper_health",+1,"Bullets can go through 1 more enemy!","green",false],
 #ENEMIES ENEMIES ENEMIES ENEMIES ENEMIES
 
 #enemy health
-22:["enemy_health",+get_percentage(Global.stats["enemy_health"],15),"+ " + str(get_percentage(Global.stats["enemy_health"],15)) + " health for your enemies!","red",true],
-23:["enemy_health",+get_percentage(Global.stats["enemy_health"],20),"+ " + str(get_percentage(Global.stats["enemy_health"],20)) + " health for your enemies!","red",true],
-24:["enemy_health",+get_percentage(Global.stats["enemy_health"],25),"+ " + str(get_percentage(Global.stats["enemy_health"],25)) + " health for your enemies!","red",true],
+23:["enemy_health",+get_percentage(Global.stats["enemy_health"],15),"+ " + str(get_percentage(Global.stats["enemy_health"],15)) + " health for your enemies!","red",true],
+24:["enemy_health",+get_percentage(Global.stats["enemy_health"],20),"+ " + str(get_percentage(Global.stats["enemy_health"],20)) + " health for your enemies!","red",true],
+25:["enemy_health",+get_percentage(Global.stats["enemy_health"],25),"+ " + str(get_percentage(Global.stats["enemy_health"],25)) + " health for your enemies!","red",true],
 #enemy damage
-25:["enemy_damage",+get_percentage(Global.stats["enemy_damage"],5),"+ " + str(get_percentage(Global.stats["enemy_damage"],5)) + " damage for your enemies!","red",true],
-26:["enemy_damage",+get_percentage(Global.stats["enemy_damage"],10),"+ " + str(get_percentage(Global.stats["enemy_damage"],10)) + " damage for your enemies!","red",true],
+26:["enemy_damage",+get_percentage(Global.stats["enemy_damage"],5),"+ " + str(get_percentage(Global.stats["enemy_damage"],5)) + " damage for your enemies!","red",true],
+27:["enemy_damage",+get_percentage(Global.stats["enemy_damage"],10),"+ " + str(get_percentage(Global.stats["enemy_damage"],10)) + " damage for your enemies!","red",true],
 #enemy speed
-27:["enemy_speed",+get_percentage(Global.stats["enemy_speed"],5),"+ " + str(get_percentage(Global.stats["enemy_speed"],5)) + " speed for your enemies!","red",true],
-28:["enemy_speed",+get_percentage(Global.stats["enemy_speed"],10),"+ " + str(get_percentage(Global.stats["enemy_speed"],10)) + " speed for your enemies!","red",true],
+28:["enemy_speed",+get_percentage(Global.stats["enemy_speed"],5),"+ " + str(get_percentage(Global.stats["enemy_speed"],5)) + " speed for your enemies!","red",true],
+29:["enemy_speed",+get_percentage(Global.stats["enemy_speed"],10),"+ " + str(get_percentage(Global.stats["enemy_speed"],10)) + " speed for your enemies!","red",true],
 }
 
 var special_keys = [1,2,3,4,5]
@@ -57,7 +58,7 @@ func _ready():
 	Global.player.should_show_arrow = true
 	check_for_disabled()
 	randomize()
-	var key_check = int(rand_range(1,26))
+	var key_check = int(rand_range(1,29))
 	if pick_ups[key_check][4] == true:
 		key = key_check
 		var tween = create_tween()
@@ -118,7 +119,7 @@ func get_the_color_and_set(the_key):
 		shadow_color = Color("2b5412")
 
 func check_for_disabled():
-	if Global.stats["player_bullets"].size() >= 3 or Global.player.weapon == "Flamethrower" or Global.stats["shotty_bullet_upgrades"] >= 3:
+	if Global.stats["player_bullets"].size() >= 3 or Global.player.weapon == "Flamethrower" or Global.stats["shotty_bullet_upgrades"] >= 3 or Global.player.weapon == "Sniper":
 		pick_ups[1][4] = false
 		pick_ups[2][4] = false
 		pick_ups[3][4] = false
@@ -141,7 +142,8 @@ func check_for_disabled():
 			pick_ups[20][4]=false
 		if Global.stats["flames_speed"] >= Global.max_flame_speed:
 			pick_ups[21][4]=false
-
+	if Global.player.weapon == "Sniper":
+		pick_ups[22][4]=true
 func get_percentage(from,perc,should_round = true):
 	if should_round:
 		return round(float(perc)/100.0 * from)

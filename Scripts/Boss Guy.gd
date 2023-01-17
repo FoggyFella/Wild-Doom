@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
-var max_health = 9000
-var health = 9000
+var max_health = 11750
+var health = 11750
 var stun = false
 
 onready var attack_path = get_node("Path1")
@@ -9,10 +9,12 @@ onready var attack_path = get_node("Path1")
 var rock = preload("res://Scenes/BossRock.tscn")
 var bullet = preload("res://Scenes/BossProjectile.tscn")
 var damage_popup = preload("res://Scenes/NumberPopup.tscn")
-var crack_texture = preload("res://Assets/cracks.png")
+var crack_texture = preload("res://Assets/Boss/Crack_.png")
+var ashes = preload("res://Scenes/BloodParticlesButAshes.tscn")
 var player = null
 var ui = null
 
+var killed_before = false
 var money_reward = 100
 var previous_attack = "Attack1"
 var velocity = Vector2()
@@ -42,6 +44,7 @@ var current_state = State.IDLE
 var bullet_rots = [-0.2,-0.1,0,0.1,0.2]
 
 func _ready():
+	killed_before = Global.settings["beat_gorilla"]
 	sprite_size_x = $Sprite.scale.x
 	player = Global.player
 	ui = player.ui
@@ -51,45 +54,47 @@ func _physics_process(delta):
 	var direction_to_player = Vector2(player.global_position - global_position)
 	rotate_to_face_player(direction_to_player)
 	var distance = global_position.distance_to(player.global_position)
-	if distance > 320:
-		speed = 70
-	else:
-		speed = previous_speed_2
-		
 	match current_state:
 		State.IDLE:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			$Sprite.play("Idle")
 			if $TimerTillWalk.is_stopped():
 					$TimerTillWalk.start()
 		State.WALKING:
+			$Sprite.speed_scale = float(speed)/50.0
 			if player != null:
 				if $TimerTillAttack.is_stopped():
 					$TimerTillAttack.start(rand_range(4,5))
 				$Sprite.play("Walk")
 				velocity = direction_to_player.normalized() * speed
 		State.ATTACKING:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			previous_attack = "Attack1"
 			if $AttackTimer.is_stopped():
 				$AttackTimer.start()
 			$Sprite.play("Attack1")
 		State.ATTACKING_PURPLE:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			previous_attack = "Attack3"
 			if $AttackTimer2.is_stopped():
 				$AttackTimer2.start()
 			$Sprite.play("Attack3")
 		State.READING_UP:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			if $ReadingUp.is_stopped():
 				$ReadingUp.start()
 			$Sprite.play("BeforeJump")
 		State.SMASH_ATTACK:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			previous_attack = "SlamAttack"
 			$Sprite.play("Attack2")
 		State.FLYING:
+			$Sprite.speed_scale = 1
 			if previous_player_spot.x > 0:
 				$Sprite.scale.x = -0.299
 			else:
@@ -98,6 +103,7 @@ func _physics_process(delta):
 			velocity.y -= 50
 			$Sprite.play("Jump")
 		State.BOULDER_THROW:
+			$Sprite.speed_scale = 1
 			velocity = Vector2.ZERO
 			if $boulder_throw.is_stopped():
 				$boulder_throw.start()
@@ -125,7 +131,7 @@ func change_state(next_state):
 
 func _on_TimerTillAttack_timeout():
 	var rng = RandomNumberGenerator.new()
-	if health <= 9000.0 * 0.75 and health > 9000.0 * 0.50:
+	if health <= 11750.0 * 0.75 and health > 11750.0 * 0.50:
 		print("attack 1,2")
 		rng.randomize()
 		var number = rng.randi_range(1,2)
@@ -136,7 +142,7 @@ func _on_TimerTillAttack_timeout():
 		elif number == 2:
 			previous_attack = "Attack2"
 			change_state(State.ATTACKING_PURPLE)
-	elif health <= 9000.0 * 0.50:
+	elif health <= 11750.0 * 0.50:
 		print("attack 1,2,3")
 		rng.randomize()
 		var number = rng.randi_range(1,3)
@@ -150,16 +156,21 @@ func _on_TimerTillAttack_timeout():
 		elif number == 3:
 			previous_attack = "Attack3"
 			change_state(State.ATTACKING_PURPLE)
-	elif health > 9000.0 * 0.75:
+	elif health > 11750.0 * 0.75:
 		print("attack 1")
 		previous_attack = "Attack1"
 		change_state(State.ATTACKING)
 
 func _on_AttackTimer_timeout():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var sound = rng.randi_range(1,2)
+	get_node("hit" + str(sound)).pitch_scale = rng.randf_range(0.95,1.1)
+	get_node("hit" + str(sound)).play()
 	player.get_node("Camera2D").apply_noise_shake()
 	var tween = create_tween()
 	var sprite = Sprite.new()
-	sprite.scale = Vector2(0.188,0.168)
+	sprite.scale = Vector2(0.7,0.7)
 	sprite.z_index = 1
 	sprite.position = $Sprite/crackpoint.global_position
 	sprite.texture = crack_texture
@@ -178,14 +189,11 @@ func _on_AttackTimer_timeout():
 func _on_TimerTillWalk_timeout():
 	change_state(State.WALKING)
 
-
 func _on_burn_timer_timeout():
-	speed = previous_speed
+	#speed = previous_speed
 	should_change_speed = true
 	burning = false
-	$Sprite.material.set("shader_param/min_line_width",0)
-	$Sprite.material.set("shader_param/max_line_width",0)
-
+	$FlameParticles.emitting = false
 
 func _on_burn_tick_timeout():
 	if burning:
@@ -196,17 +204,14 @@ func _on_burn_tick_timeout():
 	else:
 		$burn_tick.stop()
 
-
 func _on_time_to_catch_on_fire_timeout():
 	burn(5,1,5)
-
 
 func _on_flames_shield_timeout():
 	should_get_damaged_by_flames = true
 
-
 func _on_damage_timeout():
-	var number = 100.0 - ((9000.0-float(total_damage_got))/9000.0)*100.0#100.0 - ((9000.0-float(total_damage_got))/9000.0)*100.0
+	var number = 100.0 - ((11750.0-float(total_damage_got))/11750.0)*100.0#100.0 - ((11750.0-float(total_damage_got))/11750.0)*100.0
 	ui.update_boss_health(number)
 	var num_popup = damage_popup.instance()
 	num_popup.position = self.position
@@ -220,11 +225,11 @@ func take_damage(how_much,critical,knockback=true):
 	$damage.start()
 	randomize()
 	health -= how_much
-	if health <= 9000.0 * 0.50 and phase_2_entered == false:
+	if health <= 11750.0 * 0.50 and phase_2_entered == false:
 		phase_2_entered = true
 		var tween_1 = create_tween()
 		tween_1.tween_property(self,"modulate",Color("ffa5a5"),0.2)
-		speed = speed + (speed*0.25)
+		speed = speed + (speed*0.5)
 	var tween = create_tween()
 	tween.tween_property($Sprite.get_material(),"shader_param/flash_modifier",1.0,0.05)
 	tween.tween_property($Sprite.get_material(),"shader_param/flash_modifier",0.0,0.05)
@@ -236,19 +241,23 @@ func take_damage(how_much,critical,knockback=true):
 			$death.pitch_scale = rand_range(0.8,1)
 			$death.play()
 			ui.boss_dead()
+			Global.settings["beat_gorilla"] = true
 			yield(tween,"finished")
 			queue_free()
 			Global.emit_signal("money_picked_up",money_reward)
 			Global.enemies_killed += 1
+			grant_ruby()
 	elif health <= 0:
 		health = 0
 		$death.pitch_scale = rand_range(0.8,1)
 		$death.play()
 		ui.boss_dead()
+		Global.settings["beat_gorilla"] = true
 		yield(tween,"finished")
 		queue_free()
 		Global.emit_signal("money_picked_up",money_reward)
 		Global.enemies_killed += 1
+		grant_ruby()
 	yield(tween,"finished")
 	stun = false
 	if health < max_health * 0.75:
@@ -259,17 +268,15 @@ func take_damage(how_much,critical,knockback=true):
 		bullet_rots = [-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5]
 	
 func burn(time,tick,damage_per_tick):
-	if should_change_speed:
-		should_change_speed = false
-		previous_speed = speed
-		speed = speed - speed * 0.6
+	#if should_change_speed:
+		#should_change_speed = false
+		#previous_speed = speed
+		#speed = speed - speed * 0.6
 	$burn_timer.start(time)
 	if $burn_tick.is_stopped():
 		$burn_tick.start(tick)
 	burning = true
-	$Sprite.material.set("shader_param/min_line_width",2)
-	$Sprite.material.set("shader_param/max_line_width",7)
-
+	$FlameParticles.emitting = true
 
 func _on_Hitbox_area_entered(area):
 	if area.name == "FlameAffection":
@@ -295,20 +302,27 @@ func _on_Hitbox_body_exited(body):
 #		if body.ghost:
 #			body.remove_ghost()
 
-
 func _on_ReadingUp_timeout():
 	change_state(State.FLYING)
 	previous_player_spot = player.global_position
 
-
 func _on_boulder_throw_timeout():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var sound = rng.randi_range(1,2)
+	get_node("hit" + str(sound)).pitch_scale = rng.randf_range(0.95,1.1)
+	get_node("hit" + str(sound)).play()
 	var boulder_inst = rock.instance()
 	boulder_inst.position = $Sprite/BulletSpawnPoint.global_position
 	get_tree().current_scene.get_node("Enemies").add_child(boulder_inst)
 	change_state(State.WALKING)
 
-
 func _on_AttackTimer2_timeout():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var sound = rng.randi_range(1,2)
+	get_node("hit" + str(sound)).pitch_scale = rng.randf_range(0.95,1.1)
+	get_node("hit" + str(sound)).play()
 	player.get_node("Camera2D").apply_noise_shake()
 	var tween = create_tween()
 	var sprite = Sprite.new()
@@ -329,3 +343,11 @@ func _on_AttackTimer2_timeout():
 	tween.tween_property(sprite,"modulate",Color(1,1,1,0),1)
 	yield(tween,"finished")
 	sprite.queue_free()
+
+func grant_ruby():
+	if !killed_before:
+		Global.settings["rubys"] += 30
+		Global.emit_signal("ruby_collected",30)
+	elif killed_before:
+		Global.settings["rubys"] += 3
+		Global.emit_signal("ruby_collected",3)

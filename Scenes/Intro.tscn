@@ -1,30 +1,328 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=101 format=2]
 
-[ext_resource path="res://Scenes/Intro.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Font/upheavtt.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/void.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://Assets/light_intro.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/IntroWithDevil.gd" type="Script" id=5]
+[ext_resource path="res://Assets/confetti_sheet_new.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Devil_intro.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Font/use_this.tres" type="DynamicFontData" id=8]
+[ext_resource path="res://Scripts/schmancy_buttons.gd" type="Script" id=9]
+[ext_resource path="res://Assets/input_kenney.png" type="Texture" id=10]
+[ext_resource path="res://Assets/SFX/ui/items/jump.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/dash_new_under.png" type="Texture" id=12]
+[ext_resource path="res://Assets/dash_new_fill.png" type="Texture" id=13]
+[ext_resource path="res://Scripts/UI_FAKE.gd" type="Script" id=14]
+[ext_resource path="res://Assets/earth tiles.png" type="Texture" id=15]
+[ext_resource path="res://Assets/intro_circle.png" type="Texture" id=16]
+[ext_resource path="res://Assets/light.png" type="Texture" id=17]
+[ext_resource path="res://Assets/chest under.png" type="Texture" id=18]
+[ext_resource path="res://Assets/chest fill.png" type="Texture" id=19]
 
-[sub_resource type="DynamicFont" id=1]
-size = 30
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+render_priority = 1
+shader = ExtResource( 3 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=88]
+atlas = ExtResource( 10 )
+region = Rect2( 288, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=89]
+atlas = ExtResource( 10 )
+region = Rect2( 144, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=90]
+atlas = ExtResource( 10 )
+region = Rect2( 176, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=91]
+atlas = ExtResource( 10 )
+region = Rect2( 288, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=92]
+atlas = ExtResource( 10 )
+region = Rect2( 304, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=93]
+atlas = ExtResource( 10 )
+region = Rect2( 320, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=94]
+atlas = ExtResource( 10 )
+region = Rect2( 272, 112, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=95]
+atlas = ExtResource( 10 )
+region = Rect2( 288, 112, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=96]
+atlas = ExtResource( 10 )
+region = Rect2( 272, 128, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=121]
+atlas = ExtResource( 10 )
+region = Rect2( 128, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=122]
+atlas = ExtResource( 10 )
+region = Rect2( 160, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=123]
+atlas = ExtResource( 10 )
+region = Rect2( 128, 96, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=124]
+atlas = ExtResource( 10 )
+region = Rect2( 128, 128, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=125]
+atlas = ExtResource( 10 )
+region = Rect2( 256, 256, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=126]
+atlas = ExtResource( 10 )
+region = Rect2( 240, 256, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=97]
+animations = [ {
+"frames": [ SubResource( 88 ), SubResource( 89 ), SubResource( 90 ), SubResource( 91 ), SubResource( 92 ), SubResource( 93 ), SubResource( 94 ), SubResource( 95 ), SubResource( 96 ), SubResource( 121 ), SubResource( 122 ), SubResource( 123 ), SubResource( 124 ), SubResource( 125 ), SubResource( 126 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=98]
+size = 15
+outline_size = 1
+outline_color = Color( 0.0745098, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="CanvasItemMaterial" id=2]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id=3]
+interpolation_mode = 1
+offsets = PoolRealArray( 0.0871369, 0.219917, 0.381743, 0.551867, 0.721992, 0.86722 )
+colors = PoolColorArray( 0.11084, 0.00692749, 0.0218446, 1, 0.0834961, 0.0834961, 0.0834961, 1, 0.0795898, 0.00341988, 0.00341988, 1, 0.0834961, 0.0818653, 0.0824816, 1, 0.0522461, 0.00122452, 0.0279809, 1, 0.0874023, 0.0792084, 0.0798085, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Gradient" id=5]
+offsets = PoolRealArray( 0, 0.0414938, 0.211618, 0.556017, 0.871369, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+emission_shape = 1
+emission_sphere_radius = 113.88
+flag_disable_z = true
+gravity = Vector3( 0, -300, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 50.0
+radial_accel_random = 1.0
+tangential_accel = 1.27
+tangential_accel_random = 0.38
+scale = 0.1
+scale_random = 0.1
+color_ramp = SubResource( 6 )
+color_initial_ramp = SubResource( 4 )
+anim_speed = 122.78
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 7 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 7 )
+region = Rect2( 256, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 128, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 128, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=20]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 128, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 128, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 7 )
+region = Rect2( 256, 128, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=23]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 192, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 192, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 192, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 192, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 7 )
+region = Rect2( 256, 192, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 256, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 7 )
+region = Rect2( 64, 256, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 7 )
+region = Rect2( 128, 256, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 7 )
+region = Rect2( 192, 256, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 7 )
+region = Rect2( 256, 256, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=33]
+animations = [ {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": false,
+"name": "Devil_Sit",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
+"loop": false,
+"name": "Devil_Stand_UP",
+"speed": 8.0
+} ]
+
+[sub_resource type="Environment" id=34]
+background_mode = 4
+ambient_light_color = Color( 1, 0.192157, 0.192157, 1 )
+glow_enabled = true
+glow_strength = 1.11
+glow_bloom = 0.16
+adjustment_enabled = true
+adjustment_brightness = 0.68
+
+[sub_resource type="Shader" id=112]
+code = "shader_type canvas_item;
+
+uniform sampler2D offset_image : hint_white;
+uniform float strength = 1.0;
+
+void fragment() {
+	vec4 output = texture(SCREEN_TEXTURE, SCREEN_UV);
+	
+	float shift = strength * texture(offset_image, SCREEN_UV).r / 100.0;
+	output.r = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x + shift, SCREEN_UV.y)).r;
+	output.g = texture(SCREEN_TEXTURE, SCREEN_UV).g;
+	output.b = texture(SCREEN_TEXTURE, vec2(SCREEN_UV.x - shift, SCREEN_UV.y)).b;
+	
+	COLOR = output;
+}"
+
+[sub_resource type="Gradient" id=116]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.186722, 1 )
+
+[sub_resource type="GradientTexture2D" id=117]
+gradient = SubResource( 116 )
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
+fill_to = Vector2( 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=115]
+shader = SubResource( 112 )
+shader_param/strength = 0.8
+shader_param/offset_image = SubResource( 117 )
+
+[sub_resource type="DynamicFontData" id=50]
+antialiased = false
+font_path = "res://Assets/Font/upheavtt.ttf"
+
+[sub_resource type="DynamicFont" id=80]
+size = 50
+outline_size = 2
+outline_color = Color( 0.156863, 0.00784314, 0.00784314, 1 )
+font_data = SubResource( 50 )
+
+[sub_resource type="DynamicFont" id=81]
+size = 50
 outline_size = 3
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 3 )
+outline_color = Color( 0.0745098, 0, 0, 1 )
+font_data = ExtResource( 8 )
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.909804, 0.529412, 0.0823529, 1 )
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color( 0.972549, 0.172549, 0.117647, 1 )
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-shadow_color = Color( 0.635294, 0.215686, 0.188235, 1 )
-shadow_size = 1
-shadow_offset = Vector2( 0, 3 )
+[sub_resource type="StyleBoxFlat" id=87]
+bg_color = Color( 0.294118, 0.870588, 0.0313726, 0 )
+border_width_left = 9
+border_width_top = 9
+border_width_right = 9
+border_width_bottom = 9
+border_color = Color( 0.290196, 0.870588, 0.0313726, 1 )
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=83]
 bg_color = Color( 0.984314, 0.619608, 0.188235, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -37,40 +335,843 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 shadow_color = Color( 0.635294, 0.215686, 0.188235, 1 )
 shadow_size = 1
-shadow_offset = Vector2( 0, 3 )
+shadow_offset = Vector2( 0, 8 )
 
-[node name="ColorRect" type="ColorRect"]
-pause_mode = 2
+[sub_resource type="Gradient" id=84]
+offsets = PoolRealArray( 0, 0.0716981, 0.188679, 0.792453, 0.901887, 0.992453 )
+colors = PoolColorArray( 0.447059, 0.917647, 0.0588235, 0, 0.447059, 0.917647, 0.0588235, 0, 0.447059, 0.917647, 0.0588235, 1, 0.447059, 0.917647, 0.0588235, 1, 0.447059, 0.917647, 0.0588235, 0, 0.447059, 0.917647, 0.0588235, 0 )
+
+[sub_resource type="GradientTexture2D" id=85]
+gradient = SubResource( 84 )
+
+[sub_resource type="StyleBoxFlat" id=82]
+bg_color = Color( 0.870588, 0.0313726, 0.207843, 0 )
+border_width_left = 9
+border_width_top = 9
+border_width_right = 9
+border_width_bottom = 9
+border_color = Color( 0.870588, 0.0313726, 0.207843, 1 )
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Gradient" id=79]
+offsets = PoolRealArray( 0, 0.0716981, 0.188679, 0.792453, 0.901887, 0.992453 )
+colors = PoolColorArray( 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0 )
+
+[sub_resource type="GradientTexture2D" id=86]
+gradient = SubResource( 79 )
+
+[sub_resource type="DynamicFont" id=99]
+size = 45
+outline_size = 2
+outline_color = Color( 0.733333, 0.913725, 0.160784, 1 )
+use_mipmaps = true
+font_data = ExtResource( 8 )
+
+[sub_resource type="ShaderMaterial" id=100]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/flash_color = Color( 0.6, 0.6, 0.6, 1 )
+shader_param/flash_modifier = 1.0
+
+[sub_resource type="DynamicFont" id=120]
+size = 18
+outline_size = 1
+outline_color = Color( 0.0745098, 0, 0, 1 )
+font_data = ExtResource( 8 )
+
+[sub_resource type="Animation" id=118]
+resource_name = "Migaet"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:tint_progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.678431, 0.32549, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=119]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:tint_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="ConvexPolygonShape2D" id=101]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=102]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=103]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=104]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=105]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=106]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=107]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=108]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=109]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="TileSet" id=110]
+0/name = "earth tiles.png 0"
+0/texture = ExtResource( 15 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 32, 32 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 101 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 101 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+1/name = "earth tiles.png 1"
+1/texture = ExtResource( 15 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 32, 0, 32, 32 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape = SubResource( 102 )
+1/shape_one_way = false
+1/shape_one_way_margin = 1.0
+1/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 102 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+1/z_index = 0
+2/name = "earth tiles.png 2"
+2/texture = ExtResource( 15 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 64, 0, 32, 32 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape = SubResource( 103 )
+2/shape_one_way = false
+2/shape_one_way_margin = 1.0
+2/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 103 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+2/z_index = 0
+3/name = "earth tiles.png 3"
+3/texture = ExtResource( 15 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 0, 32, 32, 32 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape = SubResource( 104 )
+3/shape_one_way = false
+3/shape_one_way_margin = 1.0
+3/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 104 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+3/z_index = 0
+4/name = "earth tiles.png 4"
+4/texture = ExtResource( 15 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 32, 32, 32, 32 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape = SubResource( 105 )
+4/shape_one_way = false
+4/shape_one_way_margin = 1.0
+4/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 105 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+4/z_index = 0
+5/name = "earth tiles.png 5"
+5/texture = ExtResource( 15 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 64, 32, 32, 32 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape = SubResource( 106 )
+5/shape_one_way = false
+5/shape_one_way_margin = 1.0
+5/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 106 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+5/z_index = 0
+6/name = "earth tiles.png 6"
+6/texture = ExtResource( 15 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 0, 64, 32, 32 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape = SubResource( 107 )
+6/shape_one_way = false
+6/shape_one_way_margin = 1.0
+6/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 107 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+6/z_index = 0
+7/name = "earth tiles.png 7"
+7/texture = ExtResource( 15 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 32, 64, 32, 32 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape = SubResource( 108 )
+7/shape_one_way = false
+7/shape_one_way_margin = 1.0
+7/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 108 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+7/z_index = 0
+8/name = "earth tiles.png 8"
+8/texture = ExtResource( 15 )
+8/tex_offset = Vector2( 0, 0 )
+8/modulate = Color( 1, 1, 1, 1 )
+8/region = Rect2( 64, 64, 32, 32 )
+8/tile_mode = 0
+8/occluder_offset = Vector2( 0, 0 )
+8/navigation_offset = Vector2( 0, 0 )
+8/shape_offset = Vector2( 0, 0 )
+8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+8/shape = SubResource( 109 )
+8/shape_one_way = false
+8/shape_one_way_margin = 1.0
+8/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 109 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+8/z_index = 0
+
+[sub_resource type="CircleShape2D" id=111]
+radius = 41.1096
+
+[node name="Intro" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1024, 600 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+light_mask = 3
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+material = SubResource( 1 )
+
+[node name="Movement" type="Node2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -42, -31 )
+
+[node name="Keyboard" type="Node2D" parent="Player/Movement"]
+
+[node name="W" type="AnimatedSprite" parent="Player/Movement/Keyboard"]
+frames = SubResource( 97 )
+
+[node name="A" type="AnimatedSprite" parent="Player/Movement/Keyboard"]
+position = Vector2( 0, 15 )
+frames = SubResource( 97 )
+frame = 4
+
+[node name="S" type="AnimatedSprite" parent="Player/Movement/Keyboard"]
+position = Vector2( -15, 15 )
+frames = SubResource( 97 )
+frame = 3
+
+[node name="D" type="AnimatedSprite" parent="Player/Movement/Keyboard"]
+position = Vector2( 15, 15 )
+frames = SubResource( 97 )
+frame = 5
+
+[node name="Joy" type="Node2D" parent="Player/Movement"]
+visible = false
+
+[node name="L-stick" type="AnimatedSprite" parent="Player/Movement/Joy"]
+position = Vector2( 0.5, 8.5 )
+scale = Vector2( 1.5625, 1.5625 )
+frames = SubResource( 97 )
+frame = 11
+
+[node name="Label" type="Label" parent="Player/Movement"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = 19.5
+margin_right = 30.0
+margin_bottom = 34.5
+custom_fonts/font = SubResource( 98 )
+text = "TO MOVE"
+
+[node name="Aim" type="Node2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 39, -31 )
+
+[node name="Keyboard" type="Node2D" parent="Player/Aim"]
+
+[node name="Mouse" type="AnimatedSprite" parent="Player/Aim/Keyboard"]
+position = Vector2( -1, 11 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 2
+
+[node name="Joy" type="Node2D" parent="Player/Aim"]
+visible = false
+
+[node name="R-stick" type="AnimatedSprite" parent="Player/Aim/Joy"]
+position = Vector2( -1, 10 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 12
+
+[node name="Label" type="Label" parent="Player/Aim"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = 19.5
+margin_right = 30.0
+margin_bottom = 34.5
+custom_fonts/font = SubResource( 98 )
+text = "TO AIM"
+align = 1
+
+[node name="Shoot" type="Node2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, -71 )
+
+[node name="Keyboard" type="Node2D" parent="Player/Shoot"]
+
+[node name="Click" type="AnimatedSprite" parent="Player/Shoot/Keyboard"]
+position = Vector2( 1, 11 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 1
+
+[node name="Joy" type="Node2D" parent="Player/Shoot"]
+visible = false
+
+[node name="Click" type="AnimatedSprite" parent="Player/Shoot/Joy"]
+position = Vector2( 1, 12 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 13
+
+[node name="Label" type="Label" parent="Player/Shoot"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = 19.5
+margin_right = 30.0
+margin_bottom = 34.5
+custom_fonts/font = SubResource( 98 )
+text = "TO SHOOT"
+align = 1
+
+[node name="Dash" type="Node2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, 19 )
+
+[node name="Keyboard" type="Node2D" parent="Player/Dash"]
+
+[node name="Shift1" type="AnimatedSprite" parent="Player/Dash/Keyboard"]
+position = Vector2( -10, 11 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 6
+
+[node name="Shift2" type="AnimatedSprite" parent="Player/Dash/Keyboard"]
+position = Vector2( 14, 11 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 7
+
+[node name="Joy" type="Node2D" parent="Player/Dash"]
+visible = false
+
+[node name="LT" type="AnimatedSprite" parent="Player/Dash/Joy"]
+position = Vector2( 0, 12 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 97 )
+frame = 14
+
+[node name="Label" type="Label" parent="Player/Dash"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = 20.0
+margin_right = 32.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 98 )
+text = "TO DASH"
+align = 1
+
+[node name="Kill" type="Node2D" parent="Player"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, 19 )
+
+[node name="Label" type="Label" parent="Player/Kill"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -77.5
+margin_top = 0.5
+margin_right = 77.5
+margin_bottom = 33.5
+custom_fonts/font = SubResource( 98 )
+text = "KILL 3 DEMONS
+AND WE'RE DONE HERE"
+align = 1
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 2, -144 )
+texture = ExtResource( 4 )
+energy = 0.3
+range_item_cull_mask = 3
+
+[node name="Sprite" type="Sprite" parent="Light2D"]
+modulate = Color( 1, 1, 1, 0.764706 )
+light_mask = 0
+position = Vector2( 0, -104.5 )
+scale = Vector2( 1, 1.88621 )
+z_index = 2
+texture = ExtResource( 4 )
+
+[node name="Sprite2" type="Sprite" parent="Light2D"]
+modulate = Color( 1, 1, 1, 0.764706 )
+light_mask = 0
+position = Vector2( 1, 165 )
+scale = Vector2( 1.3, 0.296078 )
+texture = ExtResource( 16 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+modulate = Color( 1, 1, 1, 0.278431 )
+material = SubResource( 2 )
+amount = 30
+process_material = SubResource( 7 )
+texture = ExtResource( 6 )
+
+[node name="Devil" type="AnimatedSprite" parent="."]
+light_mask = 2
+position = Vector2( 154, -13 )
+frames = SubResource( 33 )
+animation = "Devil_Sit"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 34 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CanvasLayer"]
+
+[node name="Glitch" type="ColorRect" parent="CanvasLayer/CanvasLayer"]
+show_behind_parent = true
+material = SubResource( 115 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-focus_mode = 1
-mouse_filter = 1
-color = Color( 0, 0, 0, 1 )
-script = ExtResource( 1 )
 
-[node name="SkipButton" type="Button" parent="."]
-pause_mode = 2
-modulate = Color( 1, 1, 1, 0 )
-anchor_top = 1.0
+[node name="BlackScreen" type="Control" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 15.0
-margin_top = -71.0
-margin_right = 127.0
-margin_bottom = -22.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/BlackScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="TutorialOptions" type="Control" parent="CanvasLayer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TutorialOptions"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.156863, 0.0196078, 0.0784314, 0.454902 )
+
+[node name="O" type="VBoxContainer" parent="CanvasLayer/TutorialOptions"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -347.5
+margin_top = -66.0
+margin_right = 347.5
+margin_bottom = 66.0
+custom_constants/separation = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TutorialOptions/O"]
+margin_right = 695.0
+margin_bottom = 46.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TutorialOptions/O/HBoxContainer"]
+margin_right = 695.0
+margin_bottom = 46.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.203922, 0.203922, 0.203922, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 80 )
+text = "WANT TO SEE THE TUTORIAL?"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/TutorialOptions/O"]
+margin_top = 76.0
+margin_right = 695.0
+margin_bottom = 132.0
+
+[node name="Yeah" type="Button" parent="CanvasLayer/TutorialOptions/O/HBoxContainer2"]
+margin_right = 345.0
+margin_bottom = 56.0
+rect_pivot_offset = Vector2( 167, 33 )
+focus_neighbour_right = NodePath("../Nope")
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 1 )
-custom_styles/hover = SubResource( 2 )
-custom_styles/pressed = SubResource( 2 )
-custom_styles/focus = SubResource( 3 )
-custom_styles/disabled = SubResource( 3 )
-custom_styles/normal = SubResource( 3 )
-text = "SKIP"
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 81 )
+custom_styles/focus = SubResource( 87 )
+custom_styles/normal = SubResource( 83 )
+text = "YES"
+flat = true
+script = ExtResource( 9 )
+has_a_bar = true
+should_focus = true
 
-[node name="Timer" type="Timer" parent="."]
-pause_mode = 2
-wait_time = 6.0
-one_shot = true
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/TutorialOptions/O/HBoxContainer2/Yeah"]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -167.5
+margin_top = -5.0
+margin_right = 167.5
+rect_pivot_offset = Vector2( 167, 0 )
+texture = SubResource( 85 )
+expand = true
 
-[connection signal="pressed" from="SkipButton" to="." method="_on_SkipButton_pressed"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[node name="Nope" type="Button" parent="CanvasLayer/TutorialOptions/O/HBoxContainer2"]
+margin_left = 349.0
+margin_right = 695.0
+margin_bottom = 56.0
+rect_pivot_offset = Vector2( 167, 33 )
+focus_neighbour_left = NodePath("../Yeah")
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 81 )
+custom_styles/focus = SubResource( 82 )
+custom_styles/normal = SubResource( 83 )
+text = "NO"
+flat = true
+script = ExtResource( 9 )
+has_a_bar = true
+should_focus = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/TutorialOptions/O/HBoxContainer2/Nope"]
+modulate = Color( 1.5, 1.5, 1.5, 1 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -167.5
+margin_top = -5.0
+margin_right = 167.5
+rect_pivot_offset = Vector2( 167, 0 )
+texture = SubResource( 86 )
+expand = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 78, 0 )
+current = true
+zoom = Vector2( 0.4, 0.4 )
+
+[node name="Player_Bullets" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="item2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -8.0
+bus = "SoundEffects"
+
+[node name="UI" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource( 14 )
+
+[node name="Label2" type="Label" parent="UI"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 9.0
+margin_top = -62.0
+margin_right = 261.0
+margin_bottom = -21.0
+custom_colors/font_color = Color( 0.968627, 1, 0.94902, 1 )
+custom_colors/font_outline_modulate = Color( 0.0431373, 0.843137, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.0352941, 0.576471, 0.168627, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 99 )
+text = "HEALTH: 100"
+
+[node name="DashChargeUnder" type="TextureProgress" parent="UI"]
+material = SubResource( 100 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -21.0
+margin_right = 263.0
+margin_bottom = -3.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
+nine_patch_stretch = true
+
+[node name="DashLabel" type="Label" parent="UI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 7.0
+margin_top = -37.0
+margin_right = 260.0
+margin_bottom = -20.0
+custom_fonts/font = SubResource( 120 )
+text = "Dash charge"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="DashCharge" type="TextureProgress" parent="UI"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = -22.0
+margin_right = 263.0
+margin_bottom = -4.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+texture_under = ExtResource( 12 )
+texture_progress = ExtResource( 13 )
+nine_patch_stretch = true
+
+[node name="ChestProgress" type="TextureProgress" parent="UI"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -210.0
+margin_right = -2.0
+max_value = 15.0
+step = 0.01
+texture_under = ExtResource( 18 )
+texture_progress = ExtResource( 19 )
+texture_progress_offset = Vector2( 0, 31 )
+fill_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/ChestProgress"]
+autoplay = "Migaet"
+anims/Migaet = SubResource( 118 )
+anims/RESET = SubResource( 119 )
+
+[node name="ChestLabel" type="Label" parent="UI/ChestProgress"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -226.0
+margin_top = -76.0
+margin_right = -20.0
+margin_bottom = 98.0
+custom_fonts/font = SubResource( 120 )
+text = "THEY WILL APPEAR EVERY 15 seconds and this bar helps you keep track of time"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="BArrier" type="TileMap" parent="."]
+visible = false
+modulate = Color( 0.623529, 0.623529, 0.623529, 1 )
+position = Vector2( -73, 0 )
+z_index = 1
+tile_set = SubResource( 110 )
+cell_size = Vector2( 32, 32 )
+cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
+collision_mask = 2
+format = 1
+tile_data = PoolIntArray( -196615, 0, 0, -196614, 0, 0, -196613, 0, 0, -196612, 0, 0, -196611, 0, 0, -196610, 0, 0, -196609, 0, 0, -262144, 0, 0, -262143, 0, 0, -262142, 0, 0, -262141, 0, 0, -262140, 0, 0, -262139, 0, 0, -262138, 0, 0, -262137, 0, 0, -262136, 0, 0, -262135, 0, 0, -262134, 0, 0, -131079, 0, 0, -196598, 0, 0, -65543, 0, 0, -131062, 0, 0, -7, 0, 0, -65526, 0, 0, 65529, 0, 0, 10, 0, 0, 131065, 0, 0, 65546, 0, 0, 196601, 0, 0, 131082, 0, 0, 262137, 0, 0, 196618, 0, 0, 327673, 0, 0, 262154, 0, 0, 393209, 0, 0, 327690, 0, 0, 458745, 0, 0, 393226, 0, 0, 524281, 0, 0, 458762, 0, 0, 589817, 0, 0, 589818, 0, 0, 589819, 0, 0, 589820, 0, 0, 589821, 0, 0, 589822, 0, 0, 589823, 0, 0, 524288, 0, 0, 524289, 0, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524294, 0, 0, 524295, 0, 0, 524296, 0, 0, 524297, 0, 0, 524298, 0, 0 )
+
+[node name="PickUps" type="Node2D" parent="."]
+
+[node name="ChestSpawn" type="Position2D" parent="PickUps"]
+position = Vector2( -176, -36 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Text" type="Node2D" parent="PickUps/ChestSpawn"]
+modulate = Color( 1, 1, 1, 0 )
+
+[node name="Label" type="Label" parent="PickUps/ChestSpawn/Text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -104.5
+margin_top = 10.5
+margin_right = 104.5
+margin_bottom = 43.5
+custom_fonts/font = SubResource( 98 )
+text = "THESE CHESTS CAN UPGRADE YOU OR"
+align = 1
+autowrap = true
+
+[node name="Label2" type="Label" parent="PickUps/ChestSpawn/Text"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -125.0
+margin_top = 43.0
+margin_right = 126.0
+margin_bottom = 58.0
+custom_colors/font_color = Color( 0.976471, 0.184314, 0.184314, 1 )
+custom_fonts/font = SubResource( 98 )
+text = "YOUR ENEMIES"
+align = 1
+autowrap = true
+
+[node name="Area2D" type="Area2D" parent="PickUps/ChestSpawn"]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickUps/ChestSpawn/Area2D"]
+shape = SubResource( 111 )
+
+[node name="Spawn1" type="Position2D" parent="."]
+position = Vector2( -204, 226 )
+
+[node name="Spawn2" type="Position2D" parent="."]
+position = Vector2( 2, -255 )
+
+[node name="Spawn3" type="Position2D" parent="."]
+position = Vector2( 236, 239 )
+
+[node name="Light2D2" type="Light2D" parent="."]
+position = Vector2( 2, -36 )
+texture = ExtResource( 17 )
+energy = 2.0
+range_item_cull_mask = 2
+
+[connection signal="pressed" from="CanvasLayer/TutorialOptions/O/HBoxContainer2/Yeah" to="." method="_on_Yeah_pressed"]
+[connection signal="pressed" from="CanvasLayer/TutorialOptions/O/HBoxContainer2/Nope" to="." method="_on_Nope_pressed"]
+[connection signal="body_entered" from="PickUps/ChestSpawn/Area2D" to="." method="_on_Area2D_body_entered"]

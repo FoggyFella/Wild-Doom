@@ -6,6 +6,9 @@ export var health : int = 100
 export var more_health : int = 0
 export var min_money : int = 1
 export var max_money : int = 3
+export var min_ruby : int = 1
+export var max_ruby : int = 2
+export var ruby_chance: float = 0.86
 export var min_speed : int = 50
 export var max_speed : int = 85
 export var how_much_slower: int = 10
@@ -19,6 +22,10 @@ export var should_knockback = true
 export var should_stay_away:bool = false
 export var should_dash:bool = false
 export var dash_speed:float = 30
+export var should_have_fritcion:bool = false
+export var acceleration:float = 0.0
+export var friction:float = 0.0
+export var should_fully_stop:bool = false
 
 var should_run = false
 var previous_speed = speed
@@ -40,13 +47,16 @@ var dash_ghost = preload("res://Scenes/DashGhost.tscn")
 var bullet = preload("res://Scenes/enemy_bullet.tscn")
 var blood = preload("res://Scenes/BloodParticles.tscn")
 var damage_popup = preload("res://Scenes/NumberPopup.tscn")
+var ashes = preload("res://Scenes/BloodParticlesButAshes.tscn")
 var can_bite = true
 var sprite_size_x = null
+var normal_speed = 0
 
 onready var time_to_catch_on_fire = $time_to_catch_on_fire
 
 var total_damage_got = 0
 var should_get_damaged_by_flames = true
+var ruby_percentages = [1.0,0.0]
 
 func _ready():
 	randomize()
@@ -58,8 +68,10 @@ func _ready():
 	$TextureProgress.value = health
 	scale.x = rand_range(0.8,1)
 	scale.y = scale.x
+	ruby_percentages = [1.0-ruby_chance,ruby_chance]
 	if should_walk:
 		speed = Global.stats["enemy_speed"] + rand_range(min_speed,max_speed)
+		normal_speed = speed
 	else:
 		speed = 0
 	player = Global.player
@@ -77,30 +89,38 @@ func _physics_process(delta):
 				else:
 					i.call_deferred("become_ghost")
 				if i.critical:
-					take_damage(i.damage,true,true,i.should_show_total_dmg)
+					take_damage(i.damage,true,i.should_knockback,i.should_show_total_dmg)
 				elif !i.critical:
 					if stun == false:
-						take_damage(i.damage,false,true,i.should_show_total_dmg)
+						take_damage(i.damage,false,i.should_knockback,i.should_show_total_dmg)
 #			elif i.is_flamethrower:
 #				burn(5,1,5)
 	if player == null:
 		queue_free()
 	if player != null and stun == false:
-		if !should_run:
+		if !should_run and !should_have_fritcion:
 			direction_to_player = Vector2(player.global_position - global_position)
 			velocity = direction_to_player.normalized() * speed if !is_dashing() else previous_direction * dash_speed
 			move_and_slide(velocity,Vector2.UP)
-		elif should_run and !Global.player.velocity == Vector2.ZERO:
+		elif should_run and !Global.player.velocity == Vector2.ZERO and !should_have_fritcion:
 			direction_to_player = Vector2(player.global_position - global_position)
 			velocity = velocity.linear_interpolate(-direction_to_player.normalized() * speed,0.1)
 			move_and_slide(velocity,Vector2.UP)
+		elif should_have_fritcion:
+			direction_to_player = Vector2(player.global_position - global_position)
+			var desired_velocity = direction_to_player.normalized() * speed if !is_dashing() else previous_direction * dash_speed
+			var steering = (desired_velocity - velocity) * delta if !is_dashing() else (desired_velocity - velocity) * delta * 10.0
+			velocity += steering
+			move_and_slide(velocity,Vector2.UP)
 		for i in get_slide_count():
 			var collision = get_slide_collision(i)
-			if collision.get_collider().has_method("take_damage") and collision.get_collider().name == "Player":
-				if can_bite:
-					can_bite = false
-					$bite_timer.start()
-					collision.get_collider().take_damage(bite_damage)
+			if collision != null:
+				if collision.get_collider().name == "Player":
+					if collision.get_collider().has_method("take_damage"):
+						if can_bite:
+							can_bite = false
+							$bite_timer.start()
+							collision.get_collider().take_damage(bite_damage)
 		if direction_to_player.x < 0:
 			if should_rotate:
 				$Sprite.rotation_degrees = lerp($Sprite.rotation_degrees,-8.9,0.05)
@@ -118,7 +138,11 @@ func _physics_process(delta):
 			start_dash()
 func shoot():
 	if $timer2.is_stopped():
-		speed -= 40
+		previous_speed = speed
+		if !should_fully_stop:
+			speed -= 40
+		else:
+			speed = 0
 		$AnimationPlayer.play("new_shoot")
 		$timer2.start()
 #	$shoot.pitch_scale = rand_range(0.7,0.9)
@@ -167,7 +191,7 @@ func take_damage(how_much,critical,knockback=true,show_total=false):
 		$hurt.play()
 		#health -= how_much
 		if health <=0:
-			var blood_inst = blood.instance()
+			var blood_inst = blood.instance() if !burning else ashes.instance()
 			blood_inst.global_position = global_position
 			blood_inst.rotation = global_position.angle_to_point(player.global_position)
 			get_tree().current_scene.add_child(blood_inst)
@@ -176,9 +200,10 @@ func take_damage(how_much,critical,knockback=true,show_total=false):
 			yield(tween,"finished")
 			queue_free()
 			Global.emit_signal("money_picked_up",money_reward)
+			grant_ruby_with_a_chance()
 			Global.enemies_killed += 1
 	elif health <= 0:
-		var blood_inst = blood.instance()
+		var blood_inst = blood.instance() if !burning else ashes.instance()
 		blood_inst.global_position = global_position
 		blood_inst.rotation = global_position.angle_to_point(player.global_position)
 		get_tree().current_scene.add_child(blood_inst)
@@ -188,6 +213,7 @@ func take_damage(how_much,critical,knockback=true,show_total=false):
 		yield(tween,"finished")
 		queue_free()
 		Global.emit_signal("money_picked_up",money_reward)
+		grant_ruby_with_a_chance()
 		Global.enemies_killed += 1
 	yield(tween,"finished")
 	stun = false
@@ -209,7 +235,7 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 
 func _on_timer2_timeout():
-	speed += 40
+	speed = previous_speed
 	$AnimationPlayer.play("idle")
 	$shoot.pitch_scale = rand_range(0.7,0.9)
 	$shoot.play()
@@ -221,6 +247,7 @@ func _on_timer2_timeout():
 		bullet_inst.rotation = global_position.angle_to_point(player.global_position)
 		bullet_inst.player = player
 		bullet_inst.damage = damage
+		bullet_inst.scale = $Position2D.scale
 		bullet_inst.direction_to_player = direction_to_player
 		bullet_inst.lock_on = true
 		get_tree().current_scene.get_node("Enemies").add_child(bullet_inst)
@@ -251,20 +278,20 @@ func burn(time,tick,damage_per_tick):
 	if should_change_speed:
 		should_change_speed = false
 		previous_speed = speed
-		speed = speed - speed * 0.6
+		speed = normal_speed - normal_speed * 0.6
 	$burn_timer.start(time)
 	if $burn_tick.is_stopped():
 		$burn_tick.start(tick)
 	burning = true
-	$Sprite.material.set("shader_param/min_line_width",2)
-	$Sprite.material.set("shader_param/max_line_width",7)
-
+	$FlameParticles.emitting = true
+	modulate = Color("dedede")
+	
 func _on_burn_timer_timeout():
-	speed = previous_speed
+	speed = normal_speed
 	should_change_speed = true
 	burning = false
-	$Sprite.material.set("shader_param/min_line_width",0)
-	$Sprite.material.set("shader_param/max_line_width",0)
+	$FlameParticles.emitting = false
+	modulate = Color("ffffff")
 
 
 func _on_burn_tick_timeout():
@@ -339,6 +366,7 @@ func _on_ghost_tick_timeout():
 
 func _on_dash_timer_timeout():
 	$CollisionShape2D.disabled = false
+	velocity = Vector2.ZERO
 	#set_collision_mask_bit(1, true)
 	#set_collision_mask_bit(4, true)
 	instance_ghost()
@@ -368,3 +396,27 @@ func start_dash():
 
 func _on_timebetweendashes_timeout():
 	can_dash = true
+
+func grant_ruby_with_a_chance():
+	randomize()
+	var chance = rand_range(0, 100)
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	if chance <= ruby_chance:
+			var ruby_amount = rng.randi_range(min_ruby,max_ruby)
+			Global.settings["rubys"] += ruby_amount
+			Global.emit_signal("ruby_collected",ruby_amount)
+#	var rng = RandomNumberGenerator.new()
+#	rng.randomize()
+#	var num = randf()
+#	var total = 0.0
+#	var count = 0
+#	var _rand_number = int(rand_range(0,5))
+#	for per in ruby_percentages:
+#		if num >= total and num <= total + per:
+#			var ruby_amount = rng.randi_range(min_ruby,max_ruby)
+#			Global.settings["rubys"] += ruby_amount
+#			Global.emit_signal("ruby_collected",ruby_amount)
+#			break
+#		total += per
+#		count += 1

@@ -20,6 +20,7 @@ export var should_show_total_dmg:bool = false
 export var should_screenshake:bool = true
 export var is_a_flamethrower:bool = false
 export var bullet_sprite:String = "Pistol"
+export var should_have_knockback:bool = true
 export var bullet_health:int = 1
 export var starting_damage:int = 50
 export var bullet_speed:int = 50
@@ -109,7 +110,10 @@ func fire():
 			bullet_instance.health = bullet_health
 			bullet_instance.is_flamethrower = is_a_flamethrower
 			bullet_instance.bullet_speed = bullet_speed
+			bullet_instance.should_knockback = should_have_knockback
 			bullet_instance.bullet_sprite = bullet_sprite
+			if bullet_sprite == "Sniper":
+				bullet_instance.health = Global.stats["sniper_health"]
 			bullet_instance.should_show_total_dmg = should_show_total_dmg
 			bullet_instance.time_to_be_gone = bullet_dissapear_after
 			get_tree().current_scene.get_node("Player_Bullets").add_child(bullet_instance)
@@ -127,7 +131,7 @@ func fire():
 			tween2.tween_property(get_parent(),"rotation_degrees",0.0,0.2)
 
 func update_self_stats():
-	print(Global.stats["player_firerate"])
+	bullets_rotations = Global.stats["player_bullets"]
 	firerate = Global.stats["player_firerate"]
 
 func _on_gun_timeout_timeout():

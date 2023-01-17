@@ -1,117 +1,37 @@
-[gd_scene load_steps=81 format=2]
+[gd_scene load_steps=88 format=2]
 
 [ext_resource path="res://Assets/boss-2.png" type="Texture" id=1]
 [ext_resource path="res://Assets/boss-3.png" type="Texture" id=2]
 [ext_resource path="res://Assets/boss-1.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Boss Guy.gd" type="Script" id=4]
 [ext_resource path="res://Assets/circle-blood.png" type="Texture" id=5]
-[ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Boss/Zombie - Tank - Hitting1.ogg" type="AudioStream" id=6]
 [ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=7]
 [ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=8]
 [ext_resource path="res://Assets/boss-4.png" type="Texture" id=9]
 [ext_resource path="res://Assets/boss-5.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Boss/Untitled 12-02-2022 07-50-59 (3).png" type="Texture" id=11]
 [ext_resource path="res://Assets/Boss/Untitled 12-02-2022 07-50-59 (1).png" type="Texture" id=12]
+[ext_resource path="res://Assets/Boss/Zombie - Tank - Hitting2.ogg" type="AudioStream" id=13]
 
-[sub_resource type="Shader" id=29]
+[sub_resource type="Shader" id=24]
+resource_local_to_scene = true
 code = "shader_type canvas_item;
 
 uniform vec4 flash_color : hint_color = vec4(1.0);
-uniform float flash_modifier : hint_range(0.0, 1.0) = 1;
-uniform float max_line_width = 10.0;
-uniform float min_line_width = 5.0;
-uniform float freq = 1.0;
-uniform float block_size = 20.0;
-uniform vec4 starting_colour = vec4(0,0,0,1);
-uniform vec4 ending_colour = vec4(1);
+uniform float flash_modifier : hint_range(0.0, 1.0) = 0.0;
 
-const float pi = 3.1415;
-const int ang_res = 16;
-const int grad_res = 8;
-
-float hash(vec2 p, float s) {
-	return fract(35.1 * sin(dot(vec3(112.3, 459.2, 753.2), vec3(p, s))));
-}
-
-float noise(vec2 p, float s) {
-	vec2 d = vec2(0, 1);
-	vec2 b = floor(p);
-	vec2 f = fract(p);
-	return mix(
-		mix(hash(b + d.xx, s), hash(b + d.yx, s), f.x),
-		mix(hash(b + d.xy, s), hash(b + d.yy, s), f.x), f.y);
-}
-
-float getLineWidth(vec2 p, float s) {
-	p /= block_size;
-	float w = 0.0;
-	float intensity = 1.0;
-	for (int i = 0; i < 3; i++) {
-		w = mix(w, noise(p, s), intensity);
-		p /= 2.0;
-		intensity /= 2.0;
-	}
-	
-	return mix(max_line_width, min_line_width, w);
-}
-
-bool pixelInRange(sampler2D text, vec2 uv, vec2 dist) {
-	float alpha = 0.0;
-	for (int i = 0; i < ang_res; i++) {
-		float angle = 2.0 * pi * float(i) / float(ang_res);
-		vec2 disp = dist * vec2(cos(angle), sin(angle));
-		if (texture(text, uv + disp).a > 0.0) return true;
-	}
-	return false;
-}
-
-float getClosestDistance(sampler2D text, vec2 uv, vec2 maxDist) {
-	if (!pixelInRange(text, uv, maxDist)) return -1.0;
-	
-	float hi = 1.0; float lo = 0.0;
-	
-	for (int i = 1; i <= grad_res; i++) {
-		float curr = (hi + lo) / 2.0;
-		if (pixelInRange(text, uv, curr * maxDist)) {
-			hi = curr;
-		}
-		else {
-			lo = curr;
-		}
-	}
-	return hi;
-	
-}
-
-void fragment() {
-	float timeStep = floor(freq * TIME);
-	vec2 scaledDist = TEXTURE_PIXEL_SIZE;
-	scaledDist *= getLineWidth(UV / TEXTURE_PIXEL_SIZE, timeStep);
-	float w = getClosestDistance(TEXTURE, UV, scaledDist);
-	
-	if (( w > 0.0) && (texture(TEXTURE, UV).a < 0.2)) {
-		COLOR = mix(starting_colour, ending_colour, tanh(3.0*w));
-	}
-	else {
-		COLOR = texture(TEXTURE, UV);
-	vec4 color = texture(TEXTURE, UV);
-	color.rgb = mix(color.rgb, flash_color.rgb, flash_modifier );
+void fragment(){
+	vec4 color = texture(TEXTURE,UV);
+	color.rgb = mix(color.rgb,flash_color.rgb,flash_modifier);
 	COLOR = color;
-	}
-	
 }"
 
-[sub_resource type="ShaderMaterial" id=30]
+[sub_resource type="ShaderMaterial" id=126]
 resource_local_to_scene = true
-shader = SubResource( 29 )
+shader = SubResource( 24 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
-shader_param/max_line_width = 0.0
-shader_param/min_line_width = 0.0
-shader_param/freq = 10.0
-shader_param/block_size = 2.0
-shader_param/starting_colour = Plane( 1, 0, 0, 0.3 )
-shader_param/ending_colour = Plane( 1.3, 0.3, 0, 1 )
 
 [sub_resource type="AtlasTexture" id=93]
 atlas = ExtResource( 12 )
@@ -321,27 +241,27 @@ region = Rect2( 512, 256, 256, 256 )
 atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=59]
+[sub_resource type="AtlasTexture" id=120]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=60]
+[sub_resource type="AtlasTexture" id=121]
 atlas = ExtResource( 1 )
 region = Rect2( 256, 0, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=61]
+[sub_resource type="AtlasTexture" id=122]
 atlas = ExtResource( 1 )
 region = Rect2( 512, 0, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=62]
+[sub_resource type="AtlasTexture" id=123]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 256, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=63]
+[sub_resource type="AtlasTexture" id=124]
 atlas = ExtResource( 1 )
 region = Rect2( 256, 256, 256, 256 )
 
-[sub_resource type="AtlasTexture" id=64]
+[sub_resource type="AtlasTexture" id=125]
 atlas = ExtResource( 1 )
 region = Rect2( 512, 256, 256, 256 )
 
@@ -382,7 +302,7 @@ animations = [ {
 "name": "Jump",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 59 ), SubResource( 60 ), SubResource( 61 ), SubResource( 62 ), SubResource( 63 ), SubResource( 64 ) ],
+"frames": [ SubResource( 120 ), SubResource( 121 ), SubResource( 122 ), SubResource( 123 ), SubResource( 124 ), SubResource( 125 ) ],
 "loop": true,
 "name": "Walk",
 "speed": 6.0
@@ -462,10 +382,49 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=32]
 extents = Vector2( 23.5, 26 )
 
-[sub_resource type="Curve2D" id=117]
+[sub_resource type="Curve2D" id=118]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 20.047, -1.957, 0, 0, 0, 0, -28.953, -1.957, 0, 0, 0, 0, -2.953, -33.957, 0, 0, 0, 0, -2.953, 22.043, 0, 0, 0, 0, 13.047, -26.957, 0, 0, 0, 0, 13.047, 16.043, 0, 0, 0, 0, -22.953, 14.043, 0, 0, 0, 0, -21.953, -24.957, 0, 0, 0, 0, 16.047, -13.957, 0, 0, 0, 0, 17.047, 10.043, 0, 0, 0, 0, -22.953, 8.043, 0, 0, 0, 0, -12.953, -27.957 )
+"points": PoolVector2Array( 0, 0, 0, 0, -38.953, -5.957, 0, 0, 0, 0, -3.953, -39.957, 0, 0, 0, 0, 32.047, -4.957, 0, 0, 0, 0, -3.953, 23.043, 0, 0, 0, 0, 20.047, 16.043, 0, 0, 0, 0, 17.047, -27.957, 0, 0, 0, 0, -26.953, -27.957, 0, 0, 0, 0, -28.953, 21.043 )
 }
+
+[sub_resource type="Curve2D" id=119]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -2.953, -38.957, 0, 0, 0, 0, 17.047, -33.957, 0, 0, 0, 0, 23.047, -22.957, 0, 0, 0, 0, 23.047, -9.957, 0, 0, 0, 0, 23.047, 5.043, 0, 0, 0, 0, 17.047, 18.043, 0, 0, 0, 0, -2.953, 24.043, 0, 0, 0, 0, -25.953, 17.043, 0, 0, 0, 0, -32.953, 6.043, 0, 0, 0, 0, -33.953, -9.957, 0, 0, 0, 0, -32.953, -22.957, 0, 0, 0, 0, -25.953, -35.957 )
+}
+
+[sub_resource type="Gradient" id=127]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.423237, 0.672199, 1 )
+colors = PoolColorArray( 0.188235, 0.0156863, 0.0431373, 0.811765, 1, 0.513726, 0, 1, 1, 0.513726, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 127 )
+
+[sub_resource type="Curve" id=128]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.1, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=36]
+curve = SubResource( 128 )
+
+[sub_resource type="ParticlesMaterial" id=129]
+emission_shape = 1
+emission_sphere_radius = 26.78
+flag_disable_z = true
+gravity = Vector3( 0, -98, 0 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 42.95
+radial_accel_random = 0.06
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 36 )
+color_ramp = SubResource( 15 )
+hue_variation = -0.06
+hue_variation_random = 1.0
 
 [node name="Boss Dude" type="KinematicBody2D"]
 z_index = 2
@@ -475,11 +434,11 @@ script = ExtResource( 4 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 light_mask = 4
-material = SubResource( 30 )
+material = SubResource( 126 )
 position = Vector2( 0, -38 )
 scale = Vector2( 0.298828, 0.298828 )
 frames = SubResource( 23 )
-animation = "Attack2"
+animation = "Walk"
 frame = 5
 
 [node name="BulletSpawnPoint" type="Position2D" parent="Sprite"]
@@ -545,10 +504,18 @@ volume_db = -9.613
 attenuation = 4.43828
 bus = "SoundEffects"
 
-[node name="shoot" type="AudioStreamPlayer2D" parent="."]
+[node name="hit1" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 6 )
-volume_db = -7.866
-attenuation = 4.43828
+volume_db = 1.0
+max_distance = 3000.0
+attenuation = 1.41421
+bus = "SoundEffects"
+
+[node name="hit2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )
+volume_db = 2.0
+max_distance = 3000.0
+attenuation = 1.41421
 bus = "SoundEffects"
 
 [node name="burn_timer" type="Timer" parent="."]
@@ -576,12 +543,22 @@ one_shot = true
 [node name="Path1" type="Path2D" parent="."]
 visible = false
 position = Vector2( 2.953, -22.043 )
-curve = SubResource( 117 )
+curve = SubResource( 118 )
 
 [node name="Path2" type="Path2D" parent="."]
 visible = false
-position = Vector2( 2.953, -22.043 )
-curve = SubResource( 117 )
+position = Vector2( 2.953, -16.043 )
+curve = SubResource( 119 )
+
+[node name="FlameParticles" type="Particles2D" parent="."]
+modulate = Color( 2, 1, 1, 1 )
+show_behind_parent = true
+position = Vector2( -1, -23 )
+z_index = 1
+emitting = false
+amount = 50
+local_coords = false
+process_material = SubResource( 129 )
 
 [connection signal="timeout" from="TimerTillAttack" to="." method="_on_TimerTillAttack_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/new_noise.ogg-e626202be6d06a091fbe7fa51d059c02.oggstr"
+
+[deps]
+
+source_file="res://Assets/SFX/MUSIC/new_noise.ogg"
+dest_files=[ "res://.import/new_noise.ogg-e626202be6d06a091fbe7fa51d059c02.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

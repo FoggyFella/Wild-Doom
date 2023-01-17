@@ -2,17 +2,19 @@ extends Node
 
 var list_of_enemies = {
 	"Walker" : preload("res://Scenes/Walker Enemy.tscn"),
-	"Shooting" : preload("res://Scenes/ShootingEnemy.tscn"),
+	"Shooting" : preload("res://Scenes/ShootingNewEnemy.tscn"),
+	"Shooting2" : preload("res://Scenes/ShootingEnemy.tscn"),
 	"Fucker" : preload("res://Scenes/Fucker.tscn"),
-	"Gorilla" : preload("res://Scenes/Boss Guy.tscn")
+	"Gorilla" : preload("res://Scenes/Boss Guy.tscn"),
+	"Dog" : preload("res://Scenes/Dog.tscn")
 }
 
 var enemy_spawn_effect = preload("res://Scenes/Enemy_spawn_effecty.tscn")
 var waiting = false
-var current_wave = 0
-var spawn_time = 4.0
-var min_spawn_time = 2.40
-var minus_time = 0.02
+var current_wave = Global.selected_wave - 1
+var spawn_time = 3.0
+var min_spawn_time = 2.0
+var minus_time = 0.2
 
 onready var ui = $"../UI"
 
@@ -25,6 +27,7 @@ func _process(delta):
 			waiting = false
 			get_parent().get_node("TimeUntilNewWave").start()
 			ui.change_to_waiting()
+			ui.after_wave_upgrade()
 
 func _on_TimeUntilNewWave_timeout():
 	current_wave += 1
@@ -44,13 +47,22 @@ func run_wave(number):
 			for enemy_child in enemy_children:
 				match enemy_child.name.rstrip("0123456789"):
 					"Walker" : spawn_path = get_parent().get_node("WalkersSpawn")
-					"Shooting" : spawn_path = get_parent().get_node("RangerSpawn")
-				spawn_enemy(enemy,spawn_path)
+					"Dog" : spawn_path = get_parent().get_node("WalkersSpawn")
+					"Shooting" : spawn_path = get_parent().get_node("WalkersSpawn")
+				if enemy_child.name.rstrip("0123456789") != "Gorilla":
+					spawn_enemy(enemy,spawn_path)
+				else:
+					get_parent().on_boss_activate()
 		match enemy.name.rstrip("0123456789"):
 			"Walker" : spawn_path = get_parent().get_node("WalkersSpawn")
-			"Shooting" : spawn_path = get_parent().get_node("RangerSpawn")
-		spawn_enemy(enemy,spawn_path)
-		yield(get_tree().create_timer(spawn_time),"timeout")
+			"Dog" : spawn_path = get_parent().get_node("WalkersSpawn")
+			"Shooting" : spawn_path = get_parent().get_node("WalkersSpawn")
+		if enemy.name.rstrip("0123456789") != "Gorilla":
+			spawn_enemy(enemy,spawn_path)
+		else:
+			get_parent().on_boss_activate()
+		get_parent().get_node("WaveSpawnerTimer").start(spawn_time)
+		yield(get_parent().get_node("WaveSpawnerTimer"),"timeout")
 	waiting = true
 	if spawn_time > min_spawn_time:
 		spawn_time -= minus_time

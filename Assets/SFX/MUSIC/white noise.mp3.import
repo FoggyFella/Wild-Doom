@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/white noise.mp3-7a30c321f7367649cd10e649675e03ed.mp3str"
+
+[deps]
+
+source_file="res://Assets/SFX/MUSIC/white noise.mp3"
+dest_files=[ "res://.import/white noise.mp3-7a30c321f7367649cd10e649675e03ed.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

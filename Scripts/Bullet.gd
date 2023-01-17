@@ -8,6 +8,7 @@ var is_flamethrower = false
 var bullet_sprite = "Pistol"
 var ghost = false
 var health = 1
+var should_knockback = true
 var starting_damage_1 = 0
 var lock_on = false
 var velocity = Vector2.ZERO
@@ -21,6 +22,7 @@ var count = 0
 
 func _ready():
 	if is_flamethrower:
+		scale = Vector2(Global.stats["flames_size"],Global.stats["flames_size"])
 		bullet_speed = Global.stats["flames_speed"]
 		$Timer.start()
 	if !is_flamethrower:
@@ -95,9 +97,9 @@ func become_ghost():
 	$CollisionShape2D.set_deferred("disabled",true)
 	count += 1
 	ghost = true
-	if count == 1:
+	if count == 1 + Global.stats["sniper_health"] - 3:
 		damage = (starting_damage_1*0.7)
-	elif count == 2:
+	elif count == 2 + Global.stats["sniper_health"] - 3:
 		damage = (starting_damage_1*0.33)
 
 

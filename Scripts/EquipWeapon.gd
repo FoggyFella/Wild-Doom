@@ -44,4 +44,15 @@ func mouse_left():
 	if !has_focus():
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_CUBIC)
-		tween.tween_property(self,"rect_scale",Vector2(1,1),0.3)
+		tween.tween_pproperty(self,"rect_scale",Vector2(1,1),0.3)
+
+func check():
+	if weapon_name in Global.bought_weapons and !weapon_name in Global.equipped_weapon:
+		text = "Equip"
+		disabled = false
+	elif !weapon_name in Global.bought_weapons:
+		text = "Not Bought"
+		disabled = true
+	else:
+		text = "Equipped"
+		disabled = true 

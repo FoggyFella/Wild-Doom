@@ -5,7 +5,10 @@ var weapons = {
 	"Revolver" : preload("res://Scenes/Revolver.tscn"),
 	"Pistol" : preload("res://Scenes/Pistol.tscn"),
 	"Sniper" : preload("res://Scenes/Sniper.tscn"),
-	"Flamethrower" : preload("res://Scenes/Flamethrower.tscn")
+	"Flamethrower" : preload("res://Scenes/Flamethrower.tscn"),
+	"P90" : preload("res://Scenes/Petuh.tscn"),
+	"Musket" : preload("res://Scenes/Musket.tscn"),
+	"Foog" : preload("res://Scenes/FoogGun.tscn")
 }
 
 export var speed : float = 50.0
@@ -17,6 +20,7 @@ onready var hurt = $hurt
 onready var camera = $Camera2D
 
 #var look_thing_vec = Vector2.ZERO
+var can_move = true
 var weapon = null
 var dash_timeout = 3
 var can_dash = true
@@ -28,7 +32,7 @@ var should_regen = false
 var should_actually_regen = true
 var dash_ghost = preload("res://Scenes/DashGhost.tscn")
 var number_of_damage = preload("res://Scenes/NumberPopup.tscn")
-
+var should_move_camera = true
 var fire_before_frenzy = 0
 var movement = Vector2.ZERO
 var velocity = Vector2.ZERO
@@ -72,37 +76,38 @@ func _process(delta):
 func _physics_process(delta):
 	speed = Global.stats["player_speed"]
 	health = Global.stats["player_health"]
-	var movement_vector = Vector2(
-		Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
-		Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	)
-	movement = movement_vector.normalized()
-	
-	if movement.x != 0:
-		if movement.x > 0:
-			$Sprite.flip_h = false
+	if can_move:
+		var movement_vector = Vector2(
+			Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+			Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+		)
+		movement = movement_vector.normalized()
+		
+		if movement.x != 0:
+			if movement.x > 0:
+				$Sprite.flip_h = false
+			else:
+				$Sprite.flip_h = true
+		if get_node_or_null("GunRoot/Gun") != null:
+			if $GunRoot/Gun.scale.y < 0:
+				if $Sprite.flip_h == false:
+					$Sprite.flip_h = true
+			else:
+				if $Sprite.flip_h == true:
+					$Sprite.flip_h = false
+		
+		if movement == Vector2.ZERO:
+			$AnimationPlayer.playback_speed = 1
+			$AnimationPlayer.play("guy idle")
 		else:
-			$Sprite.flip_h = true
-	
-	if $GunRoot/Gun.scale.y < 0:
-		if $Sprite.flip_h == false:
-			$Sprite.flip_h = true
-	else:
-		if $Sprite.flip_h == true:
-			$Sprite.flip_h = false
-	
-	if movement == Vector2.ZERO:
-		$AnimationPlayer.playback_speed = 1
-		$AnimationPlayer.play("guy idle")
-	else:
-		$AnimationPlayer.playback_speed = speed/90
-		$AnimationPlayer.play("guy walk")
-	if Input.is_action_just_pressed("dash"):
-		start_dash(dash_duration,dash_timeout)
-	velocity = movement * dash_speed if is_dashing() else movement * speed
-	move_and_slide(velocity,Vector2.UP)
-	#if Input.is_action_just_pressed("ui_up"):
-		#take_damage(1000)
+			$AnimationPlayer.playback_speed = speed/90
+			$AnimationPlayer.play("guy walk")
+		if Input.is_action_just_pressed("dash"):
+			start_dash(dash_duration,dash_timeout)
+		velocity = movement * dash_speed if is_dashing() else movement * speed
+		move_and_slide(velocity,Vector2.UP)
+#	if Input.is_action_just_pressed("ui_up"):
+#		take_damage(1000)
 
 func take_damage(amount):
 	if can_be_hurt:

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/Gun.gd" type="Script" id=1]
 [ext_resource path="res://Assets/light.png" type="Texture" id=2]
-[ext_resource path="res://Assets/SFX/LargeWeaponFire.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/SFX/gunshoot.ogg" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Guns/Revolver/Revolver v2.png" type="Texture" id=4]
 [ext_resource path="res://Assets/flash_shader.gdshader" type="Shader" id=5]
 
@@ -112,12 +112,12 @@ range_item_cull_mask = 6
 
 [node name="shoot1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = -15.0
+volume_db = -10.0
 bus = "SoundEffects"
 
 [node name="shoot2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = -15.0
+volume_db = -10.0
 bus = "SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

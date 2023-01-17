@@ -7,12 +7,11 @@ var enemy_spawn_effect = preload("res://Scenes/Enemy_spawn_effecty.tscn")
 func _ready():
 	Global.timer_on = true
 	Global.connect("activate_boss",self,"on_boss_activate")
-	if Music.get_node("Game").playing == false and Music.get_node("Game").volume_db == -60 and Music.current_music != "Game":
-		Music.get_node("Game").playing = true
-		Music.get_node("Game").volume_db = -10
-#	if Music.playing == false and Music.volume_db == -60:
-#		Music.volume_db = -10
-#		Music.playing = true
+	if Music.get_node("Chapter1").playing == false and Music.get_node("Chapter1").volume_db == -60 and Music.current_music != "Chapter1":
+		Music.get_node("Chapter1").playing = true
+		Music.get_node("Chapter1").volume_db = -15
+		Music.current_music = "Chapter1"
+	#start_from_wave(Global.selected_wave)
 
 func _on_PickupTimer_timeout():
 	randomize()
@@ -42,7 +41,7 @@ func on_boss_activate():
 	$WalkersSpawn.get_node("Timer").stop()
 	$RangerSpawn.get_node("Timer").stop()
 	$Player/FuckerSpawn.get_node("Timer").stop()
-	Music.fade_in("Boss",1,-10,"Game",3)
+	Music.fade_in("Boss",1,-10,"Chapter1",3)
 	get_node("Enemies").add_child(enemy_spawn)
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property($BossCamera,"position",Vector2(0,0),2)
@@ -51,3 +50,8 @@ func on_boss_activate():
 	$UI.enable_boss_health()
 	$BossCamera.current = false
 	$Player/Camera2D.current = true
+
+func start_from_wave(selected_wave):
+	for wave in $WaveManager.get_children():
+		if int(wave.name) < selected_wave:
+			wave.queue_free() 

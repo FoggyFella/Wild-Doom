@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/SFX/eneymshoot.wav" type="AudioStream" id=2]
@@ -10,105 +10,24 @@
 [ext_resource path="res://Assets/Dogger/Untitled_12-16-2022_06-40-35_1.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Dogger/Untitled_12-16-2022_08-14-48.png" type="Texture" id=9]
 
-[sub_resource type="Shader" id=17]
+[sub_resource type="Shader" id=24]
+resource_local_to_scene = true
 code = "shader_type canvas_item;
 
 uniform vec4 flash_color : hint_color = vec4(1.0);
-uniform float flash_modifier : hint_range(0.0, 1.0) = 1;
-uniform float max_line_width = 10.0;
-uniform float min_line_width = 5.0;
-uniform float freq = 1.0;
-uniform float block_size = 20.0;
-uniform vec4 starting_colour = vec4(0,0,0,1);
-uniform vec4 ending_colour = vec4(1);
+uniform float flash_modifier : hint_range(0.0, 1.0) = 0.0;
 
-const float pi = 3.1415;
-const int ang_res = 16;
-const int grad_res = 8;
-
-float hash(vec2 p, float s) {
-	return fract(35.1 * sin(dot(vec3(112.3, 459.2, 753.2), vec3(p, s))));
-}
-
-float noise(vec2 p, float s) {
-	vec2 d = vec2(0, 1);
-	vec2 b = floor(p);
-	vec2 f = fract(p);
-	return mix(
-		mix(hash(b + d.xx, s), hash(b + d.yx, s), f.x),
-		mix(hash(b + d.xy, s), hash(b + d.yy, s), f.x), f.y);
-}
-
-float getLineWidth(vec2 p, float s) {
-	p /= block_size;
-	float w = 0.0;
-	float intensity = 1.0;
-	for (int i = 0; i < 3; i++) {
-		w = mix(w, noise(p, s), intensity);
-		p /= 2.0;
-		intensity /= 2.0;
-	}
-	
-	return mix(max_line_width, min_line_width, w);
-}
-
-bool pixelInRange(sampler2D text, vec2 uv, vec2 dist) {
-	float alpha = 0.0;
-	for (int i = 0; i < ang_res; i++) {
-		float angle = 2.0 * pi * float(i) / float(ang_res);
-		vec2 disp = dist * vec2(cos(angle), sin(angle));
-		if (texture(text, uv + disp).a > 0.0) return true;
-	}
-	return false;
-}
-
-float getClosestDistance(sampler2D text, vec2 uv, vec2 maxDist) {
-	if (!pixelInRange(text, uv, maxDist)) return -1.0;
-	
-	float hi = 1.0; float lo = 0.0;
-	
-	for (int i = 1; i <= grad_res; i++) {
-		float curr = (hi + lo) / 2.0;
-		if (pixelInRange(text, uv, curr * maxDist)) {
-			hi = curr;
-		}
-		else {
-			lo = curr;
-		}
-	}
-	return hi;
-	
-}
-
-void fragment() {
-	float timeStep = floor(freq * TIME);
-	vec2 scaledDist = TEXTURE_PIXEL_SIZE;
-	scaledDist *= getLineWidth(UV / TEXTURE_PIXEL_SIZE, timeStep);
-	float w = getClosestDistance(TEXTURE, UV, scaledDist);
-	
-	if (( w > 0.0) && (texture(TEXTURE, UV).a < 0.2)) {
-		COLOR = mix(starting_colour, ending_colour, tanh(3.0*w));
-	}
-	else {
-		COLOR = texture(TEXTURE, UV);
-	vec4 color = texture(TEXTURE, UV);
-	color.rgb = mix(color.rgb, flash_color.rgb, flash_modifier );
+void fragment(){
+	vec4 color = texture(TEXTURE,UV);
+	color.rgb = mix(color.rgb,flash_color.rgb,flash_modifier);
 	COLOR = color;
-	}
-	
 }"
 
 [sub_resource type="ShaderMaterial" id=18]
 resource_local_to_scene = true
-shader = SubResource( 17 )
+shader = SubResource( 24 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
-shader_param/max_line_width = 0.0
-shader_param/min_line_width = 0.0
-shader_param/freq = 10.0
-shader_param/block_size = 2.0
-shader_param/starting_colour = Plane( 1, 0, 0, 0.3 )
-shader_param/ending_colour = Plane( 1.3, 0.3, 0, 1 )
 
 [sub_resource type="AtlasTexture" id=39]
 atlas = ExtResource( 8 )
@@ -231,7 +150,41 @@ tracks/0/keys = {
 }
 
 [sub_resource type="RectangleShape2D" id=38]
-extents = Vector2( 19.5, 10.5 )
+extents = Vector2( 19.5, 11 )
+
+[sub_resource type="Gradient" id=55]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.423237, 0.672199, 1 )
+colors = PoolColorArray( 0.188235, 0.0156863, 0.0431373, 0.811765, 1, 0.513726, 0, 1, 1, 0.513726, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=60]
+gradient = SubResource( 55 )
+
+[sub_resource type="Curve" id=57]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.1, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=61]
+curve = SubResource( 57 )
+
+[sub_resource type="ParticlesMaterial" id=59]
+emission_shape = 1
+emission_sphere_radius = 18.78
+flag_disable_z = true
+gravity = Vector3( 0, -98, 0 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 42.95
+radial_accel_random = 0.06
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 61 )
+color_ramp = SubResource( 60 )
+hue_variation = -0.06
+hue_variation_random = 1.0
 
 [node name="Doggy" type="KinematicBody2D"]
 z_index = 2
@@ -239,15 +192,18 @@ collision_layer = 16
 collision_mask = 20
 script = ExtResource( 1 )
 more_health = 30
-min_speed = 2
-max_speed = 7
+ruby_chance = 2.7
+min_speed = 10
+max_speed = 100
+how_much_slower = 0
 bite_damage = 9
 should_dash = true
 dash_speed = 350.0
+should_have_fritcion = true
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 material = SubResource( 18 )
-scale = Vector2( 0.9, 0.9 )
+scale = Vector2( 1.025, 1.025 )
 frames = SubResource( 34 )
 flip_h = true
 
@@ -287,13 +243,13 @@ collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2( 0.5, 7.5 )
+position = Vector2( 0.5, 8 )
 shape = SubResource( 38 )
 
 [node name="Sprite2" type="Sprite" parent="."]
 modulate = Color( 0, 0, 0, 0.435294 )
-position = Vector2( 1.5, 18.542 )
-scale = Vector2( 1.9375, 0.125 )
+position = Vector2( 0.999999, 20.771 )
+scale = Vector2( 2.125, 0.153625 )
 z_index = -1
 texture = ExtResource( 5 )
 
@@ -347,6 +303,16 @@ wait_time = 0.05
 [node name="timebetweendashes" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="FlameParticles" type="Particles2D" parent="."]
+modulate = Color( 2, 1, 1, 1 )
+show_behind_parent = true
+position = Vector2( 2, 4 )
+z_index = 1
+emitting = false
+amount = 50
+local_coords = false
+process_material = SubResource( 59 )
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]

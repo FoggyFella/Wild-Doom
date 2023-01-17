@@ -1,31 +1,59 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Boss/marker-shee.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 33, 33 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 33, 0, 33, 33 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 33, 33, 33 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 33, 33, 33, 33 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="GDScript" id=2]
 resource_name = "marker_script"
-script/source = "extends Sprite
+script/source = "extends AnimatedSprite
 
 func _on_Timer_timeout():
 	queue_free()
 "
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 29.8667, 25.6 )
+extents = Vector2( 16.7286, 16.7286 )
 
-[node name="Sprite" type="Sprite"]
+[node name="Sprite" type="AnimatedSprite"]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( -1.90735e-06, 1.90735e-06 )
-scale = Vector2( 0.234375, 0.234375 )
-texture = ExtResource( 1 )
+scale = Vector2( 0.538, 0.538 )
+frames = SubResource( 7 )
+frame = 1
+playing = true
 script = SubResource( 2 )
 
 [node name="MarkerArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarkerArea"]
-position = Vector2( 8.90096e-06, -7.62939e-06 )
+position = Vector2( 1.32947e-06, -3.1021e-06 )
+scale = Vector2( 1, 1 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

@@ -26,3 +26,9 @@ anchor_bottom = 1.0
 rect_pivot_offset = Vector2( 512, 0 )
 mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect3" type="ColorRect" parent="Control"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2

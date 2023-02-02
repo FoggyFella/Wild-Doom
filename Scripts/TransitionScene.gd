@@ -4,6 +4,7 @@ onready var color_rect = $"%ColorRect"
 onready var color_rect_2 = $"%ColorRect2"
 onready var color_rect_3 = $"%ColorRect3"
 
+signal test
 
 func _ready():
 	set_defaults()
@@ -35,6 +36,28 @@ func change_scene(target):
 	tween.tween_interval(0.3)
 	yield(tween,"finished")
 	get_tree().change_scene(target)
+	emit_signal("test")
+	var tween2 = create_tween()
+	tween2.set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
+	tween2.set_trans(Tween.TRANS_CUBIC)
+	tween2.tween_property(color_rect_2,"rect_scale",Vector2(1,0),0.3)
+	yield(tween,"finished")
+	color_rect_2.visible = false
+
+func test(self_thing):
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
+	color_rect_2.visible = true
+	tween.tween_property(color_rect_2,"rect_scale",Vector2(1,1),0.3)
+	tween.tween_interval(0.3)
+	yield(tween,"finished")
+	get_tree().change_scene("res://Scenes/Menu.tscn")
+	yield(get_tree().create_timer(0.2),"timeout")
+	get_tree().change_scene(self_thing)
+	Music.get_node("Game").playing = false
+	if get_tree().paused:
+		get_tree().paused = false
 	var tween2 = create_tween()
 	tween2.set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
 	tween2.set_trans(Tween.TRANS_CUBIC)

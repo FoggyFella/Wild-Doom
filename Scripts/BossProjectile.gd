@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 var velocity = Vector2()
 var speed = 300
-var damage = 35
+var damage = 40
 
 func _ready():
 	pass

@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Boss/Crack_.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "crack_script"
+script/source = "extends Sprite
+
+func _ready():
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC)
+	tween.tween_interval(3)
+	tween.tween_property(self,\"modulate\",Color(0,0,0,0),1)
+	yield(tween,\"finished\")
+	self.queue_free()
+"
+
+[node name="Crack" type="Sprite"]
+z_index = 1
+texture = ExtResource( 1 )
+script = SubResource( 1 )

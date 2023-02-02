@@ -178,7 +178,7 @@ offset = Vector2( 90, -25 )
 position = Vector2( -819.5, -1.5 )
 scale = Vector2( 0.442708, 0.442708 )
 frames = SubResource( 19 )
-frame = 4
+frame = 1
 playing = true
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]

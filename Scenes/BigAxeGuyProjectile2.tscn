@@ -1,0 +1,159 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Untitled_01-29-2023_08-55-12.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Bullet_Trail.gd" type="Script" id=2]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "axeguyproj"
+script/source = "extends KinematicBody2D
+
+var velocity = Vector2()
+var speed = 300
+var damage = 45
+var default_speed = 0
+
+func _ready():
+	default_speed = speed
+	#rotation += get_angle_to(Global.player.position)
+
+func _process(delta):
+	velocity = Vector2(speed*delta,0).rotated(rotation)
+	var info = move_and_collide(velocity)
+	if info != null:
+		if info.collider.has_method(\"take_damage\"):
+			queue_free()
+			info.collider.take_damage(damage)
+
+func _on_VisibilityNotifier2D_viewport_exited(viewport):
+	queue_free()
+
+func _on_Timer_timeout():
+	speed = default_speed
+	$AnimationPlayer.stop(true)
+	rotation += get_angle_to(Global.player.position)
+	$Sprite.rotation = 0
+
+
+func _on_Timer2_timeout():
+	speed = 0
+"
+
+[sub_resource type="Curve" id=16]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.8 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=17]
+colors = PoolColorArray( 0.894531, 0.146759, 0.567381, 1, 0.379528, 0.0893555, 0.953125, 1 )
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 2.544
+height = 3.388
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 32, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=14]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "Spin"
+length = 1.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+
+[node name="AxeGuyProjectile2" type="KinematicBody2D" groups=["enemy_bullets"]]
+z_index = 2
+collision_layer = 8
+collision_mask = 0
+script = SubResource( 1 )
+
+[node name="Line2D" type="Line2D" parent="."]
+show_behind_parent = true
+position = Vector2( 8.017, 0.516 )
+width = 15.0
+width_curve = SubResource( 16 )
+default_color = Color( 0.847059, 0.0627451, 0.913725, 1 )
+gradient = SubResource( 17 )
+script = ExtResource( 2 )
+lenght = 5.0
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 14.727, -0.027 )
+scale = Vector2( 0.15, 0.15 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.456, -0.762 )
+shape = SubResource( 8 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.017, -0.484 )
+scale = Vector2( 0.535281, 0.535281 )
+frames = SubResource( 7 )
+speed_scale = 1.1
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Spin"
+anims/RESET = SubResource( 14 )
+anims/Spin = SubResource( 15 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+autostart = true
+
+[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_Timer2_timeout"]

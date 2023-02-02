@@ -42,7 +42,7 @@ modulate = Color( 1, 0, 0, 1 )
 position = Vector2( -1.90735e-06, 1.90735e-06 )
 scale = Vector2( 0.538, 0.538 )
 frames = SubResource( 7 )
-frame = 1
+frame = 3
 playing = true
 script = SubResource( 2 )
 
@@ -53,7 +53,6 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MarkerArea"]
 position = Vector2( 1.32947e-06, -3.1021e-06 )
-scale = Vector2( 1, 1 )
 shape = SubResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]

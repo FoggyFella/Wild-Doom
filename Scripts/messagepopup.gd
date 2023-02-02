@@ -32,14 +32,15 @@ func _process(delta):
 	$TextureProgress.value = lerp($TextureProgress.value,pickup_timer.time_left,0.1)
 	$Label2.text = "Health: " + str(Global.stats["player_health"])
 
-func show_death_screen():
+func show_death_screen(won=false):
 	Global.stop_timer()
+	Global.emit_signal("pick_up_collected")
 	if Music.current_music == "Boss":
 		Music.fade_in("Chapter1",1,-10,"Boss",3)
 	if $PauseMenu.visible == true:
 		$PauseMenu.visible = false
 	$UpgradeAferWave.hide()
-	var score_here = Global.enemies_killed + Global.pick_ups
+	var score_here = (Global.enemies_killed + Global.pick_ups + Global.waves_passed)*2
 	Global.score = score_here
 	if Global.score > Global.high_score:
 		Global.high_score = Global.score
@@ -47,14 +48,21 @@ func show_death_screen():
 		emit_confetti()
 	else:
 		$DeathScreen/VBoxContainer/Label5.text = "High Score: " + str(Global.high_score)
+	if !won:
+		$DeathScreen/Label.show()
+		$DeathScreen/Label2.hide()
+	elif won:
+		$DeathScreen/Label2.show()
+		$DeathScreen/Label.hide()
 	Global.save_game()
 	$DeathScreen.visible = true
 	get_tree().paused = true
 	var tween = create_tween()
 	tween.set_pause_mode(SceneTreeTween.TWEEN_PAUSE_PROCESS)
 	tween.set_trans(Tween.TRANS_CUBIC)
-	$DeathScreen/VBoxContainer/Label2.text = "You collected: "+ str(Global.pick_ups) + " pick-ups"
-	$DeathScreen/VBoxContainer/Label3.text = "You killed: "+ str(Global.enemies_killed) + " enemies"
+	$DeathScreen/VBoxContainer/Label6.text = "You passed: "+ str(Global.waves_passed) + " waves"
+	$DeathScreen/VBoxContainer/Label3.text = "You collected: "+ str(Global.pick_ups) + " boosts"
+	$DeathScreen/VBoxContainer/Label2.text = "You killed: "+ str(Global.enemies_killed) + " enemies"
 	$DeathScreen/VBoxContainer/Label4.text = "Your score: "+ str(Global.score)
 	tween.tween_property($DeathScreen,"rect_scale",Vector2(1,1),0.5)
 	$DeathScreen/Button.grab_focus()
@@ -62,9 +70,12 @@ func show_death_screen():
 
 func _on_Button_pressed():
 	Global.stop_timer()
+	Global.stats["player_bullets"] = [0]
 	Global.reset_stats()
 	Global.reset_timer()
-	Transition.reload_current_scene()
+	#Transition.reload_current_scene()
+	#get_tree().reload_current_scene()
+	Transition.test(str(get_tree().current_scene.filename))
 	if Music.current_music == "Boss":
 		Music.fade_in("Chapter1",1,-10,"Boss",3)
 
@@ -87,8 +98,14 @@ func after_wave_upgrade():
 	tween.tween_property(upgrade_afer_wave,"modulate",Color(1,1,1,1),0.4)
 	yield(tween,"finished")
 	upgrade_afer_wave.roll_upgrades()
+	if upgrade_afer_wave.get_node("Options/Option1").visible:
+		upgrade_afer_wave.get_node("Options/Option1").grab_focus()
+	else:
+		upgrade_afer_wave.get_node("Continue").grab_focus()
 
 func _on_Button2_pressed():
+	Global.selected_wave = 1
+	Global.stats["player_bullets"] = [0]
 	if Music.current_music == "Boss":
 		Music.fade_in("Game",1,-10,"Boss",3)
 	elif Music.current_music == "Chapter1":
@@ -228,9 +245,10 @@ func frenzy_end():
 	var tween = create_tween()
 	tween.tween_property($FrenzyTexture,"modulate",Color(1,1,1,0),1)
 
-func enable_boss_health():
+func enable_boss_health(boss_name):
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
+	$BossHealth/Label2.text = str(boss_name)
 	tween.tween_property($BossHealth,"rect_scale",Vector2(1,1),0.5)
 
 func update_boss_health(damage_taken):
@@ -240,11 +258,16 @@ func update_boss_health(damage_taken):
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property($BossHealth,"value",float($BossHealth/Label.text),0.1)
 
-func boss_dead():
+func boss_dead(which_parts_to_add = null):
 	$BossDeath.play()
 	var tween = create_tween()
 	$BossHealth/Label.text = str(0) + "%"
 	$BossHealth.set_value(0.0)
+	if which_parts_to_add != null:
+		for part in which_parts_to_add:
+			if !part in Global.settings["unlocked_chapter_parts"]:
+				Global.settings["unlocked_chapter_parts"].append(part)
+	#Global.settings["unlocked_chapter_parts"].append(1.2)
 	Global.settings["beat_gorilla"] = true
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_interval(4)
@@ -266,3 +289,8 @@ func change_to_waiting():
 	$VBoxContainer/WaveLine.rect_scale = Vector2(1,1)
 	$VBoxContainer/WaveLine.visible = true
 	tween.tween_property($VBoxContainer/WaveLine,"rect_scale",Vector2(0,1),5)
+
+func print_bullet_status(status):
+	print(status+":")
+	print(Global.stats["player_bullets"])
+	print(get_tree().current_scene.get_node("Player").get_node("GunRoot").get_node("Gun").bullets_rotations)

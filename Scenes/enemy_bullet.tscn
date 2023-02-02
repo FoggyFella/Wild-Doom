@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Assets/light.png" type="Texture" id=1]
 [ext_resource path="res://Assets/new_enemy_bullet.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/enemy_bullet.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Stalker/fucking bitch.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
@@ -36,6 +37,38 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 4 )
+region = Rect2( 45, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 4 )
+region = Rect2( 90, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 34, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 4 )
+region = Rect2( 45, 34, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 4 )
+region = Rect2( 90, 34, 45, 34 )
+
+[sub_resource type="SpriteFrames" id=18]
+animations = [ {
+"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
 [sub_resource type="CapsuleShape2D" id=11]
 radius = 7.48402
 height = 3.18258
@@ -47,31 +80,69 @@ collision_layer = 8
 collision_mask = 0
 script = ExtResource( 3 )
 
-[node name="Sprite" type="AnimatedSprite" parent="."]
+[node name="Default" type="Sprite" parent="."]
+visible = false
+
+[node name="Sprite" type="AnimatedSprite" parent="Default"]
 scale = Vector2( 0.33, 0.33 )
 frames = SubResource( 10 )
+frame = 3
 speed_scale = 1.5
 playing = true
 offset = Vector2( 10, 0 )
 flip_h = true
 
-[node name="Sprite2" type="AnimatedSprite" parent="."]
+[node name="Sprite2" type="AnimatedSprite" parent="Default"]
 modulate = Color( 1, 1, 1, 0.458824 )
 position = Vector2( 13, 0 )
 scale = Vector2( 0.33, 0.33 )
 frames = SubResource( 10 )
+frame = 3
+speed_scale = 1.5
+playing = true
+offset = Vector2( 10, 0 )
+flip_h = true
+
+[node name="Sprite3" type="AnimatedSprite" parent="Default"]
+modulate = Color( 1, 1, 1, 0.141176 )
+position = Vector2( 27, 0 )
+scale = Vector2( 0.33, 0.33 )
+frames = SubResource( 10 )
+frame = 3
+speed_scale = 1.5
+playing = true
+offset = Vector2( 10, 0 )
+flip_h = true
+
+[node name="Skull" type="Sprite" parent="."]
+visible = false
+
+[node name="Sprite3" type="AnimatedSprite" parent="Skull"]
+modulate = Color( 1, 1, 1, 0.223529 )
+position = Vector2( 16, 0.210223 )
+scale = Vector2( 0.577843, 0.472731 )
+frames = SubResource( 18 )
+frame = 4
+speed_scale = 1.5
+playing = true
+offset = Vector2( 10, 0 )
+flip_h = true
+
+[node name="Sprite2" type="AnimatedSprite" parent="Skull"]
+modulate = Color( 1, 1, 1, 0.458824 )
+position = Vector2( 6, 0 )
+scale = Vector2( 0.577843, 0.577843 )
+frames = SubResource( 18 )
 frame = 5
 speed_scale = 1.5
 playing = true
 offset = Vector2( 10, 0 )
 flip_h = true
 
-[node name="Sprite3" type="AnimatedSprite" parent="."]
-modulate = Color( 1, 1, 1, 0.141176 )
-position = Vector2( 27, 0 )
-scale = Vector2( 0.33, 0.33 )
-frames = SubResource( 10 )
-frame = 5
+[node name="Sprite" type="AnimatedSprite" parent="Skull"]
+position = Vector2( -5, 0 )
+scale = Vector2( 0.577843, 0.577843 )
+frames = SubResource( 18 )
 speed_scale = 1.5
 playing = true
 offset = Vector2( 10, 0 )

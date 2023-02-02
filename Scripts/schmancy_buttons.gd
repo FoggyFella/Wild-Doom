@@ -22,6 +22,8 @@ func mouse_entered():
 		tween.parallel().tween_property(self,"rect_scale",Vector2(1.05,1.05),0.3)
 		if has_a_bar:
 			tween.parallel().tween_property(get_node("TextureRect"),"rect_scale",Vector2(1.2,1),0.5)
+		if get_node_or_null("ParticleBox/Particles2D"):
+			$ParticleBox/Particles2D.emitting = true
 
 func mouse_left():
 	if self.disabled == false and !has_focus():
@@ -30,3 +32,5 @@ func mouse_left():
 		tween.parallel().tween_property(self,"rect_scale",Vector2(1,1),0.3)
 		if has_a_bar:
 			tween.parallel().tween_property(get_node("TextureRect"),"rect_scale",Vector2(1,1),0.5)
+		if get_node_or_null("ParticleBox/Particles2D"):
+			$ParticleBox/Particles2D.emitting = false

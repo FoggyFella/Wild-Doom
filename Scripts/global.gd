@@ -3,6 +3,7 @@ extends Node
 var player = null
 var pick_ups = 0
 var enemies_killed = 0
+var waves_passed = 0
 var spawn_time = 4
 var player_damage = 50
 var enemy_damage = 20
@@ -25,7 +26,13 @@ var stats = {"player_damage":50,
 "flames_speed" : 300,
 "shotty_bullet_upgrades": 0,
 "sniper_health": 3,
-"flames_size": 1}
+"flames_size": 1,
+"enemy_bite_damage": 10,
+"boss_proj_dmg": 40,
+"defense": 1,
+"activated_boosts": [],
+"player_healing": 1,
+"player_earnings": 1}
 
 signal frenzy_start
 signal weapon_equipped
@@ -35,6 +42,7 @@ signal pick_up_collected
 signal activate_stalkers
 signal activate_fuckers
 signal activate_boss
+signal activate_boost
 
 var settings = {
 	"fullscreen" : false,
@@ -45,7 +53,8 @@ var settings = {
 	"saw_intro" : false,
 	"unlocked_chapters" : [1],
 	"rubys" : 0,
-	"bought_items" : {}
+	"bought_items" : {},
+	"unlocked_chapter_parts" : [1.1]
 }
 
 var min_shield_time = 0.25
@@ -59,6 +68,8 @@ var activated_boss = false
 var frenzy_on = false
 
 var selected_wave = 1
+#var selected_wave = 1
+
 var money = 0
 var time = 0
 var timer_on = false
@@ -89,8 +100,10 @@ func _ready():
 	print("Money: " + str(money))
 
 func reset_stats():
+	#WHEN YOU UPDATE THIS UPDATE ALSO THE ONES LOWER
 	pick_ups = 0
 	enemies_killed = 0
+	waves_passed = 0
 	spawn_time = 4
 	stats["player_damage"]=50
 	stats["enemy_damage"]=10
@@ -106,6 +119,12 @@ func reset_stats():
 	stats["shotty_bullet_upgrades"] = 0
 	stats["sniper_health"] = 3
 	stats["flames_size"] = 1
+	stats["enemy_bite_damage"] = 10
+	stats["boss_proj_dmg"] = 40
+	stats["defense"] = 1
+	stats["activated_boosts"] = []
+	stats["player_healing"] = 1
+	stats["player_earnings"] = 1
 	player_max_health = 100
 	activated_fuckers = false
 	activated_stalkers = false
@@ -113,7 +132,39 @@ func reset_stats():
 	score = 0
 	max_fire_rate = 0
 	frenzy_on = false
-	
+	#selected_wave = 1
+
+func reset_enemy_stats():
+	stats["enemy_speed"]=80
+	stats["enemy_damage"]=10
+	stats["enemy_health"]=100
+
+func next_part_reset():
+	spawn_time = 4
+	stats["player_damage"]=50
+	reset_enemy_stats()
+	stats["player_health"]=100
+	stats["player_speed"]=90
+	stats["player_bullets"]=[0]
+	stats["player_firerate"] = 0.66
+	stats["player_crit_chance"] = 0.1
+	stats["flames_shield"] = 0.75
+	stats["flames_speed"] = 300
+	stats["shotty_bullet_upgrades"] = 0
+	stats["sniper_health"] = 3
+	stats["flames_size"] = 1
+	stats["defense"] = 1
+	stats["activated_boosts"] = []
+	stats["player_healing"] = 1
+	stats["player_earnings"] = 1
+	player_max_health = 100
+	activated_fuckers = false
+	activated_stalkers = false
+	activated_boss = false
+	max_fire_rate = 0
+	frenzy_on = false
+	selected_wave = 1
+
 func _process(delta):
 	if stats["enemy_damage"] < 10:
 		stats["enemy_damage"] = 10
@@ -139,17 +190,17 @@ func _process(delta):
 	var time_passed = "%02d : %02d" % [mins,secs]
 	time_text = time_passed
 	
-	if time_text == "10 : 00" and activated_stalkers == false:
-		activated_stalkers = true
-		emit_signal("activate_stalkers")
-		
-	if time_text == "15 : 00" and activated_boss == false:
-		activated_boss = true
-		emit_signal("activate_boss")
-		
-	if time_text == "12 : 45" and activated_fuckers == false:
-		activated_fuckers = true
-		emit_signal("activate_fuckers")
+#	if time_text == "10 : 00" and activated_stalkers == false:
+#		activated_stalkers = true
+#		emit_signal("activate_stalkers")
+#
+#	if time_text == "15 : 00" and activated_boss == false:
+#		activated_boss = true
+#		emit_signal("activate_boss")
+#
+#	if time_text == "12 : 45" and activated_fuckers == false:
+#		activated_fuckers = true
+#		emit_signal("activate_fuckers")
 
 func reset_timer():
 	time = 0

@@ -1,4 +1,4 @@
-extends Node2D
+extends Camera2D
 
 # How quickly to move through the noise
 export var NOISE_SHAKE_SPEED: float = 30.0
@@ -52,9 +52,7 @@ func _process(delta: float) -> void:
 #	self.offset_v = (mouse_pos.y - global_position.y) / (600 / 1.6)
 	# Fade out the intensity over time
 	shake_strength = lerp(shake_strength, 0, SHAKE_DECAY_RATE * delta)
-	
 	var shake_offset: Vector2
-	
 	match shake_type:
 		ShakeType.Random:
 			shake_offset = get_random_offset()

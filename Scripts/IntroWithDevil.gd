@@ -57,7 +57,7 @@ func _process(delta):
 		should_wait = false
 		yield(get_tree().create_timer(3),"timeout")
 		Transition.white_transition('res://Scenes/World.tscn')
-		Music.fade_in("Game",1,-10,"Noise",3)
+		Music.fade_in("Chapter1",1,-10,"Noise",3)
 		Global.settings["saw_intro"] = true
 	if current_thing != null:
 		if on_mouse:
@@ -129,7 +129,7 @@ func on_nope_finished():
 	yield(Textbox,"finished")
 	Textbox.hide_textbox()
 	Transition.white_transition('res://Scenes/World.tscn')
-	Music.fade_in("Game",1,-10,"Noise",3)
+	Music.fade_in("Chapter1",1,-10,"Noise",3)
 	Global.settings["saw_intro"] = true
 
 func on_choice():

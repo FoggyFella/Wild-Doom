@@ -94,6 +94,7 @@ scale = Vector2( 0.588, 0.588 )
 frames = SubResource( 13 )
 offset = Vector2( 33, -5 )
 script = ExtResource( 5 )
+bullet_sprite = "Musket"
 starting_damage = 45
 starting_critchance = 0.075
 bullets_rotations = [ -0.1, 0.0, 0.1 ]

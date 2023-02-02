@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://Scripts/ChapterSelectScreen.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/schmancy_buttons.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Assets/Font/use_this.tres" type="DynamicFontData" id=4]
 [ext_resource path="res://Assets/SFX/ui/error_005.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/pass.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Untitled69_20230118204040.png" type="Texture" id=7]
 
 [sub_resource type="Shader" id=87]
 code = "shader_type canvas_item;
@@ -48,24 +49,22 @@ shader_param/noise_img = SubResource( 89 )
 
 [sub_resource type="StyleBoxFlat" id=102]
 bg_color = Color( 0.337255, 0.156863, 0.145098, 1 )
-skew = Vector2( 0.044, 0 )
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color( 0.25098, 0.113725, 0.101961, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
+border_color = Color( 0.788235, 0.0745098, 0.247059, 1 )
+shadow_color = Color( 0.788235, 0.0745098, 0.247059, 0.309804 )
 shadow_size = 5
 
 [sub_resource type="StyleBoxFlat" id=98]
 bg_color = Color( 0.290196, 0.133333, 0.12549, 1 )
-skew = Vector2( 0.044, 0 )
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color( 0.203922, 0.0941176, 0.0862745, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
+border_color = Color( 0.788235, 0.0745098, 0.247059, 1 )
+shadow_color = Color( 0.788235, 0.0745098, 0.247059, 0.309804 )
 shadow_size = 5
 
 [sub_resource type="ButtonGroup" id=118]
@@ -91,69 +90,41 @@ outline_size = 2
 outline_color = Color( 0.0352941, 0, 0, 1 )
 font_data = SubResource( 112 )
 
-[sub_resource type="StyleBoxFlat" id=103]
-bg_color = Color( 0.219608, 0.407843, 0.376471, 1 )
-skew = Vector2( 0.044, 0 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.172549, 0.352941, 0.32549, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
-shadow_size = 5
+[sub_resource type="Gradient" id=128]
+offsets = PoolRealArray( 0.64794, 1 )
+colors = PoolColorArray( 1, 0, 0.193359, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 128 )
+
+[sub_resource type="ParticlesMaterial" id=129]
+emission_shape = 2
+emission_box_extents = Vector3( 105, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 0.0
+gravity = Vector3( 0, -98, 0 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 1.0
+angle = 720.0
+angle_random = 1.0
+scale = 12.03
+scale_random = 0.64
+color_ramp = SubResource( 15 )
+hue_variation = -0.06
+hue_variation_random = 1.0
 
 [sub_resource type="StyleBoxFlat" id=99]
-bg_color = Color( 0.2, 0.376471, 0.34902, 1 )
-skew = Vector2( 0.044, 0 )
+bg_color = Color( 0.0431373, 0.0588235, 0.0941176, 1 )
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color( 0.145098, 0.282353, 0.262745, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
-shadow_size = 5
-
-[sub_resource type="StyleBoxFlat" id=104]
-bg_color = Color( 0.415686, 0.768627, 0.796078, 1 )
-skew = Vector2( 0.044, 0 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.333333, 0.670588, 0.698039, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
-shadow_size = 5
-
-[sub_resource type="StyleBoxFlat" id=100]
-bg_color = Color( 0.388235, 0.745098, 0.772549, 1 )
-skew = Vector2( 0.044, 0 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.282353, 0.584314, 0.607843, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
-shadow_size = 5
-
-[sub_resource type="StyleBoxFlat" id=105]
-bg_color = Color( 0.55, 0.18, 0.28, 1 )
-skew = Vector2( 0.044, 0 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.478431, 0.117647, 0.219608, 1 )
-shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
-shadow_size = 5
-
-[sub_resource type="StyleBoxFlat" id=101]
-bg_color = Color( 0.51, 0.15, 0.25, 1 )
-skew = Vector2( 0.044, 0 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0.392157, 0.0980392, 0.180392, 1 )
+border_color = Color( 0.0862745, 0.121569, 0.2, 1 )
 shadow_color = Color( 0.282353, 0.129412, 0.121569, 0.392157 )
 shadow_size = 5
 
@@ -297,6 +268,41 @@ outline_color = Color( 0.733333, 0.913725, 0.160784, 1 )
 extra_spacing_space = -14
 font_data = ExtResource( 4 )
 
+[sub_resource type="DynamicFont" id=130]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
+
+[sub_resource type="StyleBoxFlat" id=131]
+bg_color = Color( 0.960784, 0.478431, 0.129412, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.960784, 0.223529, 0.172549, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0.635294, 0.215686, 0.188235, 1 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 2 )
+
+[sub_resource type="StyleBoxFlat" id=132]
+bg_color = Color( 0.984314, 0.619608, 0.188235, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.988235, 0.364706, 0.321569, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0.635294, 0.215686, 0.188235, 1 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 2 )
+
 [node name="ChapterSelect" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -334,16 +340,34 @@ custom_styles/pressed = SubResource( 102 )
 custom_styles/focus = SubResource( 102 )
 custom_styles/normal = SubResource( 98 )
 group = SubResource( 118 )
+expand_icon = true
 script = ExtResource( 2 )
 should_focus = true
+
+[node name="Control" type="Control" parent="Chapters/Chapter1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_clip_content = true
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Chapters/Chapter1/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource( 7 )
+expand = true
 
 [node name="Label" type="Label" parent="Chapters/Chapter1"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -83.0
-margin_top = 6.0
-margin_right = 107.0
-margin_bottom = 47.0
+margin_left = -95.0
+margin_top = 4.0
+margin_right = 95.0
+margin_bottom = 45.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -352,31 +376,52 @@ custom_fonts/font = SubResource( 93 )
 text = "CHAPTER 1"
 
 [node name="BossName" type="Label" parent="Chapters/Chapter1"]
+visible = false
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-margin_left = -114.0
-margin_top = 406.0
-margin_right = 93.0
-margin_bottom = 527.0
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_top = -131.0
+margin_right = 103.5
+margin_bottom = -10.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 94 )
-text = "???"
+text = "pisun"
 align = 1
 valign = 2
 autowrap = true
 
+[node name="ParticleBox" type="Control" parent="Chapters/Chapter1"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_top = -8.0
+margin_bottom = 32.0
+mouse_filter = 2
+
+[node name="Particles2D" type="Particles2D" parent="Chapters/Chapter1/ParticleBox"]
+show_behind_parent = true
+emitting = false
+amount = 50
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 129 )
+
 [node name="Chapter2" type="Button" parent="Chapters"]
+modulate = Color( 0.654902, 0.654902, 0.654902, 1 )
 margin_left = 238.0
 margin_right = 467.0
 margin_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 103 )
-custom_styles/pressed = SubResource( 103 )
-custom_styles/focus = SubResource( 103 )
+custom_styles/hover = SubResource( 99 )
+custom_styles/pressed = SubResource( 99 )
+custom_styles/focus = SubResource( 99 )
 custom_styles/disabled = SubResource( 99 )
 custom_styles/normal = SubResource( 99 )
 group = SubResource( 118 )
@@ -385,10 +430,10 @@ script = ExtResource( 2 )
 [node name="Label" type="Label" parent="Chapters/Chapter2"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -91.0
-margin_top = 6.0
-margin_right = 113.0
-margin_bottom = 47.0
+margin_left = -102.0
+margin_top = 4.0
+margin_right = 102.0
+margin_bottom = 45.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -398,42 +443,45 @@ text = "CHAPTER 2"
 
 [node name="BossName" type="Label" parent="Chapters/Chapter2"]
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-margin_left = -114.0
-margin_top = 406.0
-margin_right = 93.0
-margin_bottom = 527.0
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_top = -131.0
+margin_right = 103.5
+margin_bottom = -10.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 94 )
-text = "???"
+text = "SOON"
 align = 1
 valign = 2
 autowrap = true
 
 [node name="Chapter3" type="Button" parent="Chapters"]
+modulate = Color( 0.654902, 0.654902, 0.654902, 1 )
 margin_left = 477.0
 margin_right = 706.0
 margin_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 104 )
-custom_styles/pressed = SubResource( 104 )
-custom_styles/focus = SubResource( 104 )
-custom_styles/disabled = SubResource( 100 )
-custom_styles/normal = SubResource( 100 )
+custom_styles/hover = SubResource( 99 )
+custom_styles/pressed = SubResource( 99 )
+custom_styles/focus = SubResource( 99 )
+custom_styles/disabled = SubResource( 99 )
+custom_styles/normal = SubResource( 99 )
 group = SubResource( 118 )
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Chapters/Chapter3"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -91.0
-margin_top = 6.0
-margin_right = 113.0
-margin_bottom = 47.0
+margin_left = -102.0
+margin_top = 4.0
+margin_right = 102.0
+margin_bottom = 45.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -443,42 +491,45 @@ text = "CHAPTER 3"
 
 [node name="BossName" type="Label" parent="Chapters/Chapter3"]
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-margin_left = -114.0
-margin_top = 406.0
-margin_right = 93.0
-margin_bottom = 527.0
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_top = -131.0
+margin_right = 103.5
+margin_bottom = -10.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 94 )
-text = "???"
+text = "soon"
 align = 1
 valign = 2
 autowrap = true
 
 [node name="Chapter4" type="Button" parent="Chapters"]
+modulate = Color( 0.654902, 0.654902, 0.654902, 1 )
 margin_left = 716.0
 margin_right = 945.0
 margin_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 105 )
-custom_styles/pressed = SubResource( 105 )
-custom_styles/focus = SubResource( 105 )
-custom_styles/disabled = SubResource( 101 )
-custom_styles/normal = SubResource( 101 )
+custom_styles/hover = SubResource( 99 )
+custom_styles/pressed = SubResource( 99 )
+custom_styles/focus = SubResource( 99 )
+custom_styles/disabled = SubResource( 99 )
+custom_styles/normal = SubResource( 99 )
 group = SubResource( 118 )
 script = ExtResource( 2 )
 
 [node name="Label" type="Label" parent="Chapters/Chapter4"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -92.0
-margin_top = 6.0
-margin_right = 112.0
-margin_bottom = 47.0
+margin_left = -102.0
+margin_top = 4.0
+margin_right = 102.0
+margin_bottom = 45.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -488,17 +539,19 @@ text = "CHAPTER 4"
 
 [node name="BossName" type="Label" parent="Chapters/Chapter4"]
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-margin_left = -114.0
-margin_top = 406.0
-margin_right = 93.0
-margin_bottom = 527.0
+anchor_bottom = 1.0
+margin_left = -103.5
+margin_top = -131.0
+margin_right = 103.5
+margin_bottom = -10.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.305882, 0.305882, 0.305882, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
 custom_fonts/font = SubResource( 94 )
-text = "???"
+text = "soon"
 align = 1
 valign = 2
 autowrap = true
@@ -554,9 +607,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -233.5
+margin_left = -233.0
 margin_top = -219.0
-margin_right = 233.5
+margin_right = 235.0
 margin_bottom = 219.0
 custom_styles/panel = SubResource( 108 )
 
@@ -564,9 +617,9 @@ custom_styles/panel = SubResource( 108 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -212.0
-margin_top = 42.0
+margin_top = 50.0
 margin_right = 212.0
-margin_bottom = 83.0
+margin_bottom = 91.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -578,9 +631,9 @@ text = "PICK WHERE TO START"
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -212.0
-margin_top = 5.0
+margin_top = 13.0
 margin_right = 212.0
-margin_bottom = 46.0
+margin_bottom = 54.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0.258824, 0.258824, 0.258824, 1 )
 custom_constants/shadow_offset_x = 0
@@ -665,6 +718,8 @@ text = "DEMON TANK"
 flat = true
 script = ExtResource( 3 )
 wave = 10
+what_to_check = 1.2
+should_spend_pass = true
 
 [node name="TextureRect" type="TextureRect" parent="ChapterMenus/Chapter1/ChoicesContainer/Choice2"]
 modulate = Color( 1.5, 1.5, 1.5, 1 )
@@ -697,6 +752,8 @@ group = SubResource( 119 )
 text = "WAVE 11"
 flat = true
 script = ExtResource( 3 )
+chapter = "res://Scenes/Chapter 1 Part 2.tscn"
+what_to_check = 1.3
 
 [node name="TextureRect" type="TextureRect" parent="ChapterMenus/Chapter1/ChoicesContainer/Choice3"]
 modulate = Color( 1.5, 1.5, 1.5, 1 )
@@ -726,9 +783,13 @@ custom_fonts/font = SubResource( 109 )
 custom_styles/focus = SubResource( 110 )
 toggle_mode = true
 group = SubResource( 119 )
-text = "BOSS NAME HERE"
+text = " ex. Acranus"
 flat = true
 script = ExtResource( 3 )
+wave = 15
+chapter = "res://Scenes/Chapter 1 Part 2.tscn"
+what_to_check = 1.4
+should_spend_pass = true
 
 [node name="TextureRect" type="TextureRect" parent="ChapterMenus/Chapter1/ChoicesContainer/Choice4"]
 modulate = Color( 1.5, 1.5, 1.5, 1 )
@@ -815,10 +876,48 @@ custom_fonts/font = SubResource( 125 )
 text = "0"
 valign = 1
 
+[node name="Error" type="Label" parent="ChapterMenus"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -511.0
+margin_top = 210.0
+margin_right = 512.0
+margin_bottom = 246.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0.286275, 0.0156863, 0.0156863, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 3
+custom_fonts/font = SubResource( 109 )
+text = "YOU NEED A BOSS PASS TO START FROM THIS PART"
+align = 1
+
 [node name="locked" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -5.0
 bus = "SoundEffects"
+
+[node name="MainMenu" type="Button" parent="."]
+modulate = Color( 1.15, 1, 1, 1 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -61.0
+margin_top = -29.0
+margin_right = 61.0
+margin_bottom = -4.0
+focus_neighbour_right = NodePath("../HBoxContainer/NextButton")
+custom_fonts/font = SubResource( 130 )
+custom_styles/hover = SubResource( 131 )
+custom_styles/pressed = SubResource( 131 )
+custom_styles/focus = SubResource( 132 )
+custom_styles/disabled = SubResource( 132 )
+custom_styles/normal = SubResource( 132 )
+text = "BACK"
+script = ExtResource( 2 )
 
 [connection signal="pressed" from="Chapters/Chapter1" to="." method="_on_Chapter1_pressed"]
 [connection signal="pressed" from="Chapters/Chapter2" to="." method="_on_Chapter2_pressed"]
@@ -826,3 +925,4 @@ bus = "SoundEffects"
 [connection signal="pressed" from="Chapters/Chapter4" to="." method="_on_Chapter4_pressed"]
 [connection signal="pressed" from="ChapterMenus/CloseButton" to="." method="_on_CloseButton_pressed"]
 [connection signal="pressed" from="ChapterMenus/Chapter1/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="MainMenu" to="." method="_on_MainMenu_pressed"]

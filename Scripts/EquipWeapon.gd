@@ -16,10 +16,11 @@ func _ready():
 	else:
 		text = "Equipped"
 		disabled = true 
-	connect("mouse_entered",self,"mouse_entered")
-	connect("mouse_exited",self,"mouse_left")
-	connect("focus_entered",self,"mouse_entered")
-	connect("focus_exited",self,"mouse_left")
+	if !is_connected("mouse_entered",self,"mouse_entered"):
+		connect("mouse_entered",self,"mouse_entered")
+		connect("mouse_exited",self,"mouse_left")
+		connect("focus_entered",self,"mouse_entered")
+		connect("focus_exited",self,"mouse_left")
 	self.rect_pivot_offset.x = self.rect_size.x/2
 	self.rect_pivot_offset.y = self.rect_size.y/2
 func _on_Equip_pressed():
@@ -44,7 +45,7 @@ func mouse_left():
 	if !has_focus():
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_CUBIC)
-		tween.tween_pproperty(self,"rect_scale",Vector2(1,1),0.3)
+		tween.tween_property(self,"rect_scale",Vector2(1,1),0.3)
 
 func check():
 	if weapon_name in Global.bought_weapons and !weapon_name in Global.equipped_weapon:

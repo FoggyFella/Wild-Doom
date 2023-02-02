@@ -28,6 +28,8 @@ var dash_speed = 300
 var dash_duration = 0.35
 var player_regen = 1
 var max_regen = 5
+var regen_time = 2.5
+var min_regen = 0.25
 var should_regen = false
 var should_actually_regen = true
 var dash_ghost = preload("res://Scenes/DashGhost.tscn")
@@ -37,14 +39,16 @@ var fire_before_frenzy = 0
 var movement = Vector2.ZERO
 var velocity = Vector2.ZERO
 var should_show_arrow = false
+var speed_downs = 0
 
 func _ready():
 	weapon = Global.equipped_weapon
-	#weapon = "Sniper"
+	#weapon = "Shotgun"
 	var weapon_inst = weapons[weapon].instance()
 	get_node("GunRoot").add_child(weapon_inst)
 	Global.player = self
 	Global.connect("frenzy_start",self,"on_frenzy_started")
+	Global.connect("activate_boost",self,"on_boost_activated")
 	set_deadzone()
 
 func _exit_tree():
@@ -62,19 +66,23 @@ func _process(delta):
 	if Global.stats["player_health"] > Global.player_max_health:
 		Global.player_max_health = Global.stats["player_health"]
 	if should_regen and should_actually_regen:
-		Global.stats["player_health"] += player_regen
+		Global.stats["player_health"] += Global.stats["player_healing"]
 		should_actually_regen = false
 		if Global.stats["player_health"] >= Global.player_max_health:
 			Global.stats["player_health"] = Global.player_max_health
 			should_regen = false
-		yield(get_tree().create_timer(2),"timeout")
+		yield(get_tree().create_timer(regen_time),"timeout")
 		if should_regen:
-			if player_regen < max_regen:
-				player_regen += 1
+#			if player_regen < max_regen:
+#				player_regen += 1
+			if regen_time > min_regen:
+				regen_time -= 0.25
 			should_actually_regen = true
+	$Label.text = str(regen_time)
 	
 func _physics_process(delta):
-	speed = Global.stats["player_speed"]
+	if speed_downs <= 0:
+		speed = Global.stats["player_speed"]
 	health = Global.stats["player_health"]
 	if can_move:
 		var movement_vector = Vector2(
@@ -108,6 +116,8 @@ func _physics_process(delta):
 		move_and_slide(velocity,Vector2.UP)
 #	if Input.is_action_just_pressed("ui_up"):
 #		take_damage(1000)
+#	if Input.is_action_just_pressed("ui_down"):
+#		Global.stats["player_bullets"] = [-0.2,0.0,0.2]
 
 func take_damage(amount):
 	if can_be_hurt:
@@ -121,7 +131,7 @@ func take_damage(amount):
 		ui.get_damaged()
 		randomize()
 		var numb_inst = number_of_damage.instance()
-		numb_inst.amount = "-" + str(amount)
+		numb_inst.amount = "-" + str(round(amount * Global.stats["defense"]))
 		numb_inst.type = "White"
 		numb_inst.position = self.position
 		get_tree().current_scene.call_deferred("add_child",numb_inst)
@@ -132,7 +142,7 @@ func take_damage(amount):
 		tween.tween_property(self.get_material(),"shader_param/flash_modifier",1.0,0.1)
 		tween.tween_property(self.get_material(),"shader_param/flash_modifier",0.0,0.1)
 		if Global.stats["player_health"] > 0 and Global.stats["player_health"]:
-			Global.stats["player_health"] -= amount
+			Global.stats["player_health"] -= round(amount * Global.stats["defense"])
 			if Global.stats["player_health"] <= 0:
 				Global.stats["player_health"] = 0
 				yield(get_tree().create_timer(0.1),"timeout")
@@ -148,6 +158,7 @@ func take_damage(amount):
 func _on_RegenerationTimer_timeout():
 	should_regen = true
 	should_actually_regen = true
+	regen_time = 2.5
 
 func start_dash(time,timeout):
 	if can_dash:
@@ -221,3 +232,36 @@ func set_deadzone():
 	InputMap.action_set_deadzone("move_up",Global.settings["deadzone"])
 	InputMap.action_set_deadzone("move_down",Global.settings["deadzone"])
 	InputMap.action_set_deadzone("move_right",Global.settings["deadzone"])
+
+func apply_speed_down():
+	if speed_downs < 3:
+		speed_downs += 1
+		$SpeedDown.start()
+		speed -= get_percentage(speed,10)
+
+func on_speed_down_timeout():
+	speed_downs -= 1
+	speed = Global.stats["player_speed"]
+
+func get_percentage(from,perc,should_round = true):
+	if should_round:
+		return round(float(perc)/100.0 * from)
+	else:
+		return float(perc)/100.0 * from
+
+func on_boost_activated(stat,how_much,time):
+	#var boost_timer = get_tree().create_timer(time,PAUSE_MODE_STOP)
+	#boost_timer.connect("timeout",self,"on_boost_timer_timeout",[stat,how_much])
+	var boost_timer = Timer.new()
+	get_tree().current_scene.add_child(boost_timer)
+	boost_timer.connect("timeout",self,"on_boost_timer_timeout",[stat,how_much,boost_timer])
+	boost_timer.one_shot = true
+	boost_timer.start(time)
+	print("some boost activated")
+	Global.stats[stat] += how_much
+
+func on_boost_timer_timeout(stat,how_much,the_timer):
+	Global.stats[stat] -= how_much
+	Global.stats["activated_boosts"].erase(stat)
+	the_timer.queue_free()
+	print("some boost finished")

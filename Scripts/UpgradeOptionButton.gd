@@ -10,8 +10,10 @@ func _ready():
 		mouse_entered()
 	connect("mouse_entered",self,"mouse_entered")
 	connect("mouse_exited",self,"mouse_left")
-	connect("pressed",self,"on_pressed")
-	connect("pressed",get_parent().get_parent(),"option_selected")
+	#connect("pressed",self,"on_pressed")
+	#connect("pressed",get_parent().get_parent(),"option_selected")
+	#connect("toggled",self,"on_toggled")
+	group.connect("pressed",self,"on_pressed_group")
 	connect("focus_entered",self,"mouse_entered")
 	connect("focus_exited",self,"mouse_left")
 	self.rect_pivot_offset.x = self.rect_size.x/2
@@ -35,3 +37,21 @@ func mouse_left():
 
 func on_pressed():
 	get_parent().get_parent().selected_button = self
+
+func on_toggled(button_pressed):
+	if button_pressed:
+		get_parent().get_parent().selected_button = self
+		for child in get_parent().get_children():
+			if child != self:
+				child.pressed = false
+				var tween = create_tween()
+				tween.set_trans(Tween.TRANS_CUBIC)
+				tween.tween_property(child.get_node("TextureRect"),"rect_scale",Vector2(1,1),0.3)
+	else:
+		get_parent().get_parent().selected_button = null
+
+func on_pressed_group(button):
+	get_parent().get_parent().selected_button = button
+	for button_kid in group.get_buttons():
+		if button_kid != button:
+			button_kid.pressed = false

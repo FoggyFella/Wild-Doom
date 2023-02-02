@@ -9,10 +9,11 @@ func _ready():
 	if weapon_name in Global.bought_weapons:
 		text = "Bought"
 		disabled = true
-	connect("mouse_entered",self,"mouse_entered")
-	connect("mouse_exited",self,"mouse_left")
-	connect("focus_entered",self,"mouse_entered")
-	connect("focus_exited",self,"mouse_left")
+	if !is_connected("mouse_entered",self,"mouse_entered"):
+		connect("mouse_entered",self,"mouse_entered")
+		connect("mouse_exited",self,"mouse_left")
+		connect("focus_entered",self,"mouse_entered")
+		connect("focus_exited",self,"mouse_left")
 	self.rect_pivot_offset.x = self.rect_size.x/2
 	self.rect_pivot_offset.y = self.rect_size.y/2
 

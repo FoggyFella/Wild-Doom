@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/bloodsheet.png" type="Texture" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0.620454 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -1.71852, 0.0, 0, 0 ]
+
+[sub_resource type="GDScript" id=3]
+resource_name = "HitParticle"
+script/source = "extends CPUParticles2D
+
+func _on_Timer_timeout():
+	queue_free()
+"
+
+[node name="HitParticle" type="CPUParticles2D"]
+material = SubResource( 1 )
+amount = 5
+lifetime = 0.5
+explosiveness = 1.0
+texture = ExtResource( 1 )
+direction = Vector2( 2, 0 )
+spread = 18.87
+gravity = Vector2( 0, 60 )
+initial_velocity = 129.04
+initial_velocity_random = 0.33
+angular_velocity = 325.16
+angular_velocity_random = 0.92
+scale_amount_curve = SubResource( 2 )
+anim_offset = 1.0
+anim_offset_random = 1.0
+script = SubResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.45
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

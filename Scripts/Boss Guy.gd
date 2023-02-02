@@ -14,6 +14,7 @@ var ashes = preload("res://Scenes/BloodParticlesButAshes.tscn")
 var player = null
 var ui = null
 
+var can_bite = true
 var killed_before = false
 var money_reward = 100
 var previous_attack = "Attack1"
@@ -119,6 +120,15 @@ func _physics_process(delta):
 			elif !i.critical:
 				if stun == false:
 					take_damage(i.damage,false,true)
+		for i_2 in get_slide_count():
+			var collision = get_slide_collision(i)
+			if collision != null:
+				if collision.get_collider().name == "Player":
+					if collision.get_collider().has_method("take_damage"):
+						if can_bite:
+							can_bite = false
+							$bite_timer.start()
+							collision.get_collider().take_damage(30)
 
 func rotate_to_face_player(dir):
 	if dir.x > 0:
@@ -240,22 +250,26 @@ func take_damage(how_much,critical,knockback=true):
 			health = 0
 			$death.pitch_scale = rand_range(0.8,1)
 			$death.play()
-			ui.boss_dead()
+			ui.boss_dead([1.2,1.3])
 			Global.settings["beat_gorilla"] = true
+			append_unlocked([1.2,1.3])
+			#Global.settings["unlocked_chapter_parts"].append(1.2)
 			yield(tween,"finished")
 			queue_free()
-			Global.emit_signal("money_picked_up",money_reward)
+			Global.emit_signal("money_picked_up",round(money_reward * Global.stats["player_earnings"]))
 			Global.enemies_killed += 1
 			grant_ruby()
 	elif health <= 0:
 		health = 0
 		$death.pitch_scale = rand_range(0.8,1)
 		$death.play()
-		ui.boss_dead()
+		ui.boss_dead([1.2,1.3])
 		Global.settings["beat_gorilla"] = true
+		append_unlocked([1.2,1.3])
+		#Global.settings["unlocked_chapter_parts"].append(1.2)
 		yield(tween,"finished")
 		queue_free()
-		Global.emit_signal("money_picked_up",money_reward)
+		Global.emit_signal("money_picked_up",round(money_reward * Global.stats["player_earnings"]))
 		Global.enemies_killed += 1
 		grant_ruby()
 	yield(tween,"finished")
@@ -268,10 +282,6 @@ func take_damage(how_much,critical,knockback=true):
 		bullet_rots = [-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5]
 	
 func burn(time,tick,damage_per_tick):
-	#if should_change_speed:
-		#should_change_speed = false
-		#previous_speed = speed
-		#speed = speed - speed * 0.6
 	$burn_timer.start(time)
 	if $burn_tick.is_stopped():
 		$burn_tick.start(tick)
@@ -351,3 +361,13 @@ func grant_ruby():
 	elif killed_before:
 		Global.settings["rubys"] += 3
 		Global.emit_signal("ruby_collected",3)
+
+func append_unlocked(which_parts_to_add = null):
+	if which_parts_to_add != null:
+		for part in which_parts_to_add:
+			if !part in Global.settings["unlocked_chapter_parts"]:
+				Global.settings["unlocked_chapter_parts"].append(part)
+
+
+func _on_bite_timer_timeout():
+	can_bite = true

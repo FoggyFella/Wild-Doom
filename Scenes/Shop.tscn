@@ -567,6 +567,7 @@ custom_styles/pressed = SubResource( 117 )
 custom_styles/focus = SubResource( 117 )
 custom_styles/disabled = SubResource( 118 )
 custom_styles/normal = SubResource( 118 )
+disabled = true
 text = "SKILLS"
 icon_align = 1
 
@@ -1472,7 +1473,7 @@ __meta__ = {
 "_edit_group_": true
 }
 item_name = "Flamethrower"
-item_stats = [ "DMG 20", "FRT 0.5", "CRT 0%" ]
+item_stats = [ "DMG 35", "FRT 0.5", "CRT 0%" ]
 item_btm_desc = "SETs enemies on fire after hit enemies get resistance to flames for 0.75 sec."
 price = 1500
 
@@ -1595,7 +1596,7 @@ __meta__ = {
 "_edit_group_": true
 }
 item_name = "P90"
-item_stats = [ "DMG 15", "FRT 0.17", "CRT 2.5%" ]
+item_stats = [ "DMG 20", "FRT 0.17", "CRT 2.5%" ]
 item_btm_desc = "FAST AND PRETTY GOOD Why do some call it \"Petuh\"?"
 price = 1500
 
@@ -1772,10 +1773,10 @@ script = ExtResource( 24 )
 __meta__ = {
 "_edit_group_": true
 }
-item_name = "Boss Pass"
+item_name = "BossPass"
 item_top_desc = "Amount you're gonna buy: 1"
 item_btm_desc = "Lets you skip right to a boss you've unlocked"
-ruby_price = 1
+ruby_price = 10
 scale_of_icon = Vector2( 0.7, 0.7 )
 can_equip = false
 amount = 1

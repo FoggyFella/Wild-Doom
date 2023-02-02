@@ -1,4 +1,4 @@
-[gd_scene load_steps=126 format=2]
+[gd_scene load_steps=125 format=2]
 
 [ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/chest fill.png" type="Texture" id=2]
@@ -30,6 +30,8 @@
 [ext_resource path="res://Assets/Boss/Zombie - Tank - Dead.ogg" type="AudioStream" id=28]
 [ext_resource path="res://Assets/cash.png" type="Texture" id=29]
 [ext_resource path="res://Assets/ruby.png" type="Texture" id=30]
+[ext_resource path="res://Assets/transition_or_dissolve_shader.tres" type="Material" id=31]
+[ext_resource path="res://Scenes/Big Axe Guy.tscn" type="PackedScene" id=32]
 
 [sub_resource type="TileSet" id=17]
 0/name = "lava tile.png 0"
@@ -47,31 +49,31 @@
 0/shapes = [  ]
 0/z_index = 0
 
-[sub_resource type="ConvexPolygonShape2D" id=83]
+[sub_resource type="ConvexPolygonShape2D" id=131]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=84]
+[sub_resource type="ConvexPolygonShape2D" id=132]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=85]
+[sub_resource type="ConvexPolygonShape2D" id=133]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=86]
+[sub_resource type="ConvexPolygonShape2D" id=134]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=87]
+[sub_resource type="ConvexPolygonShape2D" id=135]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=88]
+[sub_resource type="ConvexPolygonShape2D" id=136]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=89]
+[sub_resource type="ConvexPolygonShape2D" id=137]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=90]
+[sub_resource type="ConvexPolygonShape2D" id=138]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
-[sub_resource type="ConvexPolygonShape2D" id=91]
+[sub_resource type="ConvexPolygonShape2D" id=139]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 
 [sub_resource type="TileSet" id=10]
@@ -85,14 +87,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 0/navigation_offset = Vector2( 0, 0 )
 0/shape_offset = Vector2( 0, 0 )
 0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 83 )
+0/shape = SubResource( 131 )
 0/shape_one_way = false
 0/shape_one_way_margin = 1.0
 0/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 83 ),
+"shape": SubResource( 131 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
@@ -106,14 +108,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 1/navigation_offset = Vector2( 0, 0 )
 1/shape_offset = Vector2( 0, 0 )
 1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-1/shape = SubResource( 84 )
+1/shape = SubResource( 132 )
 1/shape_one_way = false
 1/shape_one_way_margin = 1.0
 1/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 84 ),
+"shape": SubResource( 132 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 1/z_index = 0
@@ -127,14 +129,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 2/navigation_offset = Vector2( 0, 0 )
 2/shape_offset = Vector2( 0, 0 )
 2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape = SubResource( 85 )
+2/shape = SubResource( 133 )
 2/shape_one_way = false
 2/shape_one_way_margin = 1.0
 2/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 85 ),
+"shape": SubResource( 133 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 2/z_index = 0
@@ -148,14 +150,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 3/navigation_offset = Vector2( 0, 0 )
 3/shape_offset = Vector2( 0, 0 )
 3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-3/shape = SubResource( 86 )
+3/shape = SubResource( 134 )
 3/shape_one_way = false
 3/shape_one_way_margin = 1.0
 3/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 86 ),
+"shape": SubResource( 134 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 3/z_index = 0
@@ -169,14 +171,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 4/navigation_offset = Vector2( 0, 0 )
 4/shape_offset = Vector2( 0, 0 )
 4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-4/shape = SubResource( 87 )
+4/shape = SubResource( 135 )
 4/shape_one_way = false
 4/shape_one_way_margin = 1.0
 4/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 87 ),
+"shape": SubResource( 135 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 4/z_index = 0
@@ -190,14 +192,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 5/navigation_offset = Vector2( 0, 0 )
 5/shape_offset = Vector2( 0, 0 )
 5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-5/shape = SubResource( 88 )
+5/shape = SubResource( 136 )
 5/shape_one_way = false
 5/shape_one_way_margin = 1.0
 5/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 88 ),
+"shape": SubResource( 136 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 5/z_index = 0
@@ -211,14 +213,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 6/navigation_offset = Vector2( 0, 0 )
 6/shape_offset = Vector2( 0, 0 )
 6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-6/shape = SubResource( 89 )
+6/shape = SubResource( 137 )
 6/shape_one_way = false
 6/shape_one_way_margin = 1.0
 6/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 89 ),
+"shape": SubResource( 137 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 6/z_index = 0
@@ -232,14 +234,14 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 7/navigation_offset = Vector2( 0, 0 )
 7/shape_offset = Vector2( 0, 0 )
 7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-7/shape = SubResource( 90 )
+7/shape = SubResource( 138 )
 7/shape_one_way = false
 7/shape_one_way_margin = 1.0
 7/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 90 ),
+"shape": SubResource( 138 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 7/z_index = 0
@@ -253,19 +255,19 @@ points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
 8/navigation_offset = Vector2( 0, 0 )
 8/shape_offset = Vector2( 0, 0 )
 8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-8/shape = SubResource( 91 )
+8/shape = SubResource( 139 )
 8/shape_one_way = false
 8/shape_one_way_margin = 1.0
 8/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 91 ),
+"shape": SubResource( 139 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 8/z_index = 0
 
-[sub_resource type="Shader" id=94]
+[sub_resource type="Shader" id=140]
 code = "shader_type canvas_item;
 
 void fragment(){
@@ -275,12 +277,12 @@ void fragment(){
 }"
 
 [sub_resource type="ShaderMaterial" id=95]
-shader = SubResource( 94 )
+shader = SubResource( 140 )
 
-[sub_resource type="OpenSimplexNoise" id=96]
+[sub_resource type="OpenSimplexNoise" id=141]
 
 [sub_resource type="NoiseTexture" id=97]
-noise = SubResource( 96 )
+noise = SubResource( 141 )
 
 [sub_resource type="ShaderMaterial" id=41]
 resource_local_to_scene = true
@@ -299,7 +301,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 125, -777, 0, 0, 0, 0, -167, -820, 0, 0, 0, 0, -556, -621, 0, 0, 0, 0, -713, -546, 0, 0, 0, 0, -1076, 392, 0, 0, 0, 0, -1033, -449, 0, 0, 0, 0, -1076, 249, 0, 0, 0, 0, -1233, 53, 0, 0, 0, 0, -780, -425, 0, 0, 0, 0, -1065, -275, 0, 0, 0, 0, -984, 677, 0, 0, 0, 0, -1058, 538, 0, 0, 0, 0, -260, 898, 0, 0, 0, 0, -318, 680, 0, 0, 0, 0, -1122, -90, 0, 0, 0, 0, -673, 702, 0, 0, 0, 0, 837, 598, 0, 0, 0, 0, -57, 744, 0, 0, 0, 0, 64, 894, 0, 0, 0, 0, -1008, 78, 0, 0, 0, 0, -1201, 563, 0, 0, 0, 0, 168, 727, 0, 0, 0, 0, -581, 755, 0, 0, 0, 0, 296, 737, 0, 0, 0, 0, 495, 684, 0, 0, 0, 0, 663, 648, 0, 0, 0, 0, 1062, 238, 0, 0, 0, 0, 994, -236, 0, 0, 0, 0, 1023, -742, 0, 0, 0, 0, 342, -749, 0, 0, 0, 0, -25, -781, 0, 0, 0, 0, -453, -834, 0, 0, 0, 0, 649, -685, 0, 0, 0, 0, -1101, -168, 0, 0, 0, 0, -955, -275 )
 }
 
-[sub_resource type="Shader" id=92]
+[sub_resource type="Shader" id=142]
 code = "shader_type canvas_item;
 
 uniform sampler2D offset_image : hint_white;
@@ -320,18 +322,18 @@ void fragment() {
 interpolation_mode = 2
 offsets = PoolRealArray( 0.733333, 1 )
 
-[sub_resource type="GradientTexture2D" id=93]
+[sub_resource type="GradientTexture2D" id=143]
 gradient = SubResource( 27 )
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=29]
-shader = SubResource( 92 )
+shader = SubResource( 142 )
 shader_param/strength = 0.3
-shader_param/offset_image = SubResource( 93 )
+shader_param/offset_image = SubResource( 143 )
 
-[sub_resource type="Shader" id=66]
+[sub_resource type="Shader" id=144]
 code = "shader_type canvas_item;
 
 uniform sampler2D noise_img;
@@ -359,31 +361,31 @@ void fragment(){
 [sub_resource type="OpenSimplexNoise" id=67]
 period = 116.6
 
-[sub_resource type="NoiseTexture" id=68]
+[sub_resource type="NoiseTexture" id=145]
 seamless = true
 noise = SubResource( 67 )
 
 [sub_resource type="ShaderMaterial" id=69]
-shader = SubResource( 66 )
+shader = SubResource( 144 )
 shader_param/speed = 0.1
 shader_param/smoke_color = Color( 0.756863, 0.0901961, 0.0901961, 1 )
-shader_param/noise_img = SubResource( 68 )
+shader_param/noise_img = SubResource( 145 )
 
-[sub_resource type="Gradient" id=22]
+[sub_resource type="Gradient" id=146]
 colors = PoolColorArray( 0, 0, 0, 0, 0.890625, 0.20874, 0.20874, 1 )
 
 [sub_resource type="GradientTexture2D" id=23]
-gradient = SubResource( 22 )
+gradient = SubResource( 146 )
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0, 0 )
 
-[sub_resource type="Gradient" id=24]
+[sub_resource type="Gradient" id=147]
 offsets = PoolRealArray( 0.719136, 1 )
 colors = PoolColorArray( 0, 0, 0, 0, 0, 0, 0, 0.329412 )
 
 [sub_resource type="GradientTexture2D" id=25]
-gradient = SubResource( 24 )
+gradient = SubResource( 147 )
 fill = 1
 fill_from = Vector2( 0.5, 0.5 )
 fill_to = Vector2( 0, 0 )
@@ -402,12 +404,12 @@ outline_color = Color( 0.733333, 0.913725, 0.160784, 1 )
 use_mipmaps = true
 font_data = ExtResource( 7 )
 
-[sub_resource type="Gradient" id=74]
+[sub_resource type="Gradient" id=148]
 offsets = PoolRealArray( 0, 0.0603774, 0.135849, 0.901887, 0.943396, 1 )
 colors = PoolColorArray( 0.976471, 0.0509804, 0.266667, 0, 0.976471, 0.0509804, 0.266667, 0, 0.976471, 0.0509804, 0.266667, 1, 0.976471, 0.0509804, 0.266667, 1, 0.976471, 0.0509804, 0.266667, 0, 0.976471, 0.0509804, 0.266667, 0 )
 
 [sub_resource type="GradientTexture" id=75]
-gradient = SubResource( 74 )
+gradient = SubResource( 148 )
 
 [sub_resource type="Animation" id=76]
 resource_name = "Migaet"
@@ -441,10 +443,9 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=36]
+[sub_resource type="DynamicFont" id=130]
 size = 45
 outline_size = 2
-outline_color = Color( 0.733333, 0.913725, 0.160784, 1 )
 use_mipmaps = true
 font_data = ExtResource( 7 )
 
@@ -465,7 +466,7 @@ outline_color = Color( 0, 0, 0, 1 )
 use_mipmaps = true
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFontData" id=50]
+[sub_resource type="DynamicFontData" id=149]
 antialiased = false
 font_path = "res://Assets/Font/upheavtt.ttf"
 
@@ -475,7 +476,7 @@ outline_size = 2
 outline_color = Color( 0.0588235, 0.00392157, 0.00392157, 1 )
 extra_spacing_top = -9
 extra_spacing_bottom = -1
-font_data = SubResource( 50 )
+font_data = SubResource( 149 )
 
 [sub_resource type="DynamicFont" id=14]
 size = 73
@@ -575,7 +576,7 @@ corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="DynamicFontData" id=71]
+[sub_resource type="DynamicFontData" id=150]
 antialiased = false
 font_path = "res://Assets/Font/upheavtt.ttf"
 
@@ -583,19 +584,19 @@ font_path = "res://Assets/Font/upheavtt.ttf"
 size = 40
 outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
-font_data = SubResource( 71 )
+font_data = SubResource( 150 )
 
 [sub_resource type="DynamicFont" id=58]
 size = 40
 outline_size = 2
 outline_color = Color( 0.376471, 0.0509804, 0.0509804, 1 )
-font_data = SubResource( 71 )
+font_data = SubResource( 150 )
 
 [sub_resource type="DynamicFont" id=60]
 size = 40
 outline_size = 2
 outline_color = Color( 0.447059, 0.447059, 0.447059, 1 )
-font_data = SubResource( 71 )
+font_data = SubResource( 150 )
 
 [sub_resource type="StyleBoxFlat" id=61]
 bg_color = Color( 0.0745098, 0.72549, 0.921569, 1 )
@@ -658,7 +659,7 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="DynamicFontData" id=47]
+[sub_resource type="DynamicFontData" id=151]
 antialiased = false
 font_path = "res://Assets/Font/upheavtt.ttf"
 
@@ -666,7 +667,7 @@ font_path = "res://Assets/Font/upheavtt.ttf"
 size = 30
 outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )
-font_data = SubResource( 47 )
+font_data = SubResource( 151 )
 
 [sub_resource type="StyleBoxFlat" id=49]
 content_margin_left = 23.0
@@ -693,7 +694,7 @@ outline_color = Color( 0.32549, 0.0235294, 0.0235294, 1 )
 extra_spacing_top = 14
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFontData" id=65]
+[sub_resource type="DynamicFontData" id=152]
 antialiased = false
 font_path = "res://Assets/Font/upheavtt.ttf"
 
@@ -701,7 +702,7 @@ font_path = "res://Assets/Font/upheavtt.ttf"
 size = 30
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
-font_data = SubResource( 65 )
+font_data = SubResource( 152 )
 
 [sub_resource type="Theme" id=46]
 
@@ -731,14 +732,14 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[sub_resource type="Gradient" id=80]
+[sub_resource type="Gradient" id=153]
 offsets = PoolRealArray( 0, 0.0716981, 0.188679, 0.792453, 0.901887, 0.992453 )
 colors = PoolColorArray( 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0 )
 
 [sub_resource type="GradientTexture2D" id=81]
-gradient = SubResource( 80 )
+gradient = SubResource( 153 )
 
-[sub_resource type="Shader" id=106]
+[sub_resource type="Shader" id=154]
 code = "shader_type canvas_item;
 
 uniform float blur_amount : hint_range(0, 5);
@@ -748,39 +749,8 @@ void fragment() {
 }"
 
 [sub_resource type="ShaderMaterial" id=107]
-shader = SubResource( 106 )
+shader = SubResource( 154 )
 shader_param/blur_amount = 1.354
-
-[sub_resource type="Shader" id=116]
-code = "shader_type canvas_item;
-render_mode unshaded;
-
-uniform float cutoff : hint_range(0.0, 1.0);
-uniform float smooth_size : hint_range(0.0, 1.0);
-uniform sampler2D mask : hint_albedo;
-
-uniform vec4 color : hint_color;
-
-void fragment()
-{
-	float value = texture(mask, UV).r;
-	float alpha = smoothstep(cutoff, cutoff + smooth_size, value * (1.0 - smooth_size) + smooth_size) * COLOR.a;
-	COLOR = vec4(COLOR.rgb, alpha);
-}"
-
-[sub_resource type="OpenSimplexNoise" id=117]
-period = 54.5
-persistence = 0.518
-
-[sub_resource type="NoiseTexture" id=118]
-noise = SubResource( 117 )
-
-[sub_resource type="ShaderMaterial" id=119]
-shader = SubResource( 116 )
-shader_param/cutoff = 0.0
-shader_param/smooth_size = 0.233
-shader_param/color = Color( 0.992157, 0.172549, 0.172549, 1 )
-shader_param/mask = SubResource( 118 )
 
 [sub_resource type="DynamicFont" id=120]
 
@@ -795,7 +765,7 @@ shadow_color = Color( 0, 0, 0, 0.368627 )
 shadow_size = 5
 
 [sub_resource type="StyleBoxFlat" id=127]
-bg_color = Color( 0.176471, 0.196078, 0.984314, 1 )
+bg_color = Color( 0.984314, 0.176471, 0.364706, 1 )
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
@@ -814,15 +784,18 @@ border_color = Color( 0.180392, 0.0156863, 0.0470588, 1 )
 shadow_color = Color( 0, 0, 0, 0.392157 )
 shadow_size = 5
 
+[sub_resource type="ButtonGroup" id=129]
+resource_name = "OptionsGroup"
+
 [sub_resource type="CanvasItemMaterial" id=128]
 blend_mode = 2
 
-[sub_resource type="Gradient" id=110]
+[sub_resource type="Gradient" id=155]
 offsets = PoolRealArray( 0, 0.679426 )
 colors = PoolColorArray( 1, 1, 1, 1, 0, 0, 0, 1 )
 
 [sub_resource type="GradientTexture2D" id=111]
-gradient = SubResource( 110 )
+gradient = SubResource( 155 )
 fill_from = Vector2( 0.5, 1 )
 fill_to = Vector2( 0.5, 0 )
 
@@ -838,7 +811,7 @@ corner_radius_top_right = 200
 corner_radius_bottom_right = 200
 corner_radius_bottom_left = 200
 
-[sub_resource type="DynamicFontData" id=112]
+[sub_resource type="DynamicFontData" id=156]
 antialiased = false
 font_path = "res://Assets/Font/upheavtt.ttf"
 
@@ -846,13 +819,13 @@ font_path = "res://Assets/Font/upheavtt.ttf"
 size = 30
 outline_size = 1
 outline_color = Color( 0.0352941, 0, 0, 1 )
-font_data = SubResource( 112 )
+font_data = SubResource( 156 )
 
 [sub_resource type="DynamicFont" id=113]
 size = 40
 outline_size = 2
 outline_color = Color( 0.0352941, 0, 0, 1 )
-font_data = SubResource( 112 )
+font_data = SubResource( 156 )
 
 [sub_resource type="DynamicFont" id=121]
 size = 50
@@ -891,12 +864,12 @@ shadow_offset = Vector2( 0, 8 )
 [sub_resource type="ButtonGroup" id=124]
 resource_name = "Fellers"
 
-[sub_resource type="Gradient" id=125]
+[sub_resource type="Gradient" id=157]
 offsets = PoolRealArray( 0, 0.0716981, 0.188679, 0.792453, 0.901887, 0.992453 )
 colors = PoolColorArray( 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 1, 0.870588, 0.0313726, 0.207843, 0, 0.870588, 0.0313726, 0.207843, 0 )
 
 [sub_resource type="GradientTexture2D" id=126]
-gradient = SubResource( 125 )
+gradient = SubResource( 157 )
 
 [node name="World" type="Node2D"]
 script = ExtResource( 5 )
@@ -907,6 +880,7 @@ __meta__ = {
 
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource( 11 )
+next_part = "res://Scenes/Chapter 1 Part 2.tscn"
 
 [node name="Wave1" type="Node" parent="WaveManager"]
 
@@ -1372,7 +1346,7 @@ wait_time = 2.7
 script = ExtResource( 4 )
 
 [node name="PickupTimer" type="Timer" parent="."]
-wait_time = 15.0
+wait_time = 20.0
 autostart = true
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
@@ -1516,9 +1490,9 @@ margin_left = -40.0
 margin_top = -210.0
 margin_right = -2.0
 margin_bottom = -4.0
-max_value = 15.0
+max_value = 20.0
 step = 0.01
-value = 15.0
+value = 20.0
 texture_under = ExtResource( 9 )
 texture_progress = ExtResource( 2 )
 texture_progress_offset = Vector2( 0, 31 )
@@ -1537,11 +1511,11 @@ margin_top = -61.0
 margin_right = 258.0
 margin_bottom = -20.0
 custom_colors/font_color = Color( 0.968627, 1, 0.94902, 1 )
-custom_colors/font_outline_modulate = Color( 0.0431373, 0.843137, 1, 1 )
-custom_colors/font_color_shadow = Color( 0.0352941, 0.576471, 0.168627, 1 )
+custom_colors/font_outline_modulate = Color( 0.909804, 0.0470588, 0.14902, 1 )
+custom_colors/font_color_shadow = Color( 0.576471, 0.0352941, 0.0352941, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 2
-custom_fonts/font = SubResource( 36 )
+custom_fonts/font = SubResource( 130 )
 text = "HEALTH: 100"
 
 [node name="Cash" type="HBoxContainer" parent="UI"]
@@ -1740,13 +1714,33 @@ text = "YOU DIED!"
 align = 1
 valign = 1
 
+[node name="Label2" type="Label" parent="UI/DeathScreen"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -493.0
+margin_top = -236.0
+margin_right = 493.0
+margin_bottom = -170.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_outline_modulate = Color( 0.2, 0.00392157, 0.00392157, 1 )
+custom_colors/font_color_shadow = Color( 0.372549, 0.364706, 0.364706, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 2
+custom_fonts/font = SubResource( 14 )
+text = "YOU WIN!"
+align = 1
+valign = 1
+
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/DeathScreen"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -493.0
-margin_top = -119.0
+margin_top = -150.0
 margin_right = 493.0
 margin_bottom = 91.0
 
@@ -1763,24 +1757,38 @@ text = "ENEMIES KILED HERE"
 align = 1
 valign = 1
 
-[node name="Label3" type="Label" parent="UI/DeathScreen/VBoxContainer"]
+[node name="Label6" type="Label" parent="UI/DeathScreen/VBoxContainer"]
 margin_top = 48.0
 margin_right = 986.0
 margin_bottom = 92.0
-custom_colors/font_color = Color( 0.423529, 0.905882, 0.145098, 1 )
+custom_colors/font_color = Color( 0.223529, 0.905882, 0.145098, 1 )
 custom_colors/font_outline_modulate = Color( 0.360784, 0.772549, 0.0431373, 1 )
 custom_colors/font_color_shadow = Color( 0.239216, 0.607843, 0.027451, 1 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 3
 custom_fonts/font = SubResource( 15 )
-text = "PICKUPS COLLECTED HERE"
+text = "WAVES PASSED HERE"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="UI/DeathScreen/VBoxContainer"]
+margin_top = 96.0
+margin_right = 986.0
+margin_bottom = 140.0
+custom_colors/font_color = Color( 0.631373, 0.0941176, 0.929412, 1 )
+custom_colors/font_outline_modulate = Color( 0.168627, 0.0156863, 0.309804, 1 )
+custom_colors/font_color_shadow = Color( 0.180392, 0.027451, 0.411765, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 3
+custom_fonts/font = SubResource( 15 )
+text = "BOOSTS COLLECTED HERE"
 align = 1
 valign = 1
 
 [node name="Label4" type="Label" parent="UI/DeathScreen/VBoxContainer"]
-margin_top = 96.0
+margin_top = 144.0
 margin_right = 986.0
-margin_bottom = 140.0
+margin_bottom = 188.0
 custom_colors/font_color = Color( 0.952941, 0.792157, 0.0627451, 1 )
 custom_colors/font_outline_modulate = Color( 0.360784, 0.772549, 0.0431373, 1 )
 custom_colors/font_color_shadow = Color( 0.784314, 0.521569, 0.0196078, 1 )
@@ -1792,9 +1800,9 @@ align = 1
 valign = 1
 
 [node name="Label5" type="Label" parent="UI/DeathScreen/VBoxContainer"]
-margin_top = 144.0
+margin_top = 192.0
 margin_right = 986.0
-margin_bottom = 188.0
+margin_bottom = 236.0
 custom_colors/font_color = Color( 0.952941, 0.25098, 0.0627451, 1 )
 custom_colors/font_outline_modulate = Color( 0.360784, 0.772549, 0.0431373, 1 )
 custom_colors/font_color_shadow = Color( 0.662745, 0.168627, 0.0352941, 1 )
@@ -2281,7 +2289,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Options" type="HBoxContainer" parent="UI/UpgradeAferWave"]
-material = SubResource( 119 )
+material = ExtResource( 31 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -2307,6 +2315,7 @@ custom_styles/focus = SubResource( 109 )
 custom_styles/disabled = SubResource( 108 )
 custom_styles/normal = SubResource( 108 )
 toggle_mode = true
+group = SubResource( 129 )
 script = ExtResource( 15 )
 
 [node name="TextureRect" type="TextureRect" parent="UI/UpgradeAferWave/Options/Option1"]
@@ -2393,6 +2402,7 @@ custom_styles/focus = SubResource( 109 )
 custom_styles/disabled = SubResource( 108 )
 custom_styles/normal = SubResource( 108 )
 toggle_mode = true
+group = SubResource( 129 )
 script = ExtResource( 15 )
 
 [node name="TextureRect" type="TextureRect" parent="UI/UpgradeAferWave/Options/Option2"]
@@ -2479,6 +2489,7 @@ custom_styles/focus = SubResource( 109 )
 custom_styles/disabled = SubResource( 108 )
 custom_styles/normal = SubResource( 108 )
 toggle_mode = true
+group = SubResource( 129 )
 script = ExtResource( 15 )
 
 [node name="TextureRect" type="TextureRect" parent="UI/UpgradeAferWave/Options/Option3"]
@@ -2619,6 +2630,9 @@ autostart = true
 
 [node name="WaveSpawnerTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Executioner Acranus" parent="." instance=ExtResource( 32 )]
+position = Vector2( -180, -304 )
 
 [connection signal="timeout" from="Difficulty Increase Timer" to="Difficulty Increase Timer" method="_on_Difficulty_Increase_Timer_timeout"]
 [connection signal="timeout" from="PickupTimer" to="." method="_on_PickupTimer_timeout"]

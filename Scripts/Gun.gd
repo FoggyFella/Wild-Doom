@@ -44,6 +44,8 @@ func _ready():
 	gun_timeout.connect("timeout",self,"_on_gun_timeout_timeout")
 	firerate = Global.stats["player_firerate"]
 	Global.connect("pick_up_collected",self,"update_self_stats")
+	Global.connect("frenzy_start",self,"update_self_stats")
+	Global.emit_signal("pick_up_collected")
 
 func _physics_process(delta):
 #	look_vec = get_global_mouse_position() - global_position
@@ -131,7 +133,7 @@ func fire():
 			tween2.tween_property(get_parent(),"rotation_degrees",0.0,0.2)
 
 func update_self_stats():
-	bullets_rotations = Global.stats["player_bullets"]
+	#bullets_rotations = Global.stats["player_bullets"]
 	firerate = Global.stats["player_firerate"]
 
 func _on_gun_timeout_timeout():

@@ -14,7 +14,7 @@
 [ext_resource path="res://Assets/Boss/Untitled 12-02-2022 07-50-59 (1).png" type="Texture" id=12]
 [ext_resource path="res://Assets/Boss/Zombie - Tank - Hitting2.ogg" type="AudioStream" id=13]
 
-[sub_resource type="Shader" id=24]
+[sub_resource type="Shader" id=130]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -29,7 +29,7 @@ void fragment(){
 
 [sub_resource type="ShaderMaterial" id=126]
 resource_local_to_scene = true
-shader = SubResource( 24 )
+shader = SubResource( 130 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
 
@@ -397,13 +397,13 @@ interpolation_mode = 2
 offsets = PoolRealArray( 0, 0.423237, 0.672199, 1 )
 colors = PoolColorArray( 0.188235, 0.0156863, 0.0431373, 0.811765, 1, 0.513726, 0, 1, 1, 0.513726, 0, 1, 0, 0, 0, 0 )
 
-[sub_resource type="GradientTexture" id=15]
+[sub_resource type="GradientTexture" id=131]
 gradient = SubResource( 127 )
 
 [sub_resource type="Curve" id=128]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.1, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=36]
+[sub_resource type="CurveTexture" id=132]
 curve = SubResource( 128 )
 
 [sub_resource type="ParticlesMaterial" id=129]
@@ -421,12 +421,12 @@ angle = 720.0
 angle_random = 1.0
 scale = 2.0
 scale_random = 1.0
-scale_curve = SubResource( 36 )
-color_ramp = SubResource( 15 )
+scale_curve = SubResource( 132 )
+color_ramp = SubResource( 131 )
 hue_variation = -0.06
 hue_variation_random = 1.0
 
-[node name="Boss Dude" type="KinematicBody2D"]
+[node name="Demon Tank" type="KinematicBody2D"]
 z_index = 2
 collision_layer = 16
 collision_mask = 4
@@ -560,6 +560,10 @@ amount = 50
 local_coords = false
 process_material = SubResource( 129 )
 
+[node name="bite_timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [connection signal="timeout" from="TimerTillAttack" to="." method="_on_TimerTillAttack_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
 [connection signal="timeout" from="AttackTimer2" to="." method="_on_AttackTimer2_timeout"]
@@ -574,3 +578,4 @@ process_material = SubResource( 129 )
 [connection signal="timeout" from="flames_shield" to="." method="_on_flames_shield_timeout"]
 [connection signal="timeout" from="damage" to="." method="_on_damage_timeout"]
 [connection signal="timeout" from="boulder_throw" to="." method="_on_boulder_throw_timeout"]
+[connection signal="timeout" from="bite_timer" to="." method="_on_bite_timer_timeout"]

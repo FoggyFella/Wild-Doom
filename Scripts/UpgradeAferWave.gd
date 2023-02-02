@@ -12,10 +12,12 @@ onready var upgrades = {
 	7: ["sniper_health",+1,"your bullets can go through 1 more enemy!",3,3],
 	8: ["flames_shield",-get_percentage(Global.stats["flames_shield"],15,false),"-15% for enemies flame resistance!",5,5],
 	9: ["flames_speed",+get_percentage(Global.stats["flames_speed"],25,false),"+25% speed for your flames!",4,4],
-	10: ["flames_size",+get_percentage(Global.stats["flames_size"],25,false),"+25% size for your flames!",5,5]
+	10: ["flames_size",+get_percentage(Global.stats["flames_size"],25,false),"+25% size for your flames!",5,5],
+	11: ["defense",-get_percentage(Global.stats["defense"],12.5,false),"+12.5% defense for you!",3,0]
 }
 #WHEN YOU ADD A NEW UPGRADE UPDATE THE update_upgrades() SO THAT IT SAVES THE AMOUNT IT WAS USED
 #ALSO IF THERE ISN'T ICON ASSOCIATED IT WILL JUST BE null
+#YOU MADE THAT BTW
 var upgrades_icons = {
 	1: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_1_1.png"),
 	2: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_5.png"),
@@ -26,7 +28,8 @@ var upgrades_icons = {
 	7: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_8.png"),
 	8: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_6.png"),
 	9: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_1_3.png"),
-	10: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_1_2.png")
+	10: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_1_2.png"),
+	11: preload("res://Assets/Upgrades Icons/Untitled_01-12-2023_10-47-58_4.png")
 }	
 
 var selected_button = null
@@ -56,8 +59,13 @@ func initiate_upgrade(upgrade):
 				for thing in Global.player.get_node("GunRoot").get_node("Gun").bullets_rotations_rand:
 					thing.append(0.0)
 	else:
-		Global.stats[upgrades[upgrade][0]] += upgrades[upgrade][1]
-		update_upgrades()
+		if upgrade != 2:
+			Global.stats[upgrades[upgrade][0]] += upgrades[upgrade][1]
+			update_upgrades()
+		else:
+			Global.stats[upgrades[upgrade][0]] += upgrades[upgrade][1]
+			Global.player_max_health += get_percentage(Global.player_max_health,20,false)
+			update_upgrades()
 
 func option_selected():
 	for option in $Options.get_children():
@@ -172,5 +180,6 @@ func update_upgrades():
 		7: ["sniper_health",+1,"your bullets can go through 1 more enemy!",3,upgrades[7][4]],
 		8: ["flames_shield",-get_percentage(Global.stats["flames_shield"],15,false),"-15% for enemies flame resistance!",5,upgrades[8][4]],
 		9: ["flames_speed",+get_percentage(Global.stats["flames_speed"],25,false),"+25% speed for your flames!",4,upgrades[9][4]],
-		10: ["flames_size",+get_percentage(Global.stats["flames_size"],25,false),"+25% size for your flames!",5,upgrades[10][4]]
+		10: ["flames_size",+get_percentage(Global.stats["flames_size"],25,false),"+25% size for your flames!",5,upgrades[10][4]],
+		11: ["defense",-get_percentage(Global.stats["defense"],12.5,false),"+12.5% defense for you!",3,upgrades[11][4]]
 	}

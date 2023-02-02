@@ -1,0 +1,472 @@
+[gd_scene load_steps=65 format=2]
+
+[ext_resource path="res://Assets/SFX/enemyhurt.wav" type="AudioStream" id=1]
+[ext_resource path="res://Assets/SFX/enemy death.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/circle-blood.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/Big Axe Guy.gd" type="Script" id=4]
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Executioner.Rodran.stand.png" type="Texture" id=5]
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Untitled_12-25-2022_12-58-58.png" type="Texture" id=6]
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Executioner.Rodran.attack1.png" type="Texture" id=7]
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Untitled_12-25-2022_12-58-58_1.png" type="Texture" id=8]
+[ext_resource path="res://Assets/intro_circle.png" type="Texture" id=9]
+
+[sub_resource type="Shader" id=45]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform vec4 flash_color : hint_color = vec4(1.0);
+uniform float flash_modifier : hint_range(0.0, 1.0) = 0.0;
+
+void fragment(){
+	vec4 color = texture(TEXTURE,UV);
+	color.rgb = mix(color.rgb,flash_color.rgb,flash_modifier);
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=46]
+resource_local_to_scene = true
+shader = SubResource( 45 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=82]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=83]
+atlas = ExtResource( 7 )
+region = Rect2( 105, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=84]
+atlas = ExtResource( 7 )
+region = Rect2( 210, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=85]
+atlas = ExtResource( 7 )
+region = Rect2( 315, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=86]
+atlas = ExtResource( 7 )
+region = Rect2( 420, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=87]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=88]
+atlas = ExtResource( 7 )
+region = Rect2( 105, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=89]
+atlas = ExtResource( 7 )
+region = Rect2( 210, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=90]
+atlas = ExtResource( 7 )
+region = Rect2( 315, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=91]
+atlas = ExtResource( 7 )
+region = Rect2( 420, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=92]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 345, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=93]
+atlas = ExtResource( 7 )
+region = Rect2( 105, 345, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=94]
+atlas = ExtResource( 7 )
+region = Rect2( 210, 345, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=95]
+atlas = ExtResource( 7 )
+region = Rect2( 315, 345, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=96]
+atlas = ExtResource( 7 )
+region = Rect2( 420, 345, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=97]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 460, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=98]
+atlas = ExtResource( 7 )
+region = Rect2( 105, 460, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=99]
+atlas = ExtResource( 7 )
+region = Rect2( 210, 460, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=100]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=47]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=48]
+atlas = ExtResource( 5 )
+region = Rect2( 105, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=49]
+atlas = ExtResource( 5 )
+region = Rect2( 210, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=50]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=51]
+atlas = ExtResource( 5 )
+region = Rect2( 105, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=101]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=102]
+atlas = ExtResource( 8 )
+region = Rect2( 105, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=103]
+atlas = ExtResource( 8 )
+region = Rect2( 210, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=104]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=105]
+atlas = ExtResource( 8 )
+region = Rect2( 105, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=106]
+atlas = ExtResource( 8 )
+region = Rect2( 210, 230, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=76]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=77]
+atlas = ExtResource( 6 )
+region = Rect2( 105, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=78]
+atlas = ExtResource( 6 )
+region = Rect2( 210, 0, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=79]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=80]
+atlas = ExtResource( 6 )
+region = Rect2( 105, 115, 105, 115 )
+
+[sub_resource type="AtlasTexture" id=81]
+atlas = ExtResource( 6 )
+region = Rect2( 210, 115, 105, 115 )
+
+[sub_resource type="SpriteFrames" id=38]
+animations = [ {
+"frames": [ SubResource( 82 ), SubResource( 83 ), SubResource( 84 ), SubResource( 85 ), SubResource( 86 ), SubResource( 87 ), SubResource( 88 ), SubResource( 89 ), SubResource( 90 ), SubResource( 91 ), SubResource( 92 ), SubResource( 93 ), SubResource( 94 ), SubResource( 95 ), SubResource( 96 ), SubResource( 97 ), SubResource( 98 ), SubResource( 99 ), SubResource( 100 ) ],
+"loop": false,
+"name": "AxeAttack",
+"speed": 10.0
+}, {
+"frames": [ SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 6.0
+}, {
+"frames": [ SubResource( 101 ), SubResource( 102 ), SubResource( 103 ), SubResource( 104 ), SubResource( 105 ), SubResource( 106 ) ],
+"loop": false,
+"name": "SkullSummon",
+"speed": 8.0
+}, {
+"frames": [ SubResource( 76 ), SubResource( 77 ), SubResource( 78 ), SubResource( 79 ), SubResource( 80 ), SubResource( 81 ) ],
+"loop": true,
+"name": "Walk",
+"speed": 6.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=39]
+extents = Vector2( 21, 37 )
+
+[sub_resource type="CapsuleShape2D" id=40]
+radius = 15.0
+height = 40.0
+
+[sub_resource type="Curve2D" id=107]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 5, -15, 0, 0, 0, 0, 15, -8, 0, 0, 0, 0, 15, 7, 0, 0, 0, 0, 6, 13, 0, 0, 0, 0, -6, 13, 0, 0, 0, 0, -14, 6, 0, 0, 0, 0, -14, -8, 0, 0, 0, 0, -5, -15 )
+}
+
+[sub_resource type="Curve2D" id=108]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 5, -15, 0, 0, 0, 0, 15, -8, 0, 0, 0, 0, 15, -1, 0, 0, 0, 0, 15, 7, 0, 0, 0, 0, 12, 11, 0, 0, 0, 0, 6, 13, 0, 0, 0, 0, -6, 13, 0, 0, 0, 0, -11, 10, 0, 0, 0, 0, -14, 6, 0, 0, 0, 0, -14, -1, 0, 0, 0, 0, -14, -8, 0, 0, 0, 0, -5, -15 )
+}
+
+[sub_resource type="Gradient" id=41]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.423237, 0.672199, 1 )
+colors = PoolColorArray( 0.188235, 0.0156863, 0.0431373, 0.811765, 1, 0.513726, 0, 1, 1, 0.513726, 0, 1, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 41 )
+
+[sub_resource type="Curve" id=42]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -2.1, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=36]
+curve = SubResource( 42 )
+
+[sub_resource type="ParticlesMaterial" id=43]
+emission_shape = 1
+emission_sphere_radius = 26.78
+flag_disable_z = true
+gravity = Vector3( 0, -98, 0 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+radial_accel = 42.95
+radial_accel_random = 0.06
+angle = 720.0
+angle_random = 1.0
+scale = 2.0
+scale_random = 1.0
+scale_curve = SubResource( 36 )
+color_ramp = SubResource( 15 )
+hue_variation = -0.06
+hue_variation_random = 1.0
+
+[sub_resource type="Gradient" id=114]
+interpolation_mode = 2
+offsets = PoolRealArray( 0.327645, 0.535836, 0.614334, 0.668942 )
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0, 0, 1, 0.964706, 0.0666667, 0.340288, 1, 0.964706, 0.0666667, 0.403922, 0 )
+
+[sub_resource type="GradientTexture2D" id=115]
+gradient = SubResource( 114 )
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
+
+[sub_resource type="Gradient" id=109]
+offsets = PoolRealArray( 0.189591, 0.423792, 0.758364 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=110]
+gradient = SubResource( 109 )
+
+[sub_resource type="Curve" id=111]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -0.904204, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=112]
+curve = SubResource( 111 )
+
+[sub_resource type="ParticlesMaterial" id=113]
+emission_shape = 1
+emission_sphere_radius = 19.63
+flag_disable_z = true
+gravity = Vector3( 0, -98, 0 )
+angular_velocity = 720.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 1.3
+scale_random = 0.04
+scale_curve = SubResource( 112 )
+color = Color( 1, 0, 0.27451, 1 )
+color_ramp = SubResource( 110 )
+hue_variation_random = 0.94
+
+[node name="Executioner Acranus" type="KinematicBody2D"]
+z_index = 2
+collision_layer = 16
+collision_mask = 4
+script = ExtResource( 4 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+light_mask = 4
+material = SubResource( 46 )
+position = Vector2( -6, -50 )
+scale = Vector2( 1.0738, 1.0738 )
+frames = SubResource( 38 )
+animation = "Idle"
+offset = Vector2( -14.667, -10.492 )
+
+[node name="Shadow" type="Sprite" parent="Sprite"]
+modulate = Color( 0, 0, 0, 0.435294 )
+position = Vector2( 6.26418, 46.4601 )
+scale = Vector2( 2.36001, 0.259475 )
+z_index = -1
+texture = ExtResource( 3 )
+
+[node name="BulletSpawnPoint" type="Position2D" parent="Sprite"]
+position = Vector2( -35.3882, 46.7804 )
+scale = Vector2( 3.34641, 3.34641 )
+
+[node name="ScythesSpawnPoint" type="Position2D" parent="Sprite"]
+position = Vector2( -58.6702, 11.1753 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( -3, -36 )
+shape = SubResource( 39 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -2, -36 )
+shape = SubResource( 40 )
+
+[node name="SkullsPath" type="Path2D" parent="."]
+position = Vector2( -4, -99 )
+curve = SubResource( 107 )
+
+[node name="SkullsPath2" type="Path2D" parent="."]
+visible = false
+position = Vector2( -4, -99 )
+curve = SubResource( 108 )
+
+[node name="SkullsPath3" type="Path2D" parent="."]
+visible = false
+position = Vector2( -4, -99 )
+curve = SubResource( 108 )
+
+[node name="hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+volume_db = -11.361
+attenuation = 4.43828
+bus = "SoundEffects"
+
+[node name="death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = -9.613
+attenuation = 4.43828
+bus = "SoundEffects"
+
+[node name="burn_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="burn_tick" type="Timer" parent="."]
+wait_time = 0.15
+
+[node name="time_to_catch_on_fire" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="flames_shield" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="damage" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="FlameParticles" type="Particles2D" parent="."]
+modulate = Color( 2, 1, 1, 1 )
+show_behind_parent = true
+position = Vector2( -1, -23 )
+z_index = 1
+emitting = false
+amount = 50
+local_coords = false
+process_material = SubResource( 43 )
+
+[node name="TimerTillWalk" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="TimerTillAttack" type="Timer" parent="."]
+one_shot = true
+
+[node name="BetweenAttacks" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerTillBullets" type="Timer" parent="."]
+wait_time = 1.1
+one_shot = true
+
+[node name="TimerTillScythes" type="Timer" parent="."]
+wait_time = 1.1
+one_shot = true
+
+[node name="TimerTillSkulls" type="Timer" parent="."]
+one_shot = true
+
+[node name="SkullSummonningPeriod" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+
+[node name="OneSkullSummon" type="Timer" parent="."]
+one_shot = true
+
+[node name="ThePortal" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -3, -98 )
+
+[node name="Sprite2" type="Sprite" parent="ThePortal"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 9 )
+
+[node name="Sprite4" type="Sprite" parent="ThePortal"]
+visible = false
+modulate = Color( 1, 0.0666667, 0.329412, 1 )
+scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 9 )
+
+[node name="Sprite3" type="Sprite" parent="ThePortal"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 0, -1 )
+scale = Vector2( 0.52, 0.47 )
+texture = ExtResource( 9 )
+
+[node name="TextureRect" type="TextureRect" parent="ThePortal"]
+modulate = Color( 2, 1, 1, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -22.5
+margin_top = -23.5
+margin_right = 22.5
+margin_bottom = 21.5
+texture = SubResource( 115 )
+expand = true
+
+[node name="ThePortalParticles" type="Particles2D" parent="."]
+modulate = Color( 1.3, 1, 1, 1 )
+position = Vector2( -3.464, -98.293 )
+emitting = false
+amount = 50
+process_material = SubResource( 113 )
+
+[connection signal="animation_finished" from="Sprite" to="." method="_on_Sprite_animation_finished"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
+[connection signal="timeout" from="burn_timer" to="." method="_on_burn_timer_timeout"]
+[connection signal="timeout" from="burn_tick" to="." method="_on_burn_tick_timeout"]
+[connection signal="timeout" from="time_to_catch_on_fire" to="." method="_on_time_to_catch_on_fire_timeout"]
+[connection signal="timeout" from="flames_shield" to="." method="_on_flames_shield_timeout"]
+[connection signal="timeout" from="damage" to="." method="_on_damage_timeout"]
+[connection signal="timeout" from="TimerTillWalk" to="." method="_on_TimerTillWalk_timeout"]
+[connection signal="timeout" from="TimerTillAttack" to="." method="_on_TimerTillAttack_timeout"]
+[connection signal="timeout" from="BetweenAttacks" to="." method="_on_BetweenAttacks_timeout"]
+[connection signal="timeout" from="TimerTillBullets" to="." method="_on_TimerTillBullets_timeout"]
+[connection signal="timeout" from="TimerTillScythes" to="." method="_on_TimerTillScythes_timeout"]
+[connection signal="timeout" from="TimerTillSkulls" to="." method="_on_TimerTillSkulls_timeout"]
+[connection signal="timeout" from="SkullSummonningPeriod" to="." method="_on_SkullSummonningPeriod_timeout"]
+[connection signal="timeout" from="OneSkullSummon" to="." method="_on_OneSkullSummon_timeout"]

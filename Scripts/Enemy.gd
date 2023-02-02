@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 var speed : float = 50
 export var damage : int = 10
+export var additional_proj_damage : int = 0
 export var health : int = 100
 export var more_health : int = 0
 export var min_money : int = 1
@@ -17,7 +18,9 @@ export var max_wait : float = 4
 export var bite_damage : int = 5
 export var should_shoot = true
 export var should_rotate = false
+export var should_have_death_anim:bool = false
 export var should_walk = true
+export var should_walk_to_the_closest_thing = false
 export var should_knockback = true
 export var should_stay_away:bool = false
 export var should_dash:bool = false
@@ -26,6 +29,10 @@ export var should_have_fritcion:bool = false
 export var acceleration:float = 0.0
 export var friction:float = 0.0
 export var should_fully_stop:bool = false
+export var should_slow_down_on_proj_hit:bool = false
+export var should_wait_before_melee_attack:bool = false
+export var bullet_sprite:String = "Default"
+export var should_interact_with_others = false
 
 var should_run = false
 var previous_speed = speed
@@ -41,10 +48,13 @@ var is_visisble = false
 var velocity = Vector2.ZERO
 var should_change_speed = true
 var can_dash = false
-
+var target = null
+var min_distance = 99999999.0
 var max_health = 0
+var crack = preload("res://Scenes/Crack.tscn")
 var dash_ghost = preload("res://Scenes/DashGhost.tscn")
 var bullet = preload("res://Scenes/enemy_bullet.tscn")
+var blood_little = preload("res://Scenes/HitBloodEffect.tscn")
 var blood = preload("res://Scenes/BloodParticles.tscn")
 var damage_popup = preload("res://Scenes/NumberPopup.tscn")
 var ashes = preload("res://Scenes/BloodParticlesButAshes.tscn")
@@ -64,9 +74,11 @@ func _ready():
 	sprite_size_x = $Sprite.scale.x
 	health = Global.stats["enemy_health"] + more_health
 	max_health = health
+	bite_damage = Global.stats["enemy_bite_damage"]
+	set_collision_mask_bit(4,should_interact_with_others)
 	$TextureProgress.max_value = health
 	$TextureProgress.value = health
-	scale.x = rand_range(0.8,1)
+	scale.x = rand_range(0.85,1)
 	scale.y = scale.x
 	ruby_percentages = [1.0-ruby_chance,ruby_chance]
 	if should_walk:
@@ -77,6 +89,8 @@ func _ready():
 	player = Global.player
 	if should_dash:
 		$timebetweendashes.start(rand_range(6,8))
+	if should_walk_to_the_closest_thing:
+		search_for_a_closest_object(get_tree().current_scene.get_node("Points"))
 	
 func _physics_process(delta):
 	var overlapping_bodies = $Hitbox.get_overlapping_bodies()
@@ -90,6 +104,7 @@ func _physics_process(delta):
 					i.call_deferred("become_ghost")
 				if i.critical:
 					take_damage(i.damage,true,i.should_knockback,i.should_show_total_dmg)
+					#freeze_game()
 				elif !i.critical:
 					if stun == false:
 						take_damage(i.damage,false,i.should_knockback,i.should_show_total_dmg)
@@ -97,11 +112,19 @@ func _physics_process(delta):
 #				burn(5,1,5)
 	if player == null:
 		queue_free()
+	if target != null:
+		player = target
+		if global_position.distance_to(player.global_position) <= 30.0:
+			target = null
+			player = Global.player
 	if player != null and stun == false:
 		if !should_run and !should_have_fritcion:
+			var distance_to_player = global_position.distance_to(player.global_position)
 			direction_to_player = Vector2(player.global_position - global_position)
 			velocity = direction_to_player.normalized() * speed if !is_dashing() else previous_direction * dash_speed
 			move_and_slide(velocity,Vector2.UP)
+			if should_wait_before_melee_attack and distance_to_player <= 40.0:
+				axe_attack()
 		elif should_run and !Global.player.velocity == Vector2.ZERO and !should_have_fritcion:
 			direction_to_player = Vector2(player.global_position - global_position)
 			velocity = velocity.linear_interpolate(-direction_to_player.normalized() * speed,0.1)
@@ -117,10 +140,21 @@ func _physics_process(delta):
 			if collision != null:
 				if collision.get_collider().name == "Player":
 					if collision.get_collider().has_method("take_damage"):
-						if can_bite:
+						if can_bite and !should_wait_before_melee_attack:
 							can_bite = false
 							$bite_timer.start()
 							collision.get_collider().take_damage(bite_damage)
+						elif should_wait_before_melee_attack:
+							if can_bite:
+								speed = 0
+								can_bite = false
+								$AnimationPlayer.playback_speed = 1.2
+								$AnimationPlayer.play("Slash")
+								yield($AnimationPlayer,"animation_finished")
+								$bite_timer.start()
+								$AnimationPlayer.play("Walk")
+								$AnimationPlayer.playback_speed = 0.7
+								speed = normal_speed
 		if direction_to_player.x < 0:
 			if should_rotate:
 				$Sprite.rotation_degrees = lerp($Sprite.rotation_degrees,-8.9,0.05)
@@ -160,7 +194,11 @@ func shoot():
 
 func take_damage(how_much,critical,knockback=true,show_total=false):
 	total_damage_got += how_much
-	#if $damage.is_stopped():
+#	var blood_inst_little = blood_little.instance()
+#	blood_inst_little.global_position = global_position
+#	blood_inst_little.rotation = global_position.angle_to_point(player.global_position)
+#	get_tree().current_scene.add_child(blood_inst_little)
+	#if $damage.is_stopped()
 	if $TextureProgress.visible == false:
 		show_health_bar()
 	update_health_bar(how_much)
@@ -191,28 +229,48 @@ func take_damage(how_much,critical,knockback=true,show_total=false):
 		$hurt.play()
 		#health -= how_much
 		if health <=0:
-			var blood_inst = blood.instance() if !burning else ashes.instance()
-			blood_inst.global_position = global_position
-			blood_inst.rotation = global_position.angle_to_point(player.global_position)
-			get_tree().current_scene.add_child(blood_inst)
+			if !should_have_death_anim:
+				var blood_inst = blood.instance() if !burning else ashes.instance()
+				blood_inst.global_position = global_position
+				blood_inst.rotation = global_position.angle_to_point(player.global_position)
+				get_tree().current_scene.add_child(blood_inst)
+			else:
+				$AnimationPlayer.play("Death")
+				yield(get_tree().create_timer(1.6),"timeout")
 			$death.pitch_scale = rand_range(0.8,1)
 			$death.play()
 			yield(tween,"finished")
 			queue_free()
-			Global.emit_signal("money_picked_up",money_reward)
+			Global.emit_signal("money_picked_up",round(money_reward * Global.stats["player_earnings"]))
 			grant_ruby_with_a_chance()
 			Global.enemies_killed += 1
 	elif health <= 0:
-		var blood_inst = blood.instance() if !burning else ashes.instance()
-		blood_inst.global_position = global_position
-		blood_inst.rotation = global_position.angle_to_point(player.global_position)
-		get_tree().current_scene.add_child(blood_inst)
+		if !should_have_death_anim:
+			var blood_inst = blood.instance() if !burning else ashes.instance()
+			blood_inst.global_position = global_position
+			blood_inst.rotation = global_position.angle_to_point(player.global_position)
+			get_tree().current_scene.add_child(blood_inst)
+		else:
+			$AnimationPlayer.play("Death")
+			can_shoot = false
+			should_shoot = false
+			should_stay_away = false
+			should_rotate = false
+			$timer2.stop()
+			$TextureProgress.hide()
+			rotation = 0
+			$Sprite.rotation = 0
+			$CollisionShape2D.disabled = true
+			$Hitbox.monitoring = false
+			$Hitbox.monitorable = false
+			yield(get_tree().create_timer(1.6),"timeout")
 		health = 0
 		$death.pitch_scale = rand_range(0.8,1)
 		$death.play()
-		yield(tween,"finished")
+		if !should_have_death_anim:
+			yield(tween,"finished")
 		queue_free()
-		Global.emit_signal("money_picked_up",money_reward)
+		Global.emit_signal("money_picked_up",round(money_reward * Global.stats["player_earnings"]))
 		grant_ruby_with_a_chance()
 		Global.enemies_killed += 1
 	yield(tween,"finished")
@@ -247,9 +305,12 @@ func _on_timer2_timeout():
 		bullet_inst.rotation = global_position.angle_to_point(player.global_position)
 		bullet_inst.player = player
 		bullet_inst.damage = damage
+		bullet_inst.should_slow_down = should_slow_down_on_proj_hit
 		bullet_inst.scale = $Position2D.scale
 		bullet_inst.direction_to_player = direction_to_player
 		bullet_inst.lock_on = true
+		bullet_inst.bullet_sprite = bullet_sprite
+		bullet_inst.additional_damage = additional_proj_damage
 		get_tree().current_scene.get_node("Enemies").add_child(bullet_inst)
 	
 func show_health_bar():
@@ -420,3 +481,50 @@ func grant_ruby_with_a_chance():
 #			break
 #		total += per
 #		count += 1
+
+#func freeze_game():
+#	Engine.time_scale = 0.07
+#	yield(get_tree().create_timer(0.07*0.45),"timeout")
+#	Engine.time_scale = 1
+
+func search_for_a_closest_object(where):
+	if target == null:
+		if where.get_child_count() != 0:
+			for point in where.get_children():
+				var distance = global_position.distance_to(point.global_position)
+				if distance < min_distance:
+					min_distance = distance
+					target = point
+			min_distance = 99999999.0
+
+func change_axe_hurtbox_state():
+	if $Sprite/AxeHurtBox.monitoring == false:
+		$Sprite/AxeHurtBox.monitoring = true
+		$Sprite/AxeHurtBox.monitorable = true
+		spawn_crack()
+	else:
+		$Sprite/AxeHurtBox.monitoring = false
+		$Sprite/AxeHurtBox.monitorable = false
+
+
+func _on_AxeHurtBox_body_entered(body):
+	body.take_damage(damage+additional_proj_damage)
+
+func axe_attack():
+	if can_bite:
+		speed = 0
+		can_bite = false
+		$bite_timer.start()
+		$AnimationPlayer.playback_speed = 1.2
+		$AnimationPlayer.play("Slash")
+		yield($AnimationPlayer,"animation_finished")
+		$AnimationPlayer.play("Walk")
+		$AnimationPlayer.playback_speed = 0.7
+		speed = normal_speed
+
+func spawn_crack():
+	var crack_inst = crack.instance()
+	crack_inst.global_position = $Sprite/CrackPosition.global_position
+	crack_inst.scale.x = rand_range(0.4,0.5)
+	crack_inst.scale.y = crack_inst.scale.x
+	get_tree().current_scene.add_child(crack_inst)

@@ -1,0 +1,131 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Untitled_01-29-2023_03-27-47.png" type="Texture" id=1]
+[ext_resource path="res://Assets/AxeGuy/BIGAXE/Untitled_01-24-2023_10-52-19.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+resource_name = "axeguyproj"
+script/source = "extends KinematicBody2D
+
+var velocity = Vector2()
+var speed = 300
+var damage = 55
+var sprite = \"Default\"
+
+func _ready():
+	get_node(sprite).show()
+	if abs(rotation_degrees) > 88:
+		$Skull.scale.y = -1
+	else:
+		$Skull.scale.y = 1
+
+func _process(delta):
+	velocity = Vector2(speed*delta,0).rotated(rotation)
+	var info = move_and_collide(velocity)
+	if info != null:
+		if info.collider.has_method(\"take_damage\"):
+			queue_free()
+			info.collider.take_damage(damage)
+
+func _on_VisibilityNotifier2D_viewport_exited(viewport):
+	queue_free()
+
+func set_stuff():
+	if abs(rotation_degrees) > 88:
+		$Skull.scale.y = -1
+	else:
+		$Skull.scale.y = 1
+"
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 45, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 90, 0, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 34, 45, 34 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 2 )
+region = Rect2( 45, 34, 45, 34 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 8.0
+} ]
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 64, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 2.0
+height = 12.476
+
+[node name="AxeGuyProjectile" type="KinematicBody2D" groups=["enemy_bullets"]]
+z_index = 2
+collision_layer = 8
+collision_mask = 0
+script = SubResource( 1 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 20.727, -0.027 )
+scale = Vector2( 0.15, 0.15 )
+
+[node name="Skull" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( -3, -1 )
+scale = Vector2( 0.852941, 0.852941 )
+frames = SubResource( 14 )
+frame = 1
+playing = true
+
+[node name="Default" type="AnimatedSprite" parent="."]
+visible = false
+rotation = -1.5708
+scale = Vector2( 0.442224, 0.442224 )
+frames = SubResource( 7 )
+frame = 4
+speed_scale = 1.1
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 7.456, 0.238 )
+shape = SubResource( 8 )
+
+[connection signal="viewport_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_viewport_exited"]
